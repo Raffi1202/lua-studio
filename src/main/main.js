@@ -347,7 +347,7 @@ ipcMain.handle('studio:uebertragen', async (_e, a) => {
     const nSym = Object.keys(a.symbole || {}).length
     P.info('uebertragen', `Start: ${a.kennung}.${a.lua} nach ${a.spec.art}${a.spec.art === 'funke' ? '' : ' ' + (a.spec.wurzel || a.spec.pfad)}, Format ${JSON.stringify((a.meta || {}).formate || null)}, ${nSym} Symboldateien${a.funkeUebernehmen ? ', Änderungen der Funke übernehmen' : ''}`)
     const r = await S.uebertragen({ ziel, ablage: studioAblage(), funkeName: a.funkeName, kennung: a.kennung, lua: a.lua, projekt: a.projekt,
-      meta: { ...a.meta, studioVersion: VERSION, immerAlarm: immerAlarm(a.lua) }, funkeUebernehmen: a.funkeUebernehmen,
+      meta: { ...a.meta, studioVersion: VERSION, immerAlarm: immerAlarm(a.lua), extra: S.extraDarstellungen(beschreibungen()[a.lua], (a.meta || {}).luaVersion) }, funkeUebernehmen: a.funkeUebernehmen,
       werkGrenzen: ((beschreibungen()[a.lua] || {}).standard || {}).grenzen || {}, schritt: (t, ok) => { (ok ? P.info : P.warnung).call(P, 'uebertragen', `${ok ? 'Schritt' : 'Abbruch'}: ${t}`); melden('studio:schritt', { t, ok }) },
       symbolDateien: symbolePuffer(a.symbole), symboleLoeschen: symbolNamen(a.symboleLoeschen) })
     if (a.funkeUebernehmen) studioAblage().projektSpeichern(a.funkeName, a.lua, a.kennung, { einstellungen: r.daten.einstellungen, werte: r.daten.werte, grenzen: r.daten.grenzen, ansichten: r.daten.ansichten })
@@ -366,7 +366,7 @@ ipcMain.handle('studio:symboleUnbenutzt', async (_e, a) => {
     if (!a.spec || a.spec.art === 'ordner') return { ok: true, namen: [] }
     const ziel = zielAus(a.spec, a.lua)
     if (ziel.art === 'ordner') return { ok: true, namen: [] }
-    const d = S.dateiDaten(a.projekt, { ...(a.meta || {}), immerAlarm: immerAlarm(a.lua) })
+    const d = S.dateiDaten(a.projekt, { ...(a.meta || {}), immerAlarm: immerAlarm(a.lua), extra: S.extraDarstellungen(beschreibungen()[a.lua], (a.meta || {}).luaVersion) })
     const r = await S.symboleUnbenutzt(ziel, `${a.kennung}.${a.lua}.lua`, d.format === 2 ? d.symbole || [] : [])
     return { ok: true, ...r }
   } catch (e) { return fehlerAntwort(e) }

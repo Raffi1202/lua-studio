@@ -1,10 +1,44 @@
 {
  "lua": "gas_ecu",
- "luaVersion": "1.10.0",
+ "luaVersion": "1.11.0",
  "formate": [
   1
  ],
  "beiMotorAus": true,
+ "darstellungenExtra": {
+  "zylinder": {
+   "name": {
+    "de": "Zylinder (alle Säulen)",
+    "en": "Cylinders (all columns)"
+   },
+   "min": {
+    "b": 160,
+    "h": 220
+   },
+   "beschreibung": {
+    "de": "Alle Zylinder-Säulen wie Seite 1: Temperatur, Trendpfeil, Höchstwert-Strich, «Diff» und «max». Farben und Grenzen aus den Zylinder-Einstellungen. Nur mit w = lua:cht_max.",
+    "en": "All cylinder columns as on page 1: temperature, trend arrow, peak mark, «Diff» and «max». Colours and limits from the cylinder settings. Only with w = lua:cht_max."
+   }
+  },
+  "tank": {
+   "name": {
+    "de": "Tank (Säule mit Knopf)",
+    "en": "Tank (column with button)"
+   },
+   "min": {
+    "b": 160,
+    "h": 220
+   },
+   "beschreibung": {
+    "de": "Tank-Säule wie Seite 1: %, ml, Verbrauch, Fluss, Restzeit und Knopf «VOLLGETANKT» (mit Rückfrage). Nur mit w = lua:tank_proz.",
+    "en": "Tank column as on page 1: %, ml, used, flow, time left and button «REFUELLED» (with confirmation). Only with w = lua:tank_proz."
+   }
+  },
+  "_hinweis": {
+   "de": "Mindestgrössen in Pixeln bei 800 Pixel Breite, für andere Ansichten mit breite/800 umrechnen (wie bei den übrigen Darstellungen). Titel optional, Farben, min/max, zusatz und stufen wirken hier nicht.",
+   "en": "Minimum sizes in pixels at 800 pixel width, scale by width/800 for other views (as for the other display types). Title optional; colours, min/max, zusatz and stufen have no effect here."
+  }
+ },
  "reserviert": [
   {
    "breite": 784,
@@ -179,7 +213,8 @@
     "ring",
     "balken_w",
     "balken_s",
-    "kurve"
+    "kurve",
+    "zylinder"
    ],
    "grenzeRichtung": "ueber",
    "ansage": true
@@ -277,7 +312,8 @@
     "ring",
     "balken_w",
     "balken_s",
-    "kurve"
+    "kurve",
+    "tank"
    ],
    "grenzeRichtung": "unter",
    "ansage": true

@@ -180,7 +180,7 @@ test('Vorlage «Original» (0.6.0): Electric mit Farben wie die eingebaute Anzei
 
 test('Vorlagen «Original» von Electric, Jet und Heli: jede Grösse gültig (Rand, Überlappung, reservierte Flächen, Mindestgrössen, Funke)', () => {
   const b = S.beschreibungenLaden(path.join(__dirname, '..', 'src', 'luas'))
-  const M = { zahl: [90, 50], ring: [110, 110], balken_w: [140, 40], balken_s: [50, 110], kurve: [180, 90], status: [120, 40] }
+  const M = { zahl: [90, 50], ring: [110, 110], balken_w: [140, 40], balken_s: [50, 110], kurve: [180, 90], status: [120, 40], zylinder: [160, 220], tank: [160, 220] }
   for (const lua of ['electric', 'jet', 'heli', 'glider', 'gas_ecu', 'gas_carb']) {
     const o = S.presets(b[lua])[0]
     assert.strictEqual(o.s, 'original', lua)
@@ -197,8 +197,29 @@ test('Vorlagen «Original» von Electric, Jet und Heli: jede Grösse gültig (Ra
         assert.ok(!res.some((r) => ue(p, r)), `${wo} auf reservierter Fläche`)
         assert.ok(!a.plaetze.some((q) => q !== p && ue(p, q)), `${wo} überlappt`)
       }
-      const d = S.dateiDaten({ einstellungen: {}, werte: {}, grenzen: {}, ansichten: [a] }, { formate: [1, 2] })
+      const d = S.dateiDaten({ einstellungen: {}, werte: {}, grenzen: {}, ansichten: [a] }, { formate: [1, 2], extra: S.extraDarstellungen(b[lua]) })
       assert.strictEqual(F.pruefenWieFunke(F.dateiText(d)), null, `${lua} ${a.breite}x${a.hoehe}`)
     }
   }
+})
+
+test('Darstellungen des Luas (Gas Engine 1.11.0 / 0.11.0 «zylinder», «tank»): nur mit darstellungenExtra; sonst sauber verworfen', () => {
+  const b = S.beschreibungenLaden(path.join(__dirname, '..', 'src', 'luas'))
+  assert.deepStrictEqual(Object.keys(b.gas_ecu.darstellungenExtra).filter((d) => !d.startsWith('_')).sort(), ['tank', 'zylinder'])
+  const voll = S.presets(b.gas_ecu)[0].ansichten.find((a) => a.breite === 800)
+  assert.ok(voll.plaetze.some((p) => p.darstellung === 'zylinder') && voll.plaetze.some((p) => p.darstellung === 'tank'))
+  const projekt = { einstellungen: {}, werte: {}, grenzen: {}, ansichten: [{ breite: 800, hoehe: 480, plaetze: [{ x: 6, y: 90, b: 248, h: 300, w: 'lua:cht_max', darstellung: 'zylinder' }] }] }
+  // Lua kennt die Darstellung (extra): bleibt; älteres Lua bzw. ohne extra: Darstellung fällt weg (Standard «zahl»)
+  assert.strictEqual(S.dateiDaten(projekt, { formate: [1, 2], extra: ['zylinder', 'tank'] }).ansichten[0].plaetze[0].darstellung, 'zylinder')
+  const r = S.dateiDatenMitInfo(projekt, { formate: [1, 2] })
+  assert.strictEqual(r.daten.ansichten[0].plaetze[0].darstellung, undefined)
+  assert.ok(r.verworfen.includes('darstellung'))
+  // Lua auf der Funke älter als die Beschreibung (Gas ECU 1.10.0): keine Darstellungen des Luas; zweite gleiche Darstellung fällt weg
+  assert.deepStrictEqual(S.extraDarstellungen(b.gas_ecu, '1.10.0'), [])
+  assert.deepStrictEqual(S.extraDarstellungen(b.gas_ecu, '1.11.0').sort(), ['tank', 'zylinder'])
+  const zwei = { ...projekt, ansichten: [{ breite: 800, hoehe: 480, plaetze: [projekt.ansichten[0].plaetze[0], { x: 300, y: 90, b: 248, h: 300, w: 'lua:cht_max', darstellung: 'zylinder' }] }] }
+  assert.deepStrictEqual(S.dateiDaten(zwei, { extra: ['zylinder'] }).ansichten[0].plaetze.map((p) => p.darstellung), ['zylinder', undefined])
+  assert.ok(S.presets(b.gas_carb)[0].ansichten.find((a) => a.breite === 800).plaetze.some((p) => p.darstellung === 'tank'))
+  // Electric (ohne darstellungenExtra) bekommt keine Gas-Darstellung über eine Vorlage
+  assert.ok(!S.presets(b.electric).some((x) => x.ansichten.some((a) => a.plaetze.some((p) => p.darstellung === 'zylinder'))))
 })

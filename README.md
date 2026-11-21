@@ -43,7 +43,7 @@ A program for Mac and Windows that belongs to our FrSky Ethos Lua widgets (Elect
 | [Heli](https://github.com/Raffi1202/heli-lua) 1.13.1 | format 2, «also when motor off» |
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.4.0 | format 2, «also when motor off» |
 | [Glider](https://github.com/Raffi1202/glider-lua) 0.5.0 | format 1, «also when motor off» |
-| [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.10.0 / 0.10.0 | format 1, «also when motor off» |
+| [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.11.0 / 0.11.0 | format 1, «also when motor off» |
 
 Luas with format 2 also get symbols, bold units, decoration and templates; for format 1 the studio writes the file without them.
 

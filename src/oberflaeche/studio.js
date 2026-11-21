@@ -87,6 +87,27 @@ async function symbolGrau(n, k) {
 // Sichtbare Namen der Luas (Umbenennung 21.11.2026); unbekannte zeigen ihren Schlüssel
 const LUA_NAME = { electric: 'Electric', glider: 'Glider', heli: 'Heli', helirf: 'Heli', gas_ecu: 'Gas Engine ECU', gas_carb: 'Gas Engine Carb', jet: 'Jet' }
 function luaName(k) { return LUA_NAME[k] || k }
+// Mindestgrösse einer Darstellung bei 800 px Breite, auch für Darstellungen des Luas («darstellungenExtra»)
+// Darstellungen des Luas, die das Lua auf der Funke kennt (Version aus der Info-Datei; vorbereitete Modelle: Version der Beschreibung)
+function extraErlaubt() {
+  const b = beschreibung() || {}
+  const v = st.m && st.m.info && !st.m.info.vorbereitet ? st.m.info.luaVersion : null
+  if (!b.darstellungenExtra) return []
+  if (v && b.luaVersion) {
+    const x = String(v).split('.').map(Number), y = String(b.luaVersion).split('.').map(Number)
+    for (let i = 0; i < 3; i++) if ((x[i] || 0) !== (y[i] || 0)) { if ((x[i] || 0) < (y[i] || 0)) return []; break }
+  }
+  return Object.keys(b.darstellungenExtra).filter((d) => !d.startsWith('_'))
+}
+function mindestVon(d) {
+  if (MINDEST[d]) return MINDEST[d]
+  const x = ((beschreibung() || {}).darstellungenExtra || {})[d]
+  return x && x.min ? [x.min.b, x.min.h] : MINDEST.zahl
+}
+function darstellungName(d) {
+  const x = ((beschreibung() || {}).darstellungenExtra || {})[d]
+  return x ? name(x.name) : t('d_' + d)
+}
 // «Vorbereitet L» ist der interne Ablagename vorbereiteter Modelle; angezeigt wird er übersetzt mit dem Namen der Displaygruppe
 function funkeAnzeige(f) {
   const m = /^Vorbereitet ([LMS])$/.exec(String(f || ''))
@@ -117,7 +138,8 @@ function werteListe() {
 function wertInfo(k) { return werteListe().find((w) => w.k === k) }
 function erlaubteDarstellungen(k) {
   const w = wertInfo(k)
-  if (w && w.def && Array.isArray(w.def.darstellungen)) return w.def.darstellungen
+  // Darstellungen des Luas nur, wenn das Lua auf der Funke sie kennt
+  if (w && w.def && Array.isArray(w.def.darstellungen)) { const ex = extraErlaubt(); return w.def.darstellungen.filter((d) => DARSTELLUNGEN.includes(d) || ex.includes(d)) }
   return DARSTELLUNGEN.filter((d) => d !== 'status')
 }
 
@@ -132,7 +154,8 @@ function funkeName() { return (st.m && st.m.info && st.m.info.funke) || 'ohne Fu
 function meta() {
   const i = (st.m && st.m.info) || {}
   const immerAlarm = (beschreibung().werte || []).filter((w) => w && w.immerAlarm).map((w) => `lua:${w.s}`)
-  return { funke: i.funke, modell: i.modell, luaVersion: i.luaVersion, modellPfad: i.modellPfad, formate: i.formate, immerAlarm }
+  const extra = extraErlaubt()
+  return { funke: i.funke, modell: i.modell, luaVersion: i.luaVersion, modellPfad: i.modellPfad, formate: i.formate, immerAlarm, extra }
 }
 async function pruefen() {
   if (!st.projekt) return
@@ -342,10 +365,12 @@ function anordnungPruefen(a) {
   let kurven = 0
   a.plaetze.forEach((p, i) => {
     const d = p.darstellung || 'zahl'
-    const [mb, mh] = MINDEST[d] || MINDEST.zahl
+    const [mb, mh] = mindestVon(d)
     if (p.x < 0 || p.y < 0 || p.x + p.b > a.breite || p.y + p.h > a.hoehe) m.set(i, t('pRand'))
     else if (p.b < Math.round(mb * f) || p.h < Math.round(mh * f)) m.set(i, `${t('pKlein')} (${Math.round(mb * f)} × ${Math.round(mh * f)})`)
     if (d === 'kurve' && ++kurven > 2) m.set(i, t('pKurven'))
+    // Darstellungen des Luas (zylinder, tank) höchstens einmal je Ansicht
+    if (!MINDEST[d] && a.plaetze.filter((q) => q.darstellung === d).length > 1) m.set(i, `${darstellungName(d)}: ${t('pEinmal')}`)
     if (res.some((r) => ueberlappt(p, r))) m.set(i, t('pReserviert'))
     a.plaetze.forEach((q, j) => {
       if (j <= i) return
@@ -589,7 +614,7 @@ async function anordnenStart() {
   const art = $('anordnenArt').value
   const G = $('abstandG').value === 'auto' ? abstandStandard(a) : Number($('abstandG').value)
   const f = a.breite / 800
-  const mindest = Object.fromEntries(Object.entries(MINDEST).map(([k, [b, h]]) => [k, [Math.round(b * f), Math.round(h * f)]]))
+  const mindest = Object.fromEntries(Object.entries({ ...MINDEST, ...Object.fromEntries(Object.keys((beschreibung() || {}).darstellungenExtra || {}).filter((d) => !d.startsWith('_')).map((d) => [d, mindestVon(d)])) }).map(([k, [b, h]]) => [k, [Math.round(b * f), Math.round(h * f)]]))
   const ansicht = { breite: a.breite, hoehe: a.hoehe, plaetze: a.plaetze.map((p) => ({ x: p.x, y: p.y, b: p.b, h: p.h, darstellung: p.darstellung || 'zahl' })) }
   const r = await api.studio('anordnen', { ansicht, reserviert: reserviert(a).map((x) => ({ x: x.x, y: x.y, b: x.b, h: x.h })), G, art, mindest })
   if (!r.ok) {
@@ -666,7 +691,7 @@ function eigenschaftenZeigen() {
   feld(t('wert'), wSel)
 
   const dSel = el('select', { onchange: (e) => { p.darstellung = e.target.value; neu() } })
-  for (const d of erlaubteDarstellungen(p.w)) dSel.appendChild(el('option', { value: d, text: t('d_' + d), selected: d === (p.darstellung || 'zahl') }))
+  for (const d of erlaubteDarstellungen(p.w)) dSel.appendChild(el('option', { value: d, text: darstellungName(d), selected: d === (p.darstellung || 'zahl') }))
   feld(t('darstellung'), dSel)
 
   const titel = el('input', { type: 'text', value: p.titel || '', placeholder: (wertInfo(p.w) || {}).text || '', oninput: (e) => {

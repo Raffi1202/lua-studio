@@ -2,6 +2,11 @@
 
 New entries in English. Older entries in German.
 
+## 0.8.1 (21 Nov 2026)
+
+- **Gas Engine ECU 1.11.0 / Carb 0.11.0:** descriptions included. New displays from the Lua (`darstellungenExtra`): **cylinders** (`lua:cht_max`) and **tank** (`lua:tank_proz`, with «REFUELLED»), at most once per view, minimum 160 × 220 at 800 px width. Offered only for Luas whose description lists them **and** whose version on the radio is at least that version (1.11.0 / 0.11.0); otherwise, and for a second one in the same view, the display is dropped when writing (default «number»).
+- Preview draws cylinders and tank like the simulator picture (example values). Template «Original» for Gas Engine: full screen like page 1 (cylinders, RPM, tank, altitude/climb/speed); the hint no longer lists cylinders and tank as not adjustable.
+
 ## 0.8.0 (21 Nov 2026)
 
 - **Gas Engine ECU 1.10.0 / Carb 0.10.0:** preview like the Lua (`ansicht.lua`: palette like Glider, rounded boxes, fixed font steps; top bar with pills – example state) and template «Original (like the Lua)» for all six window sizes; the full screen is scaled from the compact layout, so **Gas Engine no longer starts empty**. Cylinders, tank, RPM arc with colour zones and the «VOLLGETANKT» button exist only in the built-in display of Gas Engine; a studio file cannot show them (listed in the template hint).

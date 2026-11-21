@@ -404,6 +404,40 @@
     k.symbol(svg, q, q.darstellung === 'status' ? (q.statusFarbe || wf) : fb)
     const th = max(15, 16 * s)
     const d = q.darstellung
+    // Darstellungen des Luas (ab Gas Engine 1.11.0 / 0.11.0), nach dem Simulatorbild «16 Studio Zylinder und Tank» (Beispielwerte)
+    if (d === 'zylinder') {
+      Z.text(b / 2, th * 0.6 + 2 * s, (q.p.titel || k.T.zylinder).toUpperCase(), 13, G.dim, 'middle', b - 8 * s)
+      const n = 2, sb = min(90 * s, (b - 40 * s) / n - 20 * s), sh = min(120 * s, h - th - 90 * s)
+      const top = th + 30 * s
+      for (let i = 0; i < n; i++) {
+        const cx = b * (i + 0.5) / n, x0 = cx - sb / 2
+        Z.text(cx, top - 16 * s, `Z${i + 1}`, 13, G.dim, 'middle')
+        Z.rechteck(x0 + 8 * s, top - 8 * s, sb - 16 * s, 4 * s, G.grau); Z.rechteck(cx - 2 * s, top - 12 * s, 4 * s, 6 * s, G.grau)
+        Z.rund(x0, top - 2 * s, sb, sh, 3 * s, G.rand); Z.rechteck(x0 + 1, top - 1 * s, sb - 2, sh - 2, G.dunkel)
+        for (let j = 1; j < 10; j++) { Z.rechteck(x0 - 8 * s, top + sh * j / 10, 5 * s, 1, G.grau); Z.rechteck(x0 + sb + 3 * s, top + sh * j / 10, 5 * s, 1, G.grau) }
+        const f = 0.62 - i * 0.02
+        Z.rechteck(x0 + 2, top + sh * (1 - f), sb - 4, sh * f - 3, G.gruen)
+        Z.rechteck(x0 - 2 * s, top + sh * (1 - f) - 4 * s, sb + 4 * s, 2, G.text)
+        Z.text(cx, top + sh + 18 * s, `${142 - i * 4}°`, 18, G.gruen, 'middle', sb + 20 * s)
+      }
+      Z.text(b / 2, h - 14 * s, 'Diff 4°   |   max 151°', 12, G.dim, 'middle', b - 8 * s)
+      return
+    }
+    if (d === 'tank') {
+      Z.text(b / 2, th * 0.6 + 2 * s, (q.p.titel || k.T.tank).toUpperCase(), 13, G.dim, 'middle', b - 8 * s)
+      const sx = 10 * s, sy = th + 18 * s, sw = min(36 * s, b * 0.2), shh = h - sy - 10 * s
+      Z.rund(sx, sy, sw, shh, 3 * s, G.rand); Z.rechteck(sx + 1, sy + 1, sw - 2, shh - 2, G.dunkel)
+      Z.rechteck(sx + 2, sy + shh * 0.28, sw - 4, shh * 0.72 - 2, G.gruen)
+      for (let xx = sx - 4 * s; xx < sx + sw + 10 * s; xx += 6 * s) Z.rechteck(xx, sy + shh * 0.85, 3 * s, 1, G.orange)
+      const tx = sx + sw + 10 * s
+      const z = [['72 %', 20, G.gruen], ['1830 ml', 12, G.text], ['', 6], [k.T.verbr, 12, G.text], [k.T.fluss, 12, G.text], ['', 6], [k.T.restzeit, 12, G.dim], [k.T.restWert, 15, G.text]]
+      let y = sy + 10 * s
+      for (const [t, g, f] of z) { if (t) Z.text(tx, y, t, g, f, 'start', b - tx - 6 * s); y += (g + 6) * s }
+      const kb = min(b - tx - 8 * s, 140 * s), kh = 26 * s
+      Z.rund(b - kb - 10 * s, h - kh - 10 * s, kb, kh, 4 * s, G.blau); Z.rund(b - kb - 10 * s + 1, h - kh - 10 * s + 1, kb - 2, kh - 2, 4 * s - 1, G.panel)
+      Z.text(b - kb / 2 - 10 * s, h - kh / 2 - 10 * s, k.T.vollgetankt, 12, G.hblau, 'middle', kb - 6)
+      return
+    }
     if (d === 'zahl' || d === 'status') {
       Z.text(b / 2, th * 0.6 + 2 * s, q.titel, 13, G.dim, 'middle', b - 8 * s)
       const ym = (h + th) / 2 - (zl ? 6 * s : 0)
@@ -467,11 +501,13 @@
     })
     Z.text(a.breite - 8 * L.s, ym, k.T.rechts, 14, G.text, 'end', a.breite * 0.4)
   }
+  const GAS_DE = { zylinder: 'Zylinder', tank: 'Kraftstoff', verbr: 'Verbr. 720 ml', fluss: 'Fluss 38 ml/min', restzeit: 'Restzeit', restWert: 'ca. 48 min', vollgetankt: 'VOLLGETANKT' }
+  const GAS_EN = { zylinder: 'Cylinders', tank: 'Fuel', verbr: 'Used 720 ml', fluss: 'Flow 38 ml/min', restzeit: 'Time left', restWert: 'approx. 48 min', vollgetankt: 'REFUELLED' }
   const GAS = { hintergrund: G.bg, flaeche: gasFlaeche, platz: gasPlatz, zahlKomma: true }
-  STILE.gas_ecu = { ...GAS, name: 'Gas Engine ECU 1.10.0',
-    texte: { de: { pillen: [['LÄUFT', 'gruen'], ['ZÜNDUNG EIN', 'rot']], rechts: 'ECU 15,2 V   Motor 1/3' }, en: { pillen: [['RUNNING', 'gruen'], ['IGNITION ON', 'rot']], rechts: 'ECU 15.2 V   Motor 1/3' } } }
-  STILE.gas_carb = { ...GAS, name: 'Gas Engine Carb 0.10.0',
-    texte: { de: { pillen: [['LÄUFT', 'gruen'], ['ZÜNDUNG EIN', 'rot']], rechts: 'Motor 1/3' }, en: { pillen: [['RUNNING', 'gruen'], ['IGNITION ON', 'rot']], rechts: 'Motor 1/3' } } }
+  STILE.gas_ecu = { ...GAS, name: 'Gas Engine ECU 1.11.0',
+    texte: { de: { pillen: [['LÄUFT', 'gruen'], ['ZÜNDUNG EIN', 'rot']], rechts: 'ECU 15,2 V   Motor 1/3', ...GAS_DE }, en: { pillen: [['RUNNING', 'gruen'], ['IGNITION ON', 'rot']], rechts: 'ECU 15.2 V   Motor 1/3', ...GAS_EN } } }
+  STILE.gas_carb = { ...GAS, name: 'Gas Engine Carb 0.11.0',
+    texte: { de: { pillen: [['LÄUFT', 'gruen'], ['ZÜNDUNG EIN', 'rot']], rechts: 'Motor 1/3', ...GAS_DE }, en: { pillen: [['RUNNING', 'gruen'], ['IGNITION ON', 'rot']], rechts: 'Motor 1/3', ...GAS_EN } } }
 
   window.LUA_VORSCHAU = { stil: (lua) => STILE[lua] || null, layout }
 })()

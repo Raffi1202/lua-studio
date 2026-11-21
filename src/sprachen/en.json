@@ -75,6 +75,7 @@
   "plaetze": "boxes",
   "pRand": "outside the edge",
   "pKlein": "too small",
+  "pEinmal": "at most once per view",
   "pKurven": "at most 2 curves per view",
   "pUeberlappung": "overlaps",
   "angaben": "Entries",

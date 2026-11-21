@@ -24,8 +24,8 @@ const FARBEN = {
 
 // Was über die Studio-Datei nicht geht (das Lua zeichnet es nur in seiner eingebauten Anzeige)
 const HINWEIS = {
-  gas_ecu: { de: 'Wie die Kompaktansicht von Gas Engine; im Vollbild auf die Fläche unter der Kopfzeile umgerechnet. Nicht einstellbar über die Studio-Datei: Zylinder, Tank, Drehzahl-Bogen mit Farbzonen und der Knopf «VOLLGETANKT» (nur in der eingebauten Anzeige), die Kopfzeile mit den Pillen.', en: 'Like the compact view of Gas Engine; in full screen scaled to the area below the top bar. Not adjustable via the studio file: cylinders, tank, RPM arc with colour zones and the «VOLLGETANKT» (refuelled) button (built-in display only), the top bar with its pills.' },
-  gas_carb: { de: 'Wie die Kompaktansicht von Gas Engine; im Vollbild auf die Fläche unter der Kopfzeile umgerechnet. Nicht einstellbar über die Studio-Datei: Zylinder, Tank, Drehzahl-Bogen mit Farbzonen und der Knopf «VOLLGETANKT» (nur in der eingebauten Anzeige), die Kopfzeile mit den Pillen.', en: 'Like the compact view of Gas Engine; in full screen scaled to the area below the top bar. Not adjustable via the studio file: cylinders, tank, RPM arc with colour zones and the «VOLLGETANKT» (refuelled) button (built-in display only), the top bar with its pills.' },
+  gas_ecu: { de: 'Wie die eingebaute Anzeige von Gas Engine (Vollbild wie Seite 1, kompakt wie die Kompaktansicht). Zylinder und Tank (mit «VOLLGETANKT») gibt es ab Gas Engine 1.11.0 / 0.11.0 auch über die Studio-Datei. Nicht einstellbar: der Drehzahl-Bogen mit Farbzonen und die Kopfzeile mit den Pillen.', en: 'Like the built-in display of Gas Engine (full screen like page 1, compact like the compact view). Cylinders and tank (with «REFUELLED») are available via the studio file from Gas Engine 1.11.0 / 0.11.0. Not adjustable: the RPM arc with colour zones and the top bar with its pills.' },
+  gas_carb: { de: 'Wie die eingebaute Anzeige von Gas Engine (Vollbild wie Seite 1, kompakt wie die Kompaktansicht). Zylinder und Tank (mit «VOLLGETANKT») gibt es ab Gas Engine 1.11.0 / 0.11.0 auch über die Studio-Datei. Nicht einstellbar: der Drehzahl-Bogen mit Farbzonen und die Kopfzeile mit den Pillen.', en: 'Like the built-in display of Gas Engine (full screen like page 1, compact like the compact view). Cylinders and tank (with «REFUELLED») are available via the studio file from Gas Engine 1.11.0 / 0.11.0. Not adjustable: the RPM arc with colour zones and the top bar with its pills.' },
   glider: {
     de: 'Wie die Kompaktansicht von Glider; im Vollbild auf die Fläche unter der Kopfzeile umgerechnet. Nicht einstellbar über die Studio-Datei: Kopfzeile mit Flugphase, Motor, Empfang und Flug, das Alarmband darunter.',
     en: 'Like the compact view of Glider; in full screen scaled to the area below the top bar. Not adjustable via the studio file: top bar with flight mode, motor, signal and flight, the alarm band below it.',
@@ -110,6 +110,23 @@ function festesFeldAlsPlatz(beschreibung, quelle, ziel) {
   ziel.plaetze.push({ x, y, b, h: unten - y, w: f.w, darstellung: 'zahl' })
 }
 
+// Gas Engine ab 1.11.0 / 0.11.0 (darstellungenExtra zylinder und tank): Vollbild wie die eingebaute Seite 1 –
+// Zylinder links, Drehzahl in der Mitte, Tank rechts, unten Höhe, Steigen, Speed (unter dem reservierten Kopfband)
+function gasVollbild(beschreibung) {
+  const ex = beschreibung.darstellungenExtra || {}
+  if (!ex.zylinder || !ex.tank) return null
+  const B = 800, H = 480, g = 6
+  const y0 = bandOben(beschreibung, B, H) + g, uh = 70, uy = H - g - uh, oh = uy - g - y0
+  return { breite: B, hoehe: H, plaetze: [
+    { x: g, y: y0, b: 248, h: oh, w: 'lua:cht_max', darstellung: 'zylinder' },
+    { x: 260, y: y0, b: 280, h: oh, w: 'lua:rpm', darstellung: 'ring' },
+    { x: 546, y: y0, b: 248, h: oh, w: 'lua:tank_proz', darstellung: 'tank' },
+    { x: g, y: uy, b: 258, h: uh, w: 'lua:hoehe', darstellung: 'zahl' },
+    { x: 270, y: uy, b: 260, h: uh, w: 'lua:vario', darstellung: 'zahl' },
+    { x: 536, y: uy, b: 258, h: uh, w: 'lua:speed', darstellung: 'zahl' },
+  ] }
+}
+
 // Vorlage «Original» für ein Lua oder null, wenn das Studio für dieses Lua keine kennt
 function original(beschreibung) {
   const farben = beschreibung && FARBEN[beschreibung.lua]
@@ -117,6 +134,8 @@ function original(beschreibung) {
   if (!farben || !Array.isArray(std) || !std.length) return null
   const ansichten = std.map((a) => ({ breite: a.breite, hoehe: a.hoehe,
     plaetze: a.plaetze.map((p) => (farben[p.w] ? { ...p, farbe: farben[p.w] } : { ...p })) }))
+  const voll = (beschreibung.lua === 'gas_ecu' || beschreibung.lua === 'gas_carb') && gasVollbild(beschreibung)
+  if (voll && !ansichten.some((a) => a.breite === 800 && a.hoehe === 480)) ansichten.push(voll)
   for (const u of UMRECHNEN) {
     const q = ansichten.find((a) => a.breite === u.von[0] && a.hoehe === u.von[1])
     if (!q) continue

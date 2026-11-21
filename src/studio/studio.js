@@ -194,7 +194,7 @@ function dateiDatenMitInfo(projekt, meta) {
         deko.push(dekoSauber(d))
       }
       const plaetze = a.plaetze.map((p) => {
-        const q = platzSauber(p, verworfen)
+        const q = platzSauber(p, verworfen, meta.extra)
         if (q.symbol && (!Y.imKatalog(q.symbol) || Y.symbolPx(q) < Y.imKatalog(q.symbol).minPx)) { verworfen.push(`symbol:${q.symbol}`); delete q.symbol }
         if (!q.symbol) delete q.symbolPx
         else if (q.symbolPx === undefined || q.symbolPx === 24) delete q.symbolPx
@@ -209,6 +209,15 @@ function dateiDatenMitInfo(projekt, meta) {
     if (braucht2) wegfall.push(kann2 ? 'format2' : 'luaKannNicht2')
     ansichten = Y.ohneFormat2(ansichten)
   }
+  // Darstellungen, die das Lua nicht kennt (z. B. «zylinder» ohne darstellungenExtra), in jedem Format weglassen
+  ansichten = ansichten.map((a) => ({ ...a, plaetze: (a.plaetze || []).map((p) => {
+    if (p.darstellung === undefined || DARSTELLUNGEN.includes(p.darstellung) || (meta.extra || []).includes(p.darstellung)) return p
+    verworfen.push('darstellung'); const q = { ...p }; delete q.darstellung; return q
+  }).map((p, i, alle) => {
+    // Darstellungen des Luas höchstens einmal je Ansicht: weitere fallen auf den Standard zurück
+    if (DARSTELLUNGEN.includes(p.darstellung) || p.darstellung === undefined || alle.findIndex((x) => x.darstellung === p.darstellung) === i) return p
+    verworfen.push('darstellung:einmal'); const q = { ...p }; delete q.darstellung; return q
+  }) }))
   const daten = {
     format,
     studio: meta.studioVersion,
@@ -245,10 +254,24 @@ function farbeGut(f) { return Array.isArray(f) && f.length === 3 && f.every((v) 
 const FARBFELDER = ['farbe', 'farbeWarn', 'farbeAlarm', 'hintergrund']
 const DARSTELLUNGEN = ['zahl', 'ring', 'balken_w', 'balken_s', 'kurve', 'status']
 // Felder eines Platzes, die das Studio sonst ungeprüft schriebe (aus Vorlagen): ungültige weg, Grund in «verworfen»
-function platzSauber(p, verworfen) {
+// Darstellungen des Luas aus beschreibung.json «darstellungenExtra» (Schlüssel mit _ sind Hinweise, keine Darstellung)
+// luaVersion: Version des Luas auf der Funke (Info-Datei). Ist sie älter als die mitgelieferte Beschreibung, die die
+// Darstellungen einführt, gibt es sie nicht (ein älteres Lua kennt sie nicht).
+function versionKleiner(a, b) {
+  const x = String(a).split('.').map(Number), y = String(b).split('.').map(Number)
+  for (let i = 0; i < 3; i++) { if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) < (y[i] || 0) }
+  return false
+}
+function extraDarstellungen(b, luaVersion) {
+  if (!b || !b.darstellungenExtra) return []
+  if (luaVersion && b.luaVersion && versionKleiner(luaVersion, b.luaVersion)) return []
+  return Object.keys(b.darstellungenExtra).filter((d) => !d.startsWith('_'))
+}
+// extra: zusätzliche Darstellungen des Luas (beschreibung.json «darstellungenExtra», z. B. Gas Engine «zylinder», «tank»)
+function platzSauber(p, verworfen, extra = []) {
   const q = { ...p }
   for (const k of FARBFELDER) if (q[k] !== undefined && !farbeGut(q[k])) { verworfen.push(`${k}`); delete q[k] }
-  if (q.darstellung !== undefined && !DARSTELLUNGEN.includes(q.darstellung)) { verworfen.push('darstellung'); delete q.darstellung }
+  if (q.darstellung !== undefined && !DARSTELLUNGEN.includes(q.darstellung) && !(extra || []).includes(q.darstellung)) { verworfen.push('darstellung'); delete q.darstellung }
   if (q.symbolPx !== undefined && !Y.PX.includes(q.symbolPx)) { verworfen.push('symbolPx'); delete q.symbolPx }
   if (q.einheitZeigen !== undefined && ![true, false, 'fett'].includes(q.einheitZeigen)) { verworfen.push('einheitZeigen'); delete q.einheitZeigen }
   return q
@@ -283,7 +306,7 @@ function presets(beschreibung) {
       p.x >= 0 && p.y >= 0 && p.x + p.b <= a.breite && p.y + p.h <= a.hoehe)
     if (gut.length !== a.plaetze.length || gut.length > 16) verworfen.push('platz')
     const plaetze = gut.slice(0, 16).map((p) => {
-      const q = platzSauber(JSON.parse(JSON.stringify(p)), verworfen)
+      const q = platzSauber(JSON.parse(JSON.stringify(p)), verworfen, extraDarstellungen(beschreibung))
       if (q.symbol !== undefined && (!Y.imKatalog(q.symbol) || (q.symbolPx || 24) < Y.imKatalog(q.symbol).minPx)) { verworfen.push('symbol'); delete q.symbol; delete q.symbolPx }
       return q
     })
@@ -563,5 +586,5 @@ async function schnelltest({ ziel, kennung, lua, format, vorher, logZeilen, groe
   return { ok: !punkte.some((x) => x.stufe === 'fehler'), unsicher: alt, punkte }
 }
 
-module.exports = { ALIAS, aliasAktiv, ablageUmziehen, grenzenSchreiben, symboleUnbenutzt, beschreibungenLaden, Ablage, modelleLesen, neuesProjekt, dateiDaten, dateiDatenMitInfo, bauenMitWaechter, presets, presetAnwenden,
+module.exports = { extraDarstellungen, versionKleiner, ALIAS, aliasAktiv, ablageUmziehen, grenzenSchreiben, symboleUnbenutzt, beschreibungenLaden, Ablage, modelleLesen, neuesProjekt, dateiDaten, dateiDatenMitInfo, bauenMitWaechter, presets, presetAnwenden,
   GRUPPEN, VORBEREITET, gruppeVonFenster, vorbereitetInfo, symboleSchreiben, symboleAufraeumen, schnelltest, funkeAenderungenUebernehmen, uebertragen }
