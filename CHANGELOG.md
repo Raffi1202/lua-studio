@@ -2,6 +2,12 @@
 
 New entries in English. Older entries in German.
 
+## 0.8.4 (21 Nov 2026)
+
+- Prepared models using cylinders/tank: a warning before saving or transferring that Gas Engine 1.11.0 / 0.11.0 or newer is needed on the radio (older versions show a number there).
+- «Save as file»: after saving, Lua-Studio explains the file name (model name → id, shown for the model), the window sizes the file is made for, and that the model must be changed once.
+- Prepare form: hint that a layout only works in the window sizes of the group (another widget zone needs its own view).
+
 ## 0.8.3 (21 Nov 2026)
 
 - More detail in the error log for support (#1): which studio folders on the radio were searched, what the radio returned for each (status, number of entries, info files), the chosen folder or cancel in «Choose folder», and the path of «Save as file». The user folder is replaced by `~` as before.

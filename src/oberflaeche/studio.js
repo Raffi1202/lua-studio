@@ -1150,13 +1150,33 @@ $('exportZiel').addEventListener('change', async (e) => {
 })
 
 // Notlösung: Studio-Datei als Datei speichern (Speichern-Dialog), danach von Hand auf die SD-Karte kopieren
+// Kennung aus dem Modellnamen wie im Lua (Format v1 §2.1): jedes Byte ausser A–Z, a–z, 0–9 wird «_», höchstens 32 Byte
+function kennungVon(name) {
+  const k = Array.from(new TextEncoder().encode(String(name || '')), (b) => (/[A-Za-z0-9]/.test(String.fromCharCode(b)) && b < 128 ? String.fromCharCode(b) : '_')).join('').slice(0, 32)
+  return k || 'modell'
+}
+// Vorbereitete Modelle mit Darstellungen des Luas (z. B. Zylinder/Tank): Version auf der Funke unbekannt, darum warnen
+function extraWarnungOk() {
+  if (!st.m || !st.m.vorbereitet) return true
+  const b = beschreibung() || {}
+  const ex = Object.keys(b.darstellungenExtra || {}).filter((d) => !d.startsWith('_'))
+  const benutzt = [...new Set(st.projekt.ansichten.flatMap((a) => a.plaetze.map((p) => p.darstellung)).filter((d) => ex.includes(d)))]
+  if (!benutzt.length) return true
+  return confirm(t('extraWarnung').replace('{was}', benutzt.map(darstellungName).join(', ')).replace('{lua}', luaName(st.m.lua)).replace('{version}', b.luaVersion || t('neueVersion')))
+}
 async function exportDatei() {
   if (!st.m || !st.projekt) return
+  if (!extraWarnungOk()) return
   const r = await api.studio('exportDatei', { lua: st.m.lua, kennung: st.m.kennung, projekt: st.projekt, meta: meta() })
   if (r.abgebrochen) return
   $('schritte').textContent = ''
   if (!r.ok) { $('schritte').appendChild(el('li', { class: 'fehler', text: `${t('fehler')}: ${fehlerText(String(r.fehler).startsWith('pruefen|') ? r.fehler : 'u_' + r.fehler)}` })); return }
   $('schritte').appendChild(el('li', { class: 'gut', text: t('exportDateiOk').replace('{pfad}', r.pfad).replace('{datei}', `${st.m.kennung}.${st.m.lua}.lua`) }))
+  // Hinweise, damit die Datei auf der Funke wirkt (Issue #1): Name aus dem Modellnamen, Fenstergrössen, Modell wechseln
+  const groessen = st.projekt.ansichten.filter((a) => a.plaetze.length).map((a) => `${a.breite} × ${a.hoehe}`).join(', ')
+  const modell = st.m.info && st.m.info.modell
+  if (modell) $('schritte').appendChild(el('li', { class: 'warn', text: t('exportDateiName').replace('{modell}', modell).replace('{kennung}', kennungVon(modell)) }))
+  if (groessen) $('schritte').appendChild(el('li', { class: 'warn', text: t('exportDateiGroessen').replace('{groessen}', groessen) }))
   if (r.symbole) $('schritte').appendChild(el('li', { class: 'warn', text: t('exportDateiSymbole') }))
 }
 $('exportDateiKnopf').addEventListener('click', exportDatei)
@@ -1253,6 +1273,7 @@ async function uebertragenStart() {
   const ziel = zielSpec()
   if (!ziel || !st.projekt) return
   if (st.m.doppelt) { alert(t('doppeltLang')); return }
+  if (!extraWarnungOk()) return
   const pr = await pruefen()
   if (!pr || !pr.ok) return
   if (pr.fehler.length) { alert(pr.fehler.join('\n')); return }
