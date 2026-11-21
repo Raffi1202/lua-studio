@@ -2,6 +2,12 @@
 
 New entries in English. Older entries in German.
 
+## 0.7.2 (21 Nov 2026)
+
+- **Heli:** preview like the Lua (Heli 1.13.1: own top bar with model name, clock, profile/rate, signal and transmitter battery; title at least 10 px, unit in the ring lower and not bold, larger status value) and template «Original (like the Lua)» for all six window sizes. New Heli models start with it.
+- Converting templates to X14/X18 sizes: a box that gets too low takes the missing height from the box above it (same column).
+- Glider and Gas Engine follow in a later version; until then they keep the simple preview and still start with an empty full-screen view.
+
 ## 0.7.1 (21 Nov 2026)
 
 - Description of Heli 1.13.1 included (help texts without naming a flight controller).

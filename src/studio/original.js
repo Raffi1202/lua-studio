@@ -12,10 +12,17 @@ const FARBEN = {
   // Jet 0.4.0 (seite1.lua): Ringe Drehzahl hellblau, EGT/Kraftstoff/ECU-Akku grün; Zahlen weiss, Empfang grün
   jet: { 'lua:drehzahl': HBLAU, 'lua:egt': GRUEN, 'lua:kraftstoff_proz': GRUEN, 'lua:ecu_akku': GRUEN, 'lua:fluss': W, 'lua:pumpe': W,
     'lua:schub': W, 'lua:hoehe': W, 'lua:speed': W, 'lua:empfang': GRUEN, 'lua:laeufe': W },
+  // Heli 1.13.1 (Simulatorbild «Normal»): Akku/Reglertemp grün, Drehzahl hellblau, Strom blau; Zelle grün, BEC/Verbraucht weiss
+  heli: { 'lua:akku_proz': GRUEN, 'lua:drehzahl': HBLAU, 'lua:strom': BLAU, 'lua:reglertemp': GRUEN, 'lua:zelle': GRUEN, 'lua:bec': W,
+    'lua:verbraucht': W, 'lua:spannung': W, 'lua:rssi': GRUEN, 'lua:leistung': W, 'lua:fluege': W },
 }
 
 // Was über die Studio-Datei nicht geht (das Lua zeichnet es nur in seiner eingebauten Anzeige)
 const HINWEIS = {
+  heli: {
+    de: 'Wie die eingebaute Anzeige von Heli. Nicht einstellbar über die Studio-Datei: Fusszeilen wie «12S 47,0V» oder «Kopf 1840 U/MIN», die Pille «SCHARF» in der Governor-Kachel, das Feld Flugmodus, der Knopf «AUF 0», die Farbstreifen an den Kästchen und Titel, die mit der Sprache der Funke wechseln.',
+    en: 'Like the built-in display of Heli. Not adjustable via the studio file: footers like «12S 47.0V» or «head 1840 rpm», the «ARMED» pill in the governor box, the flight mode field, the «AUF 0» button, the colour stripes on the boxes and titles that follow the language of the radio.',
+  },
   jet: {
     de: 'Wie die eingebaute Seite 1 von Jet. Nicht einstellbar über die Studio-Datei: Fusszeilen der eingebauten Anzeige, die Farbstreifen oben an den Kästchen und Titel, die mit der Sprache der Funke wechseln. Seite 2 (Turbinen) und 3 (Flugliste) bleiben wie im Lua.',
     en: 'Like the built-in page 1 of Jet. Not adjustable via the studio file: footers of the built-in display, the colour stripes on top of the boxes and titles that follow the language of the radio. Pages 2 (turbines) and 3 (flight list) stay as in the Lua.',
@@ -31,6 +38,23 @@ const UMRECHNEN = [
   { von: [800, 480], nach: [[640, 360], [480, 320]] },
   { von: [784, 316], nach: [[630, 258], [472, 210]] },
 ]
+
+// Mindestgrössen bei 800 px Breite (wie die Prüfung der Oberfläche)
+const MINDEST = { zahl: [90, 50], ring: [110, 110], balken_w: [140, 40], balken_s: [50, 110], kurve: [180, 90], status: [120, 40] }
+// Nach dem Umrechnen: zu niedrige Plätze holen die fehlende Höhe beim Platz direkt darüber (gleiche Spalte), Abstand bleibt
+function mindestHoehe(a) {
+  const f = a.breite / 800
+  const minH = (p) => Math.round((MINDEST[p.darstellung || 'zahl'] || MINDEST.zahl)[1] * f)
+  for (const p of a.plaetze) {
+    const fehlt = minH(p) - p.h
+    if (fehlt <= 0) continue
+    const oben = a.plaetze.filter((q) => q !== p && q.x < p.x + p.b && p.x < q.x + q.b && q.y + q.h <= p.y && p.y - (q.y + q.h) <= 12)
+    if (!oben.length || oben.some((q) => q.h - fehlt < minH(q))) continue
+    for (const q of oben) q.h -= fehlt
+    p.y -= fehlt; p.h += fehlt
+  }
+  return a
+}
 
 function skaliert(a, breite, hoehe) {
   const fx = breite / a.breite, fy = hoehe / a.hoehe
@@ -81,7 +105,7 @@ function original(beschreibung) {
       if (ansichten.some((a) => a.breite === b && a.hoehe === h)) continue
       const neu = skaliert(q, b, h)
       festesFeldAlsPlatz(beschreibung, q, neu)
-      ansichten.push(neu)
+      ansichten.push(mindestHoehe(neu))
     }
   }
   return { s: 'original', name: { de: 'Original (wie das Lua)', en: 'Original (like the Lua)' },

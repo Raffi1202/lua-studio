@@ -171,8 +171,34 @@ test('Vorlage «Original» (0.6.0): Electric mit Farben wie die eingebaute Anzei
   assert.strictEqual(F.pruefenWieFunke(F.dateiText(d)), null)
   // Luas ohne Original-Vorlage: unverändert
   assert.ok(S.presets(b.jet)[0].s === 'original' && S.presets(b.jet)[0].ansichten.length === 6, 'Jet hat ab 0.7.0 eine Vorlage «Original»')
+  assert.ok(S.presets(b.heli)[0].s === 'original' && S.presets(b.heli)[0].ansichten.length === 6, 'Heli hat ab 0.7.2 eine Vorlage «Original»')
   assert.ok(!S.presets(b.glider).some((x) => x.s === 'original'))
   // Neue Modelle beginnen mit der Vorlage «Original»
   const np = S.neuesProjekt(b.electric, S.vorbereitetInfo('M', b.electric, 'Neu'))
   assert.deepStrictEqual(np.ansichten.map((a) => a.plaetze.length > 0), [true, true])
+})
+
+test('Vorlagen «Original» von Electric, Jet und Heli: jede Grösse gültig (Rand, Überlappung, reservierte Flächen, Mindestgrössen, Funke)', () => {
+  const b = S.beschreibungenLaden(path.join(__dirname, '..', 'src', 'luas'))
+  const M = { zahl: [90, 50], ring: [110, 110], balken_w: [140, 40], balken_s: [50, 110], kurve: [180, 90], status: [120, 40] }
+  for (const lua of ['electric', 'jet', 'heli']) {
+    const o = S.presets(b[lua])[0]
+    assert.strictEqual(o.s, 'original', lua)
+    assert.deepStrictEqual(o.verworfen, [], lua)
+    for (const a of o.ansichten) {
+      const f = a.breite / 800
+      const res = (b[lua].reserviert || []).filter((r) => r.breite === a.breite && r.hoehe === a.hoehe)
+      const ue = (p, q) => p.x < q.x + q.b && q.x < p.x + p.b && p.y < q.y + q.h && q.y < p.y + p.h
+      for (const p of a.plaetze) {
+        const wo = `${lua} ${a.breite}x${a.hoehe} ${p.w}`
+        const [mb, mh] = M[p.darstellung || 'zahl']
+        assert.ok(p.x >= 0 && p.y >= 0 && p.x + p.b <= a.breite && p.y + p.h <= a.hoehe, wo)
+        assert.ok(p.b >= Math.round(mb * f) && p.h >= Math.round(mh * f), `${wo} zu klein`)
+        assert.ok(!res.some((r) => ue(p, r)), `${wo} auf reservierter Fläche`)
+        assert.ok(!a.plaetze.some((q) => q !== p && ue(p, q)), `${wo} überlappt`)
+      }
+      const d = S.dateiDaten({ einstellungen: {}, werte: {}, grenzen: {}, ansichten: [a] }, { formate: [1, 2] })
+      assert.strictEqual(F.pruefenWieFunke(F.dateiText(d)), null, `${lua} ${a.breite}x${a.hoehe}`)
+    }
+  }
 })

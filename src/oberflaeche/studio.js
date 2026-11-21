@@ -358,7 +358,7 @@ function anordnungPruefen(a) {
 // ---------- Vorschau wie im Lua (lua-vorschau.js) ----------
 function luaKontext(stil, a) {
   const T = (stil.texte && (stil.texte[sprache] || stil.texte.en)) || {}
-  return { ansicht: a, T, modell: String((st.m && st.m.info && st.m.info.modell) || 'DEMO').toUpperCase(),
+  return { ansicht: a, T, regeln: stil.regeln, reserviert: reserviert(a), modell: String((st.m && st.m.info && st.m.info.modell) || 'DEMO').toUpperCase(),
     symbol: (svg, q, farbe) => symbolUndEinheit(svg, q.p, farbe, q.einheit, q.zeit || q.darstellung === 'status') }
 }
 // Symbol und fette Einheit oben links (Format 2 §5, wie studio_symbole.lua); Rückgabe Einzug des Titels und ob die Einheit am Wert steht
@@ -402,7 +402,7 @@ function platzInfo(p, stil) {
   const T = (stil && stil.texte && (stil.texte[sprache] || stil.texte.en)) || {}
   let statusText = def.zustaende && def.zustaende[1] ? name({ de: def.zustaende[1].de, en: def.zustaende[1].en }) : t('status')
   let statusFarbe = def.zustaende && def.zustaende[1] && def.zustaende[1].farbe ? rgbHex(def.zustaende[1].farbe) : null
-  if (p.w === 'lua:motor' && T.scharf) { statusText = T.scharf; statusFarbe = null }
+  if ((p.w === 'lua:motor' || p.w === 'lua:scharf') && T.scharf) { statusText = T.scharf; statusFarbe = null }
   return { p, w: p.w, leer: !p.w || p.w === 'leer', darstellung: p.darstellung || 'zahl', titel: p.titel || (def.titelLaufend ? name(def.titelLaufend) : (w ? w.text : '—')),
     einheit, zeit: !!def.zeit, zahlText, zeitText: mmss(wert), anteil: Math.max(0, Math.min(1, (wert - lo) / (hi - lo))),
     farbeWert, hintergrund: p.hintergrund ? rgbHex(p.hintergrund) : null, zusatz: p.zusatz, statusText, statusFarbe }
