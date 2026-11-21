@@ -281,5 +281,98 @@
     },
     texte: { de: { scharf: 'SCHARF', profil: 'Profil 1 / Rate 1' }, en: { scharf: 'ARMED', profil: 'Profile 1 / Rate 1' } } }
 
+  // ---------- Glider 0.5.0 (src/glider/platz.lua, zeichnen.lua): eigene Palette, eckige Kacheln, Titel grau und mittig ----------
+  const G = Object.fromEntries(Object.entries({
+    bg: [14, 17, 22], panel: [22, 27, 34], rand: [48, 54, 61], text: [230, 237, 243], dim: [139, 148, 158], grau: [75, 85, 99],
+    blau: [59, 130, 246], gruen: [34, 197, 94], orange: [245, 158, 11], rot: [239, 68, 68], dunkel: [11, 13, 16], hblau: [96, 165, 250],
+  }).map(([k, v]) => [k, hex(v)]))
+
+  function gliderFlaeche(svg, a, k) {
+    const L = layout(a.breite, a.hoehe)
+    const Z = zeichner(svg, L)
+    const band = Math.max(0, ...((k.reserviert || []).filter((r) => r.y <= 0 && r.b >= a.breite).map((r) => r.h)))
+    Z.rechteck(0, 0, a.breite, a.hoehe, G.bg)
+    if (!band) return
+    // Kopfzeile wie im Simulatorbild: umrandete Pillen links (Flugphase, Motor), rechts Empfang und Flug (Beispielzustand)
+    const kh = Math.min(band, Math.round(44 * L.s / (L.kompakt ? 0.72 : 1) * (L.kompakt ? 0.8 : 1)))
+    const ph = Math.max(16, Math.round(26 * L.s)), ym = kh / 2
+    let x = 6 * L.s
+    for (const [t, f] of [[k.T.phase, G.blau], [k.T.motorAus, G.gruen]]) {
+      const b = Z.breite(t, 13) + 22 * L.s
+      Z.rund(x, ym - ph / 2, b, ph, ph / 2, f)
+      Z.rund(x + 2, ym - ph / 2 + 2, b - 4, ph - 4, ph / 2 - 2, G.bg)
+      Z.text(x + b / 2, ym, t, 13, f, 'middle', b)
+      x += b + 6 * L.s
+    }
+    Z.text(a.breite - 8 * L.s, ym, k.T.rechts, 14, G.text, 'end', a.breite / 3)
+  }
+
+  function gliderPlatz(svg, b, h, q, k) {
+    const L = layout(k.ansicht.breite, k.ansicht.hoehe)
+    const Z = zeichner(svg, L)
+    const gr = (px) => px / (1.25 * L.s)
+    Z.rechteck(0, 0, b, h, G.rand)
+    Z.rechteck(1, 1, b - 2, h - 2, q.hintergrund || G.panel)
+    if (q.leer) return
+    const fb = q.farbeWert || G.hblau
+    const wert = q.zeit ? q.zeitText : (q.einheit ? `${q.zahlText} ${q.einheit}` : q.zahlText)
+    const zt = q.zusatz && q.zusatz !== 'keine' ? `${k.T[{ min: 'zMin', max: 'zMax', mittel: 'zMittel' }[q.zusatz]]} ${wert}` : null
+    k.symbol(svg, q, q.darstellung === 'status' ? (q.statusFarbe || G.text) : fb)
+    const d = q.darstellung
+    if (d === 'ring') {
+      const tg = min(16, max(11, h * 0.12))
+      Z.text(b / 2, tg * 0.75 + 2, q.titel, gr(tg), G.dim, 'middle', b - 8)
+      const oben = tg + 6
+      const r2 = min(b * 0.4, (h - oben - 4) * 0.56)
+      const r1 = r2 - max(5, floor(r2 * 0.16))
+      const cx = b / 2, cy = oben + r2 + 2
+      Z.bogen(cx, cy, r1, r2, 225, 495, G.rand)
+      if (q.anteil > 0) Z.bogen(cx, cy, r1, r2, 225, 225 + 270 * q.anteil, q.farbeWert || G.hblau)
+      Z.text(cx, cy - 2, wert, gr(min(34, r1 * 0.55)), G.text, 'middle', r1 * 1.8)
+      if (zt) Z.text(cx, cy + r1 * 0.55, zt, gr(12), G.dim, 'middle', r1 * 1.6)
+    } else if (d === 'balken_w' || d === 'kurve') {
+      const tg = min(16, max(11, h * (d === 'kurve' ? 0.16 : 0.28)))
+      Z.text(6, tg * 0.75 + 2, q.titel, gr(tg), G.dim, 'start', b * 0.5)
+      Z.text(b - 6, tg * 0.75 + 2, wert, gr(tg * 1.15), G.text, 'end', b * 0.48)
+      if (d === 'balken_w') {
+        const by = tg + 6, bh = max(6, h - by - 6)
+        Z.rechteck(6, by, b - 12, bh, G.rand); Z.rechteck(7, by + 1, b - 14, bh - 2, G.dunkel)
+        if (q.anteil > 0) Z.rechteck(8, by + 2, (b - 16) * q.anteil, bh - 4, fb)
+      } else {
+        const gx = 6, gy = tg + 8, gb = b - 12, gh = h - gy - 6
+        if (gh >= 8) {
+          Z.rechteck(gx, gy + gh, gb, 1, G.rand)
+          let vor = null
+          for (let j = 0; j <= 60; j++) {
+            const sx = gx + gb * j / 60, sy = gy + gh - gh * (0.35 + 0.25 * Math.sin(j / 7) + 0.1 * Math.sin(j / 2.3))
+            if (vor) Z.linie(vor[0], vor[1], sx, sy, fb)
+            vor = [sx, sy]
+          }
+        }
+      }
+    } else if (d === 'balken_s') {
+      const tg = min(16, max(11, b * 0.14)), vt = tg * 1.2
+      Z.text(b / 2, tg * 0.75 + 2, q.titel, gr(tg), G.dim, 'middle', b - 6)
+      const by = tg + 6, bh = max(10, h - by - vt - 6), bb = min(b - 12, max(14, b * 0.4)), bx = (b - bb) / 2
+      Z.rechteck(bx, by, bb, bh, G.rand); Z.rechteck(bx + 1, by + 1, bb - 2, bh - 2, G.dunkel)
+      if (q.anteil > 0) Z.rechteck(bx + 2, by + 2 + (bh - 4) * (1 - q.anteil), bb - 4, (bh - 4) * q.anteil, fb)
+      Z.text(b / 2, h - vt * 0.6 - 2, wert, gr(vt), G.text, 'middle', b - 6)
+    } else if (d === 'status') {
+      const tg = min(16, max(11, h * 0.22))
+      Z.text(b / 2, tg * 0.75 + 2, q.titel, gr(tg), G.dim, 'middle', b - 8)
+      Z.text(b / 2, tg + 4 + (h - tg - 4) / 2, q.statusText, gr(min(40, (h - tg) * 0.55)), q.statusFarbe || G.text, 'middle', b - 10)
+    } else {
+      const tg = min(16, max(11, h * 0.2))
+      Z.text(b / 2, tg * 0.75 + 2, q.titel, gr(tg), G.dim, 'middle', b - 8)
+      const unten = zt && h >= 70 ? tg : 0
+      const vh = min(64, (h - tg - unten) * 0.62)
+      Z.text(b / 2, tg + 4 + (h - tg - unten - 4) / 2, wert, gr(vh), q.farbeWert || G.text, 'middle', b - 10)
+      if (unten) Z.text(b / 2, h - tg * 0.7, zt, gr(tg * 0.85), G.dim, 'middle', b - 8)
+    }
+  }
+  STILE.glider = { name: 'Glider 0.5.0', hintergrund: G.bg, flaeche: gliderFlaeche, platz: gliderPlatz, zahlKomma: true,
+    texte: { de: { phase: 'STANDARD-FLUGPHASE', motorAus: 'MOTOR AUS', rechts: 'Empfang 92 %   Flug 1/3', zMin: 'Min', zMax: 'Max', zMittel: 'Ø' },
+      en: { phase: 'STANDARD FLIGHT MODE', motorAus: 'MOTOR OFF', rechts: 'Signal 92 %   Flight 1/3', zMin: 'Min', zMax: 'Max', zMittel: 'Ø' } } }
+
   window.LUA_VORSCHAU = { stil: (lua) => STILE[lua] || null, layout }
 })()

@@ -13,12 +13,18 @@ const FARBEN = {
   jet: { 'lua:drehzahl': HBLAU, 'lua:egt': GRUEN, 'lua:kraftstoff_proz': GRUEN, 'lua:ecu_akku': GRUEN, 'lua:fluss': W, 'lua:pumpe': W,
     'lua:schub': W, 'lua:hoehe': W, 'lua:speed': W, 'lua:empfang': GRUEN, 'lua:laeufe': W },
   // Heli 1.13.1 (Simulatorbild «Normal»): Akku/Reglertemp grün, Drehzahl hellblau, Strom blau; Zelle grün, BEC/Verbraucht weiss
+  // Glider 0.5.0: Farben wie im Lua ohne Studio-Datei (keine eigenen Farben je Wert)
+  glider: {},
   heli: { 'lua:akku_proz': GRUEN, 'lua:drehzahl': HBLAU, 'lua:strom': BLAU, 'lua:reglertemp': GRUEN, 'lua:zelle': GRUEN, 'lua:bec': W,
     'lua:verbraucht': W, 'lua:spannung': W, 'lua:rssi': GRUEN, 'lua:leistung': W, 'lua:fluege': W },
 }
 
 // Was über die Studio-Datei nicht geht (das Lua zeichnet es nur in seiner eingebauten Anzeige)
 const HINWEIS = {
+  glider: {
+    de: 'Wie die Kompaktansicht von Glider; im Vollbild auf die Fläche unter der Kopfzeile umgerechnet. Nicht einstellbar über die Studio-Datei: Kopfzeile mit Flugphase, Motor, Empfang und Flug, das Alarmband darunter.',
+    en: 'Like the compact view of Glider; in full screen scaled to the area below the top bar. Not adjustable via the studio file: top bar with flight mode, motor, signal and flight, the alarm band below it.',
+  },
   heli: {
     de: 'Wie die eingebaute Anzeige von Heli. Nicht einstellbar über die Studio-Datei: Fusszeilen wie «12S 47,0V» oder «Kopf 1840 U/MIN», die Pille «SCHARF» in der Governor-Kachel, das Feld Flugmodus, der Knopf «AUF 0», die Farbstreifen an den Kästchen und Titel, die mit der Sprache der Funke wechseln.',
     en: 'Like the built-in display of Heli. Not adjustable via the studio file: footers like «12S 47.0V» or «head 1840 rpm», the «ARMED» pill in the governor box, the flight mode field, the «AUF 0» button, the colour stripes on the boxes and titles that follow the language of the radio.',
@@ -37,7 +43,13 @@ const HINWEIS = {
 const UMRECHNEN = [
   { von: [800, 480], nach: [[640, 360], [480, 320]] },
   { von: [784, 316], nach: [[630, 258], [472, 210]] },
+  // Luas ohne Vollbild in der Beschreibung (Glider, Gas Engine): Vollbild aus der Kompaktansicht, unter der Kopfzeile
+  { von: [784, 316], nach: [[800, 480], [640, 360], [480, 320]], band: true },
 ]
+// Höhe des reservierten Bands oben (Kopfzeile des Luas) für eine Fenstergrösse
+function bandOben(beschreibung, b, h) {
+  return Math.max(0, ...((beschreibung.reserviert || []).filter((r) => r.breite === b && r.hoehe === h && r.y <= 0 && r.x <= 0 && r.b >= b).map((r) => r.y + r.h)))
+}
 
 // Mindestgrössen bei 800 px Breite (wie die Prüfung der Oberfläche)
 const MINDEST = { zahl: [90, 50], ring: [110, 110], balken_w: [140, 40], balken_s: [50, 110], kurve: [180, 90], status: [120, 40] }
@@ -56,11 +68,13 @@ function mindestHoehe(a) {
   return a
 }
 
-function skaliert(a, breite, hoehe) {
-  const fx = breite / a.breite, fy = hoehe / a.hoehe
+// sb/tb: Kopfband der Quelle bzw. des Ziels; der Bereich darunter wird gestreckt (ohne Band: ganz)
+function skaliert(a, breite, hoehe, sb = 0, tb = 0) {
+  const fx = breite / a.breite, fy = (hoehe - tb) / (a.hoehe - sb)
+  const Y = (y) => Math.round(tb + (y - sb) * fy)
   const plaetze = a.plaetze.map((p) => {
-    const x = Math.round(p.x * fx), y = Math.round(p.y * fy)
-    return { ...p, x, y, b: Math.round((p.x + p.b) * fx) - x, h: Math.round((p.y + p.h) * fy) - y }
+    const x = Math.round(p.x * fx), y = Y(p.y)
+    return { ...p, x, y, b: Math.round((p.x + p.b) * fx) - x, h: Y(p.y + p.h) - y }
   })
   return { breite, hoehe, plaetze }
 }
@@ -103,7 +117,7 @@ function original(beschreibung) {
     if (!q) continue
     for (const [b, h] of u.nach) {
       if (ansichten.some((a) => a.breite === b && a.hoehe === h)) continue
-      const neu = skaliert(q, b, h)
+      const neu = u.band ? skaliert(q, b, h, bandOben(beschreibung, q.breite, q.hoehe), bandOben(beschreibung, b, h)) : skaliert(q, b, h)
       festesFeldAlsPlatz(beschreibung, q, neu)
       ansichten.push(mindestHoehe(neu))
     }

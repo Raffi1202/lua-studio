@@ -2,6 +2,11 @@
 
 New entries in English. Older entries in German.
 
+## 0.7.3 (21 Nov 2026)
+
+- **Glider:** preview like the Lua (Glider 0.5.0 `platz.lua`: own dark palette, square boxes with 1 px frame, grey centred titles, thinner ring, small grey extra line; top bar with outlined pills for flight mode and motor, signal and flight on the right – example state) and template «Original (like the Lua)». Glider has only a compact layout in its description; the full-screen sizes are scaled from it below the top bar, so **Glider no longer starts empty in full screen**.
+- Gas Engine ECU/Carb (cylinders and tank as fixed parts) and the compact top bar of Heli follow in a later version.
+
 ## 0.7.2 (21 Nov 2026)
 
 - **Heli:** preview like the Lua (Heli 1.13.1: own top bar with model name, clock, profile/rate, signal and transmitter battery; title at least 10 px, unit in the ring lower and not bold, larger status value) and template «Original (like the Lua)» for all six window sizes. New Heli models start with it.
