@@ -96,8 +96,6 @@ GPL-3.0-or-later, siehe [LICENSE](LICENSE). Symbole teils nach Tabler Icons (MIT
 | [Jet](https://github.com/Raffi1202/jet-lua) | Ethos-Widget für Turbinen (mehrere ECU-Hersteller) |
 | [Glider](https://github.com/Raffi1202/glider-lua) | Ethos-Widget für Segler (Vario, Thermik) |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) | Ethos-Widgets für Verbrennungsmotoren |
-| [Telemetrie-Simulator](https://github.com/Raffi1202/telemetrie-simulator) | ESP32-S3 simuliert FrSky-Telemetriesensoren |
-| [Ethos-Modell-Konverter](https://github.com/Raffi1202/ethos-modell-konverter) | Modelle zwischen Ethos-Funken umziehen |
 | [Ethos-Sensor-IDs](https://github.com/Raffi1202/ethos-sensor-ids) | Welchen Sensor Ethos je AppID anlegt |
 
 ## Entwickeln
