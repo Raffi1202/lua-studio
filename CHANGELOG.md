@@ -2,6 +2,15 @@
 
 New entries in English. Older entries in German.
 
+## 0.10.0 (22 Nov 2026)
+
+- **Control interface for tests and automation** (off by default; only with `--steuerung` or `LUA_STUDIO_STEUERUNG=1`): 127.0.0.1 only, random port, random key per start, `steuerung.json` readable only by the user and deleted on quit. State as JSON, commands through the same functions as the user interface (connect, models, prepare, templates, arrange, boxes, limits, transfer, «Save as file» and support ZIP with a path instead of a dialog, quick test, language, tabs), preview as data (PNG only on request), error log from a line number.
+- **MCP server** in `tools/mcp/` (no dependencies) with `lua_studio_state`, `lua_studio_do`, `lua_studio_preview`, `lua_studio_log`; setup for Claude Code on Mac and Windows.
+- Flow test `npm run test:steuerung` over the interface (replaces the screenshot self-test «motoraus»), including a check that the interface is unreachable when off.
+- **Glider:** second template «Original (pure glider)» with «signal» in the third ring instead of «drive battery».
+- After «Save as file» newer Luas show only «Saved» plus the short hint.
+- Heli 1.14.1 description included.
+
 ## 0.9.0 (22 Nov 2026)
 
 - **Studio layout is always found** (with Electric 0.7.0, Heli 1.14.0, Jet 0.5.0, Glider 0.6.0, Gas Engine 1.12.0 / 0.12.0): the Luas look in all studio folders, offer «Studio layout» in the widget menu and scale a view that does not fit exactly. Descriptions of these versions included.

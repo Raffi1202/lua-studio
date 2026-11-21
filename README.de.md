@@ -78,7 +78,7 @@ Symbole und Schmuck braucht ein Lua, das Format 2 kann. Für ältere Luas schrei
 | Lua | Studio-Unterstützung |
 |---|---|
 | [Electric](https://github.com/Raffi1202/electric-lua) 0.7.0 | format 2, «auch bei Motor aus» |
-| [Heli](https://github.com/Raffi1202/heli-lua) 1.14.0 | format 2, «auch bei Motor aus» |
+| [Heli](https://github.com/Raffi1202/heli-lua) 1.14.1 | format 2, «auch bei Motor aus» |
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.5.0 | format 2, «auch bei Motor aus» |
 | [Glider](https://github.com/Raffi1202/glider-lua) 0.6.0 | format 1, «auch bei Motor aus» |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.12.0 / 0.12.0 | format 1, «auch bei Motor aus» |
@@ -96,6 +96,10 @@ GPL-3.0-or-later, siehe [LICENSE](LICENSE). Symbole teils nach Tabler Icons (MIT
 | [Jet](https://github.com/Raffi1202/jet-lua) | Ethos-Widget für Turbinen (mehrere ECU-Hersteller) |
 | [Glider](https://github.com/Raffi1202/glider-lua) | Ethos-Widget für Segler (Vario, Thermik) |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) | Ethos-Widgets für Verbrennungsmotoren |
+
+## Automatisierung (für Entwickler)
+
+Lua-Studio hat eine Steuerschnittstelle für Tests und Automatisierung: Zustand als JSON, Befehle über dieselben Funktionen wie die Oberfläche, Vorschau als Daten, Fehlerprotokoll ab einer Zeile, dazu ein MCP-Server für Claude Code. Sie ist **standardmässig aus** und startet nur mit `--steuerung` (oder `LUA_STUDIO_STEUERUNG=1`); erreichbar nur über 127.0.0.1 mit einem Zufallsschlüssel je Start. Einrichtung und Sicherheit: [tools/mcp/README.md](tools/mcp/README.md). Ablauftest: `npm run test:steuerung`.
 
 ## Entwickeln
 

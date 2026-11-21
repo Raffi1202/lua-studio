@@ -272,9 +272,10 @@ function fehlerAntwort(e) { P.fehler('studio', e); return { ok: false, fehler: S
 
 ipcMain.handle('studio:beschreibungen', () => beschreibungen())
 ipcMain.handle('studio:ziele', () => ({ funke: !!(funke && !funke.getrennt), funkeName: funke && funke.hallo ? funke.hallo.board : null, laufwerke: laufwerkeSuchen() }))
-ipcMain.handle('studio:ordnerWaehlen', async () => {
+// pfad: nur über die Steuerschnittstelle (statt Dialog), sonst wird er nicht beachtet
+ipcMain.handle('studio:ordnerWaehlen', async (_e, pfad) => {
   P.info('ordner', 'Ordner wählen geöffnet')
-  const r = await dialog.showOpenDialog(fenster && !fenster.isDestroyed() ? fenster : undefined, { properties: ['openDirectory', 'createDirectory'] })
+  const r = steuerung && typeof pfad === 'string' && pfad ? { canceled: false, filePaths: [pfad] } : await dialog.showOpenDialog(fenster && !fenster.isDestroyed() ? fenster : undefined, { properties: ['openDirectory', 'createDirectory'] })
   P.info('ordner', r.canceled ? 'Ordner wählen abgebrochen' : `Ordner gewählt: ${r.filePaths[0]}`)
   if (r.canceled) return null
   erlaubteOrdner.add(r.filePaths[0])
@@ -287,7 +288,7 @@ ipcMain.handle('studio:exportDatei', async (_e, a) => {
     const b = beschreibungen()[a.lua] || {}
     const gebaut = S.bauenMitWaechter(a.projekt, { ...(a.meta || {}), studioVersion: VERSION, immerAlarm: immerAlarm(a.lua), extra: S.extraDarstellungen(b, (a.meta || {}).luaVersion) })
     if (gebaut.fehler.length) return { ok: false, fehler: `pruefen|${gebaut.fehler.join('; ')}` }
-    const r = await dialog.showSaveDialog(fenster && !fenster.isDestroyed() ? fenster : undefined, { defaultPath: `${a.kennung}.${a.lua}.lua`, filters: [{ name: 'Lua-Studio', extensions: ['lua'] }] })
+    const r = steuerung && a.pfad ? { canceled: false, filePath: String(a.pfad) } : await dialog.showSaveDialog(fenster && !fenster.isDestroyed() ? fenster : undefined, { defaultPath: `${a.kennung}.${a.lua}.lua`, filters: [{ name: 'Lua-Studio', extensions: ['lua'] }] })
     if (r.canceled || !r.filePath) { P.info('export', 'Als Datei speichern abgebrochen'); return { ok: false, abgebrochen: true } }
     fs.writeFileSync(r.filePath, gebaut.text, 'utf8')
     P.info('export', `Datei gespeichert: ${r.filePath} (${gebaut.zaehlung.byte} Byte, Format ${gebaut.daten.format}, ${(gebaut.daten.symbole || []).length} Symbole)`)
@@ -569,7 +570,7 @@ function menueSetzen() {
 async function selbsttest(wert) {
   const [port, datei, art, exportOrdner] = wert.split(';')
   await new Promise((r) => fenster.webContents.once('did-finish-load', r))
-  const ok = art === 'vorbereitet' || art === 'anordnen' || art === 'motoraus' || art === 'symbole' || (art === 'protokoll' && !port) ? { ok: false } : await verbinden({ art: 'simulator', port })
+  const ok = art === 'vorbereitet' || art === 'anordnen' || art === 'symbole' || (art === 'protokoll' && !port) ? { ok: false } : await verbinden({ art: 'simulator', port })
   await warten(art === 'vorbereitet' ? 1500 : 4000)
   const foto = async (name) => fs.writeFileSync(name, (await fenster.webContents.capturePage()).toPNG())
   if (art === 'protokoll') {
@@ -611,31 +612,6 @@ async function selbsttest(wert) {
       console.log('ANORDNEN', art, await js("JSON.stringify({ m: document.getElementById('anordnungMeldung').textContent, p: ansichtAktuell().plaetze.map((p) => [p.x, p.y, p.b, p.h].join(',')) })"))
       await foto(datei.replace(/\.png$/, ` 3 ${art}.png`))
     }
-    app.quit()
-    return
-  }
-  if (art === 'motoraus') {
-    // 0.4.1: «auch bei Motor aus» im Reiter Grenzen: Spalte, Haken, «alle», Warnband, Hinweis bei Lua ohne Unterstützung
-    const js = (code) => fenster.webContents.executeJavaScript(code)
-    const zustand = async (n) => console.log('MOTORAUS', n, await js(`JSON.stringify({ band: document.getElementById('motorAusBand').hidden ? null : document.getElementById('motorAusBand').textContent,
-      alle: (() => { const h = document.querySelector('#tabGrenzen th label.alle input'); return h ? (h.indeterminate ? 'gemischt' : h.checked) : 'fehlt' })(),
-      grenzen: st.projekt.grenzen, datei: Object.fromEntries(Object.entries(st.projekt.grenzen).map(([k, g]) => [k, g.beiMotorAus])) })`))
-    await js("window.confirm = () => true; window.alert = () => {}; 0")
-    await js("document.querySelector('[data-reiter=studio]').click(); 0"); await warten(1200)
-    await js("document.getElementById('vorbereitenOben').click(); 0"); await warten(1200)
-    await js("document.getElementById('vLua').value = 'testlua'; document.getElementById('vName').value = 'Motor aus 1'; document.getElementById('vName').dispatchEvent(new Event('input')); 0"); await warten(300)
-    await js("document.getElementById('vAnlegen').click(); 0"); await warten(1500)
-    await js("document.querySelector('[data-unter=grenzen]').click(); 0"); await warten(800)
-    await zustand('anfang'); await foto(datei.replace(/\.png$/, ' 0 Grenzen.png'))
-    const haken = (n) => `[...document.querySelectorAll('#tabGrenzen tr')].find((z) => z.firstElementChild.textContent.startsWith('${n}')).lastElementChild.querySelector('input')`
-    await js(`{ const h = ${haken('Strom')}; h.checked = false; h.dispatchEvent(new Event('change')) }; 0`); await warten(500)
-    await zustand('strom aus'); await foto(datei.replace(/\.png$/, ' 1 Einer aus.png'))
-    await js("{ const h = document.querySelector('#tabGrenzen th label.alle input'); h.checked = false; h.dispatchEvent(new Event('change')) }; 0"); await warten(500)
-    await zustand('alle aus')
-    await js("st.m.info = Object.assign({}, st.m.info, { vorbereitet: false }); grenzenZeigen(); 0"); await warten(300)
-    await zustand('lua alt'); await foto(datei.replace(/\.png$/, ' 2 Alle aus, Lua alt.png'))
-    await js("st.m.info = Object.assign({}, st.m.info, { vorbereitet: true }); { const h = document.querySelector('#tabGrenzen th label.alle input'); h.checked = true; h.dispatchEvent(new Event('change')) }; 0"); await warten(600)
-    await zustand('alle an')
     app.quit()
     return
   }
@@ -713,10 +689,15 @@ async function selbsttest(wert) {
   app.quit()
 }
 
+// Steuerschnittstelle (ab 0.10.0): nur mit --steuerung bzw. LUA_STUDIO_STEUERUNG=1
+const STEUERUNG = require('./steuerung')
+let steuerung = null
 app.whenReady().then(() => {
   P.kopf(kopfZeilen())
   menueSetzen()
   fensterOeffnen()
+  if (STEUERUNG.aktiv()) steuerung = STEUERUNG.starten({ ordner: app.getPath('userData'), fenster: () => fenster, P, version: VERSION, supportZip })
   if (process.env.LUA_STUDIO_SELBSTTEST) selbsttest(process.env.LUA_STUDIO_SELBSTTEST)
 })
+app.on('will-quit', () => { if (steuerung) steuerung.aufraeumen() })
 app.on('window-all-closed', async () => { await trennen(); P.info('start', 'beendet'); app.quit() })

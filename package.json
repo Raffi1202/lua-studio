@@ -1,7 +1,7 @@
 {
   "name": "lua-studio",
   "productName": "Lua-Studio",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "PC app (Mac/Windows) for FrSky Ethos Lua widgets: radio live over USB, set up layout, limits and symbols per model",
   "main": "src/main/main.js",
   "private": true,
@@ -14,6 +14,7 @@
     "test": "node --test test/*.test.js",
     "test:format": "node --test test/format.test.js",
     "test:simulator": "node test/simulator-ablauf.js",
+    "test:steuerung": "node test/steuerung-ablauf.js",
     "bauen:mac": "electron-builder --mac -c.directories.output=$HOME/Library/Caches/lua-studio-bau",
     "bauen:win": "electron-builder --win",
     "anleitung": "electron bau/anleitung-pdf.js",

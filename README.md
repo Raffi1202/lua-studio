@@ -40,7 +40,7 @@ A program for Mac and Windows that belongs to our FrSky Ethos Lua widgets (Elect
 | Lua | Studio support |
 |---|---|
 | [Electric](https://github.com/Raffi1202/electric-lua) 0.7.0 | format 2, «also when motor off» |
-| [Heli](https://github.com/Raffi1202/heli-lua) 1.14.0 | format 2, «also when motor off» |
+| [Heli](https://github.com/Raffi1202/heli-lua) 1.14.1 | format 2, «also when motor off» |
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.5.0 | format 2, «also when motor off» |
 | [Glider](https://github.com/Raffi1202/glider-lua) 0.6.0 | format 1, «also when motor off» |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.12.0 / 0.12.0 | format 1, «also when motor off» |
@@ -67,6 +67,10 @@ GPL-3.0-or-later, see [LICENSE](LICENSE). Some symbols are based on Tabler Icons
 | [Jet](https://github.com/Raffi1202/jet-lua) | Ethos widget for turbines (several ECU brands) |
 | [Glider](https://github.com/Raffi1202/glider-lua) | Ethos widget for gliders (vario, thermals) |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) | Ethos widgets for gas engines |
+
+## Automation (for developers)
+
+Lua-Studio has a control interface for tests and automation: state as JSON, commands through the same functions as the user interface, preview as data, error log from a line number, plus an MCP server for Claude Code. It is **off by default** and only starts with `--steuerung` (or `LUA_STUDIO_STEUERUNG=1`); it listens on 127.0.0.1 with a random key per start. Setup and security notes: [tools/mcp/README.md](tools/mcp/README.md). Flow test: `npm run test:steuerung`.
 
 ## Development
 

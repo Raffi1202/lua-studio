@@ -150,4 +150,18 @@ function original(beschreibung) {
     hinweis: HINWEIS[beschreibung.lua] || { de: 'Wie die eingebaute Anzeige des Luas, soweit über die Studio-Datei einstellbar.', en: 'Like the built-in display of the Lua, as far as the studio file allows.' }, ansichten }
 }
 
-module.exports = { original, FARBEN }
+// Weitere Vorlagen «Original» je Lua (ab 0.10.0). Glider zeigt im dritten Ring «Antriebsakku», wenn das Modell einen Antrieb
+// hat, sonst «Empfang»: darum zusätzlich «Original (reiner Segler)» mit Empfang statt Antriebsakku.
+function originalVarianten(beschreibung) {
+  const o = original(beschreibung)
+  if (!o) return []
+  const r = [o]
+  if (beschreibung.lua === 'glider' && (beschreibung.werte || []).some((w) => w.s === 'empfang')) {
+    r.push({ s: 'original_segler', name: { de: 'Original (reiner Segler)', en: 'Original (pure glider)' },
+      hinweis: { de: 'Wie «Original», im dritten Ring aber «Empfang» statt «Antriebsakku» – so zeigt Glider es bei Modellen ohne Antrieb.', en: 'Like «Original», but the third ring shows «signal» instead of «drive battery» – as Glider shows it for models without a motor.' },
+      ansichten: o.ansichten.map((a) => ({ ...a, plaetze: a.plaetze.map((p) => (p.w === 'lua:antrieb_proz' ? { ...p, w: 'lua:empfang' } : p)) })) })
+  }
+  return r
+}
+
+module.exports = { original, originalVarianten, FARBEN }

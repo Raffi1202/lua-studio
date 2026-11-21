@@ -1172,19 +1172,22 @@ function extraWarnungOk() {
   if (!benutzt.length) return true
   return confirm(t('extraWarnung').replace('{was}', benutzt.map(darstellungName).join(', ')).replace('{lua}', luaName(st.m.lua)).replace('{version}', b.luaVersion || t('neueVersion')))
 }
-async function exportDatei() {
+// pfad: nur über die Steuerschnittstelle (ohne Dialog); beim Klick kommt hier das Ereignis an
+async function exportDatei(pfad) {
   if (!st.m || !st.projekt) return
+  if (typeof pfad !== 'string') pfad = undefined
   if (!extraWarnungOk()) return
-  const r = await api.studio('exportDatei', { lua: st.m.lua, kennung: st.m.kennung, projekt: st.projekt, meta: meta() })
+  const r = await api.studio('exportDatei', { lua: st.m.lua, kennung: st.m.kennung, projekt: st.projekt, meta: meta(), pfad })
   if (r.abgebrochen) return
   $('schritte').textContent = ''
   if (!r.ok) { $('schritte').appendChild(el('li', { class: 'fehler', text: `${t('fehler')}: ${fehlerText(String(r.fehler).startsWith('pruefen|') ? r.fehler : 'u_' + r.fehler)}` })); return }
-  $('schritte').appendChild(el('li', { class: 'gut', text: t('exportDateiOk').replace('{pfad}', r.pfad).replace('{datei}', `${st.m.kennung}.${st.m.lua}.lua`) }))
+  const bb = beschreibung() || {}
+  const neueWahl = NEUE_WAHL[st.m.lua] && bb.luaVersion && !versionKleinerUI(bb.luaVersion, NEUE_WAHL[st.m.lua])
+  $('schritte').appendChild(el('li', { class: 'gut', text: neueWahl ? t('exportDateiGespeichert').replace('{pfad}', r.pfad) : t('exportDateiOk').replace('{pfad}', r.pfad).replace('{datei}', `${st.m.kennung}.${st.m.lua}.lua`) }))
   // Hinweise, damit die Datei auf der Funke wirkt (Issue #1): Name aus dem Modellnamen, Fenstergrössen, Modell wechseln
   const groessen = st.projekt.ansichten.filter((a) => a.plaetze.length).map((a) => `${a.breite} × ${a.hoehe}`).join(', ')
   // Luas ab der Version mit «Studio-Layout sicher finden» (R1–R4): Ort und Name sind nicht mehr zwingend, kurzer Hinweis
-  const b = beschreibung() || {}
-  if (NEUE_WAHL[st.m.lua] && b.luaVersion && !versionKleinerUI(b.luaVersion, NEUE_WAHL[st.m.lua])) {
+  if (neueWahl) {
     $('schritte').appendChild(el('li', { class: 'warn', text: t('exportDateiNeu') }))
     return
   }
