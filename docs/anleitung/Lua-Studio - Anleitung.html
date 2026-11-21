@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Lua-Studio – Anleitung</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  body { font: 11pt/1.5 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #1b1e24; max-width: 820px; margin: 24px auto; padding: 0 16px; }
+  h1 { font-size: 22pt; margin: 0 0 4px; }
+  h2 { font-size: 14pt; margin: 22px 0 6px; border-bottom: 1px solid #d5d9e0; padding-bottom: 3px; page-break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 14px 0 4px; page-break-after: avoid; }
+  .unter { color: #5a6270; margin: 0 0 14px; }
+  table { border-collapse: collapse; width: 100%; margin: 6px 0 10px; page-break-inside: avoid; }
+  th, td { border: 1px solid #d5d9e0; padding: 4px 8px; text-align: left; vertical-align: top; }
+  th { background: #f1f3f6; }
+  img { max-width: 100%; border: 1px solid #d5d9e0; border-radius: 4px; }
+  .hinweis { background: #fff6e0; border-left: 4px solid #e0a800; padding: 6px 10px; margin: 8px 0; page-break-inside: avoid; }
+  code, kbd { font: 10pt ui-monospace, Menlo, Consolas, monospace; background: #f1f3f6; padding: 0 3px; border-radius: 3px; }
+  ol, ul { padding-left: 22px; }
+  li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+<h1>Lua-Studio – Anleitung</h1>
+<p class="unter">Version 0.4.2 · Stand 21.11.2026 · English manual: «Lua-Studio - Manual»</p>
+
+<h2>1. Was ist Lua-Studio?</h2>
+<p>Lua-Studio ist ein Programm für Mac und Windows. Es gehört zu unseren Ethos-Luas (Heli RF, Elektro, Segler, Motoren).
+<b>Funke live</b>: Das Display deiner FrSky-Funke erscheint am Computer, und du
+bedienst die Funke mit Maus und Tastatur. Das geht über ein USB-Kabel im <b>Serialmodus</b> der Funke.</p>
+<p><b>Modelle</b> (ab 0.2.0, Kapitel 6): je Modell Kästchen, Grenzwerte und Einstellungen am Computer einstellen und auf die Funke übertragen. Später: Flüge auswerten.</p>
+<img src="../bilder/Funke%20live.png" alt="Lua-Studio mit dem Display der Funke">
+<p class="unter">Bild aus dem Ethos-Simulator.</p>
+
+<h2>2. Was du brauchst</h2>
+<ul>
+  <li>FrSky-Funke mit <b>Ethos 26.2</b> oder neuer und Farbdisplay. Am echten Sender getestet: <b>X18RS</b>.</li>
+  <li>Mac (Apple-Chip oder Intel) oder Windows-PC (64 Bit), USB-Datenkabel.</li>
+  <li>Die passende Datei aus dem GitHub-Release (Seite «Releases» rechts im Repo):
+    <ul>
+      <li>Mac mit Apple-Chip: <code>Lua-Studio-0.4.2-mac-arm64.dmg</code></li>
+      <li>Mac mit Intel: <code>Lua-Studio-0.4.2-mac-x64.dmg</code></li>
+      <li>Windows: <code>Lua-Studio-0.4.2-win-x64.exe</code></li>
+    </ul>
+  </li>
+</ul>
+<p>«Funke live» liest nur das Display und schickt Tasten und Berührungen, so als würdest du die Funke selbst bedienen.
+«Modelle» schreibt nur in den Ordner <code>scripts/studio</code> der Funke und sichert vorher die alten Dateien am PC. Modelle selbst ändert Lua-Studio nicht.</p>
+
+<h2>3. Installieren</h2>
+<h3>Mac</h3>
+<ol>
+  <li>DMG-Datei doppelklicken und <b>Lua-Studio</b> in den Ordner <b>Programme</b> ziehen.</li>
+  <li>Lua-Studio öffnen. Das Programm ist nicht bei Apple registriert. Beim ersten Mal meldet macOS darum, dass es den
+      Entwickler nicht überprüfen kann. Dann: <b>Systemeinstellungen › Datenschutz &amp; Sicherheit</b>, ganz unten bei
+      «Lua-Studio wurde blockiert» auf <b>Trotzdem öffnen</b> klicken und bestätigen. Bei älteren macOS-Versionen
+      reicht Rechtsklick auf das Programm › <b>Öffnen</b>.</li>
+</ol>
+<h3>Windows</h3>
+<ol>
+  <li>Die EXE-Datei an einen festen Ort legen (z. B. Dokumente) und doppelklicken. Es gibt keine Installation.</li>
+  <li>Erscheint «Der Computer wurde durch Windows geschützt»: <b>Weitere Informationen</b> › <b>Trotzdem ausführen</b>.</li>
+  <li>Der Start dauert beim ersten Mal 5–10 Sekunden, weil sich das Programm zuerst entpackt.</li>
+</ol>
+
+<h2>4. Funke verbinden</h2>
+<ol>
+  <li>Funke einschalten und mit dem USB-Kabel an den Computer stecken.</li>
+  <li>Auf der Funke erscheint die Auswahl für den USB-Modus. <b>Serial</b> wählen (nicht Laufwerk/Speicher).</li>
+  <li>In Lua-Studio oben bei <b>Verbindung</b> die Funke wählen. Ethos-Funken sind mit <b>●</b> markiert und werden
+      automatisch vorgewählt. Steht dort «Keine Funke gefunden»: Kabel und Modus prüfen, dann <b>Neu suchen</b>.</li>
+  <li><b>Verbinden</b> klicken. Die Statuszeile zeigt «Bitte am Sender die Fernsteuerung erlauben».</li>
+  <li>Auf der Funke die Abfrage zur Fernsteuerung <b>bestätigen</b>. Lua-Studio wartet bis zu 2 Minuten.</li>
+  <li>Die Statuszeile zeigt <b>Verbunden</b>, Sender und Ethos-Version. Kurz danach erscheint das Display.</li>
+</ol>
+<div class="hinweis">Jede neue Verbindung muss am Sender neu erlaubt werden, auch nach Trennen und Wiederverbinden.</div>
+
+<h2>5. Bedienen</h2>
+<table>
+  <tr><th>Am Computer</th><th>Auf der Funke</th></tr>
+  <tr><td>Klick ins Bild</td><td>tippen</td></tr>
+  <tr><td>Rechtsklick oder Maustaste lange halten</td><td>lange tippen</td></tr>
+  <tr><td>Mit gedrückter Maustaste ziehen</td><td>wischen</td></tr>
+  <tr><td>Mausrad (Maus über dem Bild), Pfeiltasten ↑ ↓ (oder ← →)</td><td>Drehrad</td></tr>
+  <tr><td><kbd>Enter</kbd> · <kbd>Esc</kbd> oder <kbd>←&nbsp;Löschen</kbd> · <kbd>Tab</kbd></td><td>ENTER · RTN · PAGE</td></tr>
+  <tr><td><kbd>F1</kbd> · <kbd>F2</kbd> · <kbd>F3</kbd></td><td>SYS · MDL · DISP</td></tr>
+  <tr><td><kbd>Umschalt</kbd> + Taste</td><td>Taste lange drücken</td></tr>
+</table>
+<p>Rechts gibt es Knöpfe für alle Tasten. Mit dem Haken <b>Lang drücken</b> wird der nächste Knopf lange gedrückt.
+Text für die Bildschirmtastatur der Funke (z. B. einen Modellnamen) tippst du ins Feld <b>Text in die Bildschirmtastatur</b>
+und klickst <b>Senden</b>. Vorher muss auf der Funke ein Textfeld offen sein.</p>
+<p>Die Tastenkürzel wirken überall im Fenster, ausser während du in ein Eingabefeld oder eine Auswahlliste tippst.</p>
+<h3>Grösse, Bildschirmfoto, Log</h3>
+<ul>
+  <li><b>Grösse</b>: Einpassen (füllt das Fenster), 100 %, 150 % oder 200 %.</li>
+  <li><b>Bildschirmfoto</b> speichert das aktuelle Display als PNG (Vorschlag: Ordner Bilder).</li>
+  <li><b>Lua-Log der Funke</b> zeigt, was Lua-Skripte auf der Funke ausgeben (<code>print</code>) und Fehlermeldungen (rot).
+      <b>Leeren</b> löscht die Liste.</li>
+  <li><b>DE / EN</b> oben rechts wechselt die Sprache.</li>
+</ul>
+
+<h2>6. Modelle einstellen (Reiter «Modelle»)</h2>
+<p>Hier stellst du je Modell ein, was das Lua auf der Funke zeigt: Kästchen, Grenzwerte und Einstellungen. Das geht für die
+Luas mit Studio-Unterstützung (ab Elektro 0.3.0, Motoren ECU 1.8.0, Motoren Vergaser 0.8.0, Segler 0.3.0, Jet 0.1.1, Heli RF 1.10.1).
+Die Funke rechnet dabei nichts nach. Sie liest nur die fertige, geprüfte Datei.</p>
+<p>Solange kein Modell offen ist, zeigt der Reiter zwei Einstiege (ab 0.4.0): <b>Mit Funke einstellen</b> (lädt die Modelle der
+verbundenen Funke bzw. führt zur Verbindung) und <b>Ohne Funke vorbereiten</b> mit der Liste der vorbereiteten Modelle (anklickbar). Der Knopf <b>+ Vorbereiten</b> oben neben den
+Reitern öffnet das Vorbereiten-Formular von überall.</p>
+<h3>Modelle laden</h3>
+<ol>
+  <li>Das Modell einmal auf der Funke laden, damit das Lua seine Info-Datei schreibt (Modellname, Fenstergrössen, Sensoren).</li>
+  <li>Bei <b>Quelle</b> wählen: <b>Verbundene Funke</b> (vorher im Reiter «Funke live» verbinden), <b>SD-Laufwerk</b> (Funke im Modus Laufwerk/Speicher) oder <b>Ordner</b> (Export).</li>
+  <li><b>Modelle laden</b> und das Modell in der Liste anklicken.</li>
+</ol>
+<h3>Anordnung</h3>
+<ul>
+  <li><b>Ansicht</b> wählt die Fenstergrösse (z. B. 784 × 316 kompakt oder 800 × 480 Vollbild). Mit <b>●</b> und «lief zuletzt auf der Funke» markiert ist die Grösse, in der das Lua auf der Funke zuletzt lief; sie ist beim Öffnen vorgewählt. Nur Änderungen in dieser Ansicht siehst du auf der Funke sofort.</li>
+  <li>Kästchen ziehen verschiebt, die Ecke unten rechts ändert die Grösse. <b>Kästchen hinzufügen</b> und <b>Kästchen entfernen</b> (oder Entf-Taste). Höchstens 16 Kästchen je Ansicht.</li>
+  <li>Rechts für das gewählte Kästchen: Wert (Werte des Luas, eigene Sensoren, Kanäle), Darstellung (Zahl, Ring/Tacho, Balken waagrecht/senkrecht, Kurve, Status-Text), Beschriftung, Bereich, Farben für normal/Warnung/Alarm/Hintergrund, bis zu 3 Farbstufen (nur Farbe) und Zusatzzeile (Minimum, Maximum, Mittelwert).</li>
+  <li><b>Rot</b> umrandet ist ein Kästchen, das über den Rand ragt, zu klein ist, ein anderes überlappt oder auf einer Fläche liegt, die das Lua selbst zeichnet (grau schraffiert, z. B. die Statusleiste). Zu kleine Kästchen und solche über dem Rand verwirft die Funke; überlappende liegen unter anderen.</li>
+  <li><b>Automatisch anordnen</b> (ab 0.4.0): Ein Klick setzt alle Abstände zwischen den Kästchen und zum Rand gleich und füllt die Fläche.
+      Was neben und unter was liegt, bleibt. Daneben die Art:
+      <b>Gleich breit je Zeile</b> (Standard: nebeneinander gleich breit, Zeilen im alten Höhenverhältnis),
+      <b>Verhältnis behalten</b> (alles im alten Grössenverhältnis gestreckt),
+      <b>Nur verteilen</b> (Grössen bleiben, alle Lücken genau der Abstand, der übrige Platz gleichmässig an die Ränder; liegen die Kästchen enger, nimmt das Studio den grössten Abstand, der passt) und
+      <b>Neu im Raster</b> (alle Kästchen in Lesereihenfolge in ein gleichmässiges Raster, für ganz verschobene Anordnungen).
+      <b>Abstand</b>: Standard 8 px im Vollbild, 5 px in der kompakten Ansicht, wählbar 4–10 px. Flächen, die das Lua selbst zeichnet,
+      bleiben frei; die Spalte mit so einer Fläche behält ihre Breite. Würde ein Kästchen zu klein oder greifen die Kästchen
+      ineinander, ändert das Studio nichts und sagt warum. <b>Rückgängig</b> nimmt das Anordnen zurück. Schmuck bleibt, wo er ist. Ab 0.4.1 füllen bei «Neu im Raster» die Kästchen der letzten Zeile den freien Platz dieser Zeile, auch neben einer Fläche des Luas wie «Flüge».</li>
+  <li>Oben rechts steht, wie viel Platz die Einstellungen brauchen (Angaben, höchstens 1100).</li>
+  <li>Die Vorschau zeichnet das Studio selbst. Sie zeigt Lage, Grösse und Art; Schrift und Feinheiten zeigt erst die Funke (danach mit «Funke live» kontrollieren).</li>
+</ul>
+<h3>Symbole, Einheit und Schmuck (ab 0.3.0)</h3>
+<p>Nur mit einer Lua-Version, die das Lua-Studio-Format 2 kann. Sonst steht der Hinweis «Symbole und Schmuck gibt es erst mit …», und das Studio schreibt Format 1.</p>
+<ul>
+  <li><b>Symbol</b> je Kästchen: steht oben links vor der Beschriftung und färbt sich wie der Wert (normal, Warnung, Alarm). Grösse 24, 32, 48 oder 64 px (am X18RS; auf X14 und X18 kleiner umgerechnet). Schlepp gibt es erst ab 48 px.</li>
+  <li><b>Einheit:</b> neben dem Wert (wie bisher), <b>fett oben links</b> (statt Bild oder neben dem Symbol) oder keine. Spannung, Strom, Verbrauch, Energie, Drehzahl und Gas haben bewusst kein Bild, sondern die fette Einheit.</li>
+  <li><b>Nicht mehr benutzte Symbole</b> (ab 0.4.1): Nennt keine Studio-Datei auf der Funke ein Symbol mehr, zeigt der Reiter «Übertragen» vorher «n nicht mehr benutzte Symbole … löschen» («Welche Dateien?» klappt alle Namen auf). Gelöscht wird nur, wenn du den Haken setzt, und nur diese Dateien. Ohne Haken bleiben sie auf der SD-Karte und stören nicht.</li>
+  <li><b>Schmuck:</b> <b>+ Symbol</b>, <b>+ Text</b>, <b>+ Linie</b>, <b>+ Rahmen</b> setzt frei platzierte Elemente ohne Wert, höchstens 24 je Ansicht. Sie liegen unter den Kästchen. Ziehen verschiebt, rechts stehen Lage, Grösse und Farbe; Entf löscht.</li>
+  <li><b>Preset</b> setzt die Anordnung auf das Aussehen des Luas («Standard des Luas» oder Vorlagen des Luas) oder <b>Leer anfangen</b>. Grenzwerte und Einstellungen bleiben.</li>
+</ul>
+<h3>Funken-Schnelltest (ab 0.3.1)</h3>
+<p>Nach dem Übertragen auf eine verbundene Funke prüft das Studio nach einigen Sekunden selbst, sobald die Funke das Modell neu geladen hat. Den Knopf <b>Funken-Schnelltest</b> im Reiter «Übertragen» kannst du bei verbundener Funke jederzeit drücken (bei SD-Laufwerk und Ordner gibt es ihn nicht). Das Studio liest die Info-Datei des Luas und das Lua-Log der Funke und meldet:</p>
+<ul>
+  <li>ob das Lua die Studio-Datei geladen hat und ob es ungültige Felder gefunden hat;</li>
+  <li>ob das Lua das Format kann und ob es Sensoren gefunden hat;</li>
+  <li>auffällige Log-Zeilen, z. B. Lua-Fehler, Befehlsgrenze, Speicher oder fehlende Symbole;</li>
+  <li>ob die Funke die geänderte Ansicht überhaupt zeigt (sonst siehst du dort keine Änderung).</li>
+</ul>
+<p>Steht «Info-Datei seit dem Übertragen nicht neu geschrieben», das Modell auf der Funke einmal wechseln und erneut prüfen.</p>
+<h3>Grössenwächter</h3>
+<p>Unten im Reiter steht immer der Grössenwächter. Er zeigt Datei, Elemente, Tabellen, den geschätzten Lua-Speicher beim Laden, Kästchen, Kurven, Listen, Schmuck, Symbole und Bildspeicher, jeweils mit Ampel. Ist eine Zeile <b>rot</b>, lässt sich nicht übertragen; der Grund steht dabei.</p>
+<h3>Grenzwerte &amp; Einstellungen</h3>
+<ul>
+  <li><b>Grenzwerte</b> gelten je Wert für das ganze Modell, egal in welchem Kästchen der Wert steht. Neue Modelle beginnen mit den Werkgrenzen des Luas. Ein leeres Feld schaltet diese Stufe aus; sind <b>beide</b> leer, nimmt die Funke die Werkgrenze (ganz aus nur mit <b>Aus</b>); «Werk: …» erscheint nur bei Werten, für die noch kein Eintrag besteht. Mit <b>Aus</b> schaltest du einen Alarm ganz aus. Bei eigenen Sensoren muss «Alarm wenn» gewählt sein, und bei «unter» muss der Alarm tiefer liegen als die Warnung (bei «über» höher) – sonst überträgt das Studio nicht.</li>
+  <li><b>Auch bei Motor aus</b> (ab 0.4.1, nur bei Luas, die es kennen): Angehakt (Standard) kommt der Alarm auch, wenn der Motorschalter (z. B. SF) auf aus steht. Nimmst du den Haken weg, schweigt dieser Alarm, solange der Motor aus ist; das Studio zeigt dann oben ein gelbes Band mit allen solchen Alarmen. «alle» setzt oder löscht den Haken bei allen Alarmen. Fehlercodes und Abschaltgründe kommen immer und haben keinen Haken. Kennt das Lua auf der Funke die Einstellung noch nicht, kommt der Alarm dort weiter; das Band sagt das.</li>
+  <li><b>Werte anpassen:</b> Faktor, Versatz, Einheit und Nachkommastellen eines Werts, z. B. Drehzahl ÷ 2. Gilt überall, auch für die Grenzwerte.</li>
+  <li><b>Einstellungen</b> des Luas, z. B. Akku und Kapazität.</li>
+  <li><b>Vorlage:</b> «Standard des Luas» oder eine eigene Vorlage laden; <b>Als Vorlage speichern</b>; <b>Von Modell kopieren</b> übernimmt alles von einem anderen Modell.</li>
+</ul>
+<p>Alles wird am PC automatisch gespeichert.</p>
+<h3>Übertragen</h3>
+<ol>
+  <li>Reiter <b>Übertragen</b>, dann <b>Auf die Funke übertragen</b>.</li>
+  <li>Das Studio prüft die Datei, sichert die alte Datei am PC, schreibt die neue, liest sie zurück und vergleicht. Bei verbundener Funke lädt es das Modell neu; sonst das Modell auf der Funke einmal wechseln.</li>
+  <li>Hast du an der Funke im Widget-Menü etwas geändert, zeigt das Studio die Änderungen und übernimmt sie, wenn der Haken gesetzt ist. Ohne Haken gelten sie auf der Funke weiter über der neuen Datei.</li>
+  <li>Hast du nur eine Ansicht geändert, die das Lua auf der Funke gerade nicht zeigt (z. B. kompakt, die Funke zeigt Vollbild), fragt das Studio vorher nach.</li>
+  <li>Haben zwei Modelle Namen, die sich nur in Gross-/Kleinschreibung unterscheiden, sperrt das Studio das Übertragen (sie würden sich die Datei teilen): ein Modell umbenennen.</li>
+</ol>
+<p>Sicherungen liegen im Benutzerordner von Lua-Studio unter <code>Studio/sicherungen</code>
+(Mac: <code>~/Library/Application Support/Lua-Studio</code>, Windows: <code>%APPDATA%\Lua-Studio</code>).</p>
+
+<h3>Ohne Funke vorbereiten (ab 0.3.0)</h3>
+<ol>
+  <li><b>+ Vorbereiten</b> oben (oder auf der Startseite <b>+ Neues Modell vorbereiten</b>). Das geht auch wie bisher: bei <b>Quelle</b> «Vorbereitet (ohne Funke)» wählen, <b>Modelle laden</b>, dann <b>Neues Modell vorbereiten …</b></li>
+  <li>Displaygruppe (X18RS/X20S/X20PRO, X14 oder X18/Twin X Lite), Lua und den Modellnamen <b>genau wie auf der Funke</b> eingeben. Das Studio zeigt die Kennung, unter der die Funke die Datei sucht.</li>
+  <li>Gestalten wie gewohnt. Eigene Sensoren gibt es erst nach dem ersten Verbinden; die Werte des Luas gehen sofort.</li>
+  <li>Im Reiter <b>Übertragen</b> ein SD-Laufwerk (Kartenleser oder Funke als Laufwerk) oder einen Ordner wählen. Das Studio schreibt nach <code>scripts/studio/</code> und schreibt nichts, wenn dort dieselbe Kennung in anderer Gross-/Kleinschreibung liegt.</li>
+  <li>Später mit Funke: Beim Modell der Funke im Reiter «Grenzwerte &amp; Einstellungen» unter <b>Vorbereitung</b> die passende Vorbereitung wählen und <b>Übernehmen</b>. Die Liste der Modelle zeigt «Vorbereitung vorhanden», wenn die Kennung passt.</li>
+  <li>Das × in der Liste legt eine Vorbereitung in den Papierkorb.</li>
+</ol>
+
+<h2>7. Bekannte Grenzen</h2>
+<ul>
+  <li><b>Bildtempo:</b> Am Mac mit der X18RS gemessen rund 25 Bilder pro Sekunde. Unter Windows ist die Verbindung mit echter Funke noch nicht gemessen.</li>
+  <li>Am echten Sender getestet ist nur die <b>X18RS</b> mit Ethos 26.2.0 am Mac. Andere Sender und die Verbindung unter
+      Windows sind noch nicht mit einer echten Funke getestet.</li>
+  <li>Die Programme sind nicht signiert (siehe Kapitel 3).</li>
+  <li>Während Lua-Studio verbunden ist, kann kein anderes Programm (z. B. die FrSky Suite) die Serial-Verbindung nutzen.</li>
+</ul>
+
+<h2>8. Fehlerbehebung</h2>
+<table>
+  <tr><th>Meldung oder Problem</th><th>Was tun</th></tr>
+  <tr><td>«Keine Funke gefunden»</td><td>USB-Modus auf der Funke muss <b>Serial</b> sein. Anderes Kabel (manche laden nur). Dann <b>Neu suchen</b>.</td></tr>
+  <tr><td>«Die Fernsteuerung wurde am Sender nicht erlaubt (Zeit abgelaufen)»</td><td>Die Abfrage auf der Funke kam nicht oder wurde nicht bestätigt. Nochmals <b>Verbinden</b> und sofort auf der Funke bestätigen.</td></tr>
+  <tr><td>«Bitte am Sender die Fernsteuerung erlauben», aber auf der Funke erscheint keine Abfrage</td><td>Falscher Anschluss gewählt oder die Funke ist nicht im Serialmodus. <b>Trennen</b>, Funke im Modus <b>Serial</b> neu einstecken, den mit ● markierten Eintrag wählen.</td></tr>
+  <tr><td>«Die Fernsteuerung wurde am Sender abgelehnt»</td><td>Nochmals verbinden und auf der Funke erlauben.</td></tr>
+  <tr><td>«Anschluss lässt sich nicht öffnen …»</td><td>Ein anderes Programm benutzt die Funke (FrSky Suite, zweites Lua-Studio). Dieses schliessen, Funke aus- und wieder einstecken.</td></tr>
+  <tr><td>«Verbindung getrennt: Die Verbindung zur Funke wurde getrennt»</td><td>Kabel gezogen oder Funke ausgeschaltet. Wieder einstecken, Serial wählen, Verbinden.</td></tr>
+  <tr><td>Bild bleibt stehen</td><td>Trennen und neu verbinden.</td></tr>
+  <tr><td>Mac: Programm startet nicht</td><td>Kapitel 3 (Trotzdem öffnen). Programm aus dem DMG zuerst in «Programme» kopieren.</td></tr>
+</table>
+
+<h2>9. Fehler melden (ab 0.3.3)</h2>
+<p>Lua-Studio schreibt in einem <b>Fehlerprotokoll</b> mit, was passiert: Start (Version, Betriebssystem), Verbinden und Trennen,
+Modelle laden, jeden Schritt beim Übertragen, Funken-Schnelltest, Sperren des Grössenwächters und <b>jeden Fehler</b> mit
+der Stelle im Programm. So lässt sich ein Absturz auch nachträglich finden.</p>
+<ol>
+  <li>Wenn etwas schiefgeht: Lua-Studio offen lassen (oder neu starten), die Funke möglichst <b>verbunden lassen</b>.</li>
+  <li>Oben rechts <b>Hilfe ▾ → Fehlerprotokoll …</b> (am Mac auch in der Menüleiste unter «Hilfe»).</li>
+  <li><b>Für Support speichern (ZIP) …</b> wählen. Vorschlag: Schreibtisch, Name «Lua-Studio Fehlerprotokoll &lt;Datum&gt;.zip».</li>
+  <li>Die ZIP-Datei per Mail oder Messenger schicken, dazu kurz: was du gemacht hast und was passiert ist.</li>
+</ol>
+<p><b>Was in der ZIP steht:</b> das Protokoll (<code>lua-studio.log</code>, <code>lua-studio-alt.log</code>), <code>system.txt</code>
+(Versionen von Lua-Studio, Betriebssystem, Funke). Bei verbundener Funke dazu die letzten 400 Zeilen des Lua-Logs der Funke
+und die Info-Dateien der Luas (<code>*.info.json</code>). <b>Nicht</b> drin: Studio-Projekte, Modelldateien, Seriennummern.
+Der Benutzerordner ist überall durch <code>~</code> ersetzt. <b>Aber:</b> Die Info-Dateien nennen die Modelle der Funke mit Modellname, Speicherort des Modells (mit Ordnername) und Sensorliste (Name, AppID, Physical ID). Das braucht man zum Zuordnen; wer es nicht weitergeben will, schaut die ZIP vorher an.</p>
+<p><b>Stufen:</b> <i>normal</i> (Standard) schreibt die Ereignisse und alle Fehler. <i>ausführlich</i> schreibt zusätzlich jeden
+Befehl an die Funke (gekürzt) und das ganze Lua-Log der Funke; nur einschalten, wenn man darum gebeten wird, und den Fehler
+dann nochmals auslösen. <i>aus</i> schreibt nichts, auch keine Fehler.</p>
+<p><b>Ablage:</b> Mac <code>~/Library/Application Support/Lua-Studio/Protokoll</code>, Windows
+<code>%APPDATA%\Lua-Studio\Protokoll</code> (Knopf <b>Ordner öffnen</b>). Höchstens zwei Dateien zu je 1 MB; ist die laufende voll,
+wird sie zur alten und die vorherige alte fällt weg. <b>Löschen</b> leert das Protokoll.</p>
+<p>Wer ein GitHub-Konto hat, kann den Fehler auch als Issue mit der Vorlage <b>Fehler / Bug</b> melden und die ZIP anhängen.</p>
+</body>
+</html>

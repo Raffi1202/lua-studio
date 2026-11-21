@@ -1,0 +1,64 @@
+name: Fehler / Bug
+description: Etwas funktioniert nicht wie in Anleitung oder Testleitfaden beschrieben (something does not work)
+title: "[Fehler] "
+labels: ["fehler"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke für die Meldung! Bitte keine Modelldateien und keine persönlichen Daten anhängen.
+        Thanks for reporting! English is fine too.
+  - type: input
+    id: studio
+    attributes:
+      label: Lua-Studio-Version
+      description: Name der heruntergeladenen Datei, z. B. Lua-Studio-0.1.1-win-x64.exe
+    validations:
+      required: true
+  - type: input
+    id: rechner
+    attributes:
+      label: Computer / Computer
+      description: z. B. Mac mit Apple-Chip, macOS 26.3 · Windows 11
+    validations:
+      required: true
+  - type: input
+    id: sender
+    attributes:
+      label: Sender und Ethos-Version / Radio and Ethos version
+      description: z. B. X18RS, Ethos 26.2.0 (System › Info)
+    validations:
+      required: true
+  - type: input
+    id: testfall
+    attributes:
+      label: Testfall (Nummer aus TESTLEITFADEN.md)
+      description: falls zutreffend, z. B. 5
+  - type: textarea
+    id: schritte
+    attributes:
+      label: Schritte / Steps
+      description: Was hast du nacheinander gemacht?
+      placeholder: |
+        1. …
+        2. …
+    validations:
+      required: true
+  - type: textarea
+    id: erwartet
+    attributes:
+      label: Erwartet und tatsächlich / Expected and actual
+      description: Was hast du erwartet, was ist passiert? Text aus der Statuszeile oben im Studio bitte wörtlich.
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Log
+      description: Zeilen aus «Lua-Log der Funke» rechts im Studio (falls etwas drinsteht). Ab 0.3.3 besser – Hilfe → Fehlerprotokoll → «Für Support speichern (ZIP)» und die ZIP unten anhängen / Help → Error log → “Save for support (ZIP)” and attach the ZIP below.
+      render: text
+  - type: textarea
+    id: bild
+    attributes:
+      label: Bildschirmfoto / Screenshot
+      description: Bild vom Studio-Fenster hier hineinziehen (Handyfoto genügt)

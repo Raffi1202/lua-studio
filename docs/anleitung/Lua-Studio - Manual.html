@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lua-Studio – Manual</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  body { font: 11pt/1.5 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #1b1e24; max-width: 820px; margin: 24px auto; padding: 0 16px; }
+  h1 { font-size: 22pt; margin: 0 0 4px; }
+  h2 { font-size: 14pt; margin: 22px 0 6px; border-bottom: 1px solid #d5d9e0; padding-bottom: 3px; page-break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 14px 0 4px; page-break-after: avoid; }
+  .unter { color: #5a6270; margin: 0 0 14px; }
+  table { border-collapse: collapse; width: 100%; margin: 6px 0 10px; page-break-inside: avoid; }
+  th, td { border: 1px solid #d5d9e0; padding: 4px 8px; text-align: left; vertical-align: top; }
+  th { background: #f1f3f6; }
+  img { max-width: 100%; border: 1px solid #d5d9e0; border-radius: 4px; }
+  .hinweis { background: #fff6e0; border-left: 4px solid #e0a800; padding: 6px 10px; margin: 8px 0; page-break-inside: avoid; }
+  code, kbd { font: 10pt ui-monospace, Menlo, Consolas, monospace; background: #f1f3f6; padding: 0 3px; border-radius: 3px; }
+  ol, ul { padding-left: 22px; }
+  li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+<h1>Lua-Studio – Manual</h1>
+<p class="unter">Version 0.4.2 · 21 Nov 2026 · Deutsche Anleitung: «Lua-Studio - Anleitung»</p>
+
+<h2>1. What is Lua-Studio?</h2>
+<p>Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Heli RF, Elektro, Segler, Motoren).
+<b>Radio live</b>: your FrSky radio's display appears on the computer and you
+operate the radio with mouse and keyboard, over a USB cable in the radio's <b>serial mode</b>.</p>
+<p><b>Models</b> (from 0.2.0, chapter 6): set up boxes, limits and settings per model on the computer and transfer them to the radio. Later: analyse flights.</p>
+<img src="../bilder/Funke%20live.png" alt="Lua-Studio showing the radio display">
+<p class="unter">Picture taken with the Ethos simulator.</p>
+
+<h2>2. What you need</h2>
+<ul>
+  <li>FrSky radio with <b>Ethos 26.2</b> or newer and a colour display. Tested on real hardware: <b>X18RS</b>.</li>
+  <li>Mac (Apple silicon or Intel) or Windows PC (64-bit), USB data cable.</li>
+  <li>The matching file from the GitHub release (“Releases” on the right of the repository page):
+    <ul>
+      <li>Mac with Apple silicon: <code>Lua-Studio-0.4.2-mac-arm64.dmg</code></li>
+      <li>Mac with Intel: <code>Lua-Studio-0.4.2-mac-x64.dmg</code></li>
+      <li>Windows: <code>Lua-Studio-0.4.2-win-x64.exe</code></li>
+    </ul>
+  </li>
+</ul>
+<p>«Radio live» only reads the display and sends keys and touches, the same as operating the radio by hand.
+«Models» only writes to the folder <code>scripts/studio</code> on the radio and backs up the old files on the PC first. Lua-Studio never changes models themselves.</p>
+
+<h2>3. Install</h2>
+<h3>Mac</h3>
+<ol>
+  <li>Double-click the DMG file and drag <b>Lua-Studio</b> into <b>Applications</b>.</li>
+  <li>Open Lua-Studio. The program is not registered with Apple, so the first time macOS says it cannot verify the
+      developer. Then go to <b>System Settings › Privacy &amp; Security</b>, click <b>Open Anyway</b> next to
+      “Lua-Studio was blocked” and confirm. On older macOS versions, right-click the app › <b>Open</b> is enough.</li>
+</ol>
+<h3>Windows</h3>
+<ol>
+  <li>Put the EXE file in a fixed place (e.g. Documents) and double-click it. There is no installer.</li>
+  <li>If “Windows protected your PC” appears: <b>More info</b> › <b>Run anyway</b>.</li>
+  <li>The first start takes 5–10 seconds because the program unpacks itself first.</li>
+</ol>
+
+<h2>4. Connect the radio</h2>
+<ol>
+  <li>Switch the radio on and connect it to the computer with the USB cable.</li>
+  <li>The radio asks for the USB mode. Choose <b>Serial</b> (not drive/storage).</li>
+  <li>In Lua-Studio, choose the radio under <b>Connection</b> at the top. Ethos radios are marked with <b>●</b> and are
+      selected automatically. If it says “No radio found”: check cable and mode, then click <b>Search again</b>.</li>
+  <li>Click <b>Connect</b>. The status line shows “Please allow remote control on the radio”.</li>
+  <li><b>Confirm</b> the remote control prompt on the radio. Lua-Studio waits up to 2 minutes.</li>
+  <li>The status line shows <b>Connected</b>, the radio and the Ethos version. The display appears shortly after.</li>
+</ol>
+<div class="hinweis">Every new connection has to be allowed on the radio again, also after disconnecting and reconnecting.</div>
+
+<h2>5. Operate</h2>
+<table>
+  <tr><th>On the computer</th><th>On the radio</th></tr>
+  <tr><td>Click into the picture</td><td>tap</td></tr>
+  <tr><td>Right-click, or hold the mouse button</td><td>long tap</td></tr>
+  <tr><td>Drag with the mouse button held</td><td>swipe</td></tr>
+  <tr><td>Mouse wheel (pointer over the picture), arrow keys ↑ ↓ (or ← →)</td><td>rotary encoder</td></tr>
+  <tr><td><kbd>Enter</kbd> · <kbd>Esc</kbd> or <kbd>Backspace</kbd> · <kbd>Tab</kbd></td><td>ENTER · RTN · PAGE</td></tr>
+  <tr><td><kbd>F1</kbd> · <kbd>F2</kbd> · <kbd>F3</kbd></td><td>SYS · MDL · DISP</td></tr>
+  <tr><td><kbd>Shift</kbd> + key</td><td>long key press</td></tr>
+</table>
+<p>On the right there are buttons for all keys. With <b>Long press</b> ticked, the next button is pressed long.
+Text for the radio's on-screen keyboard (e.g. a model name) goes into <b>Text for the on-screen keyboard</b>, then click
+<b>Send</b>. A text field must be open on the radio first.</p>
+<p>The shortcuts work anywhere in the window, except while you type into an input field or a selection list.</p>
+<h3>Size, screenshot, log</h3>
+<ul>
+  <li><b>Size</b>: Fit (fills the window), 100 %, 150 % or 200 %.</li>
+  <li><b>Screenshot</b> saves the current display as PNG (suggested folder: Pictures).</li>
+  <li><b>Lua log of the radio</b> shows what Lua scripts on the radio print and error messages (red). <b>Clear</b> empties it.</li>
+  <li><b>DE / EN</b> at the top right switches the language.</li>
+</ul>
+
+<h2>6. Setting up models (tab «Models»)</h2>
+<p>Here you set up per model what the Lua shows on the radio: boxes, limits and settings. This works for the Luas with studio
+support (from Elektro 0.3.0, Motoren ECU 1.8.0, Motoren Vergaser 0.8.0, Segler 0.3.0, Jet 0.1.1, Heli RF 1.10.1).
+The radio does not recalculate anything; it only reads the finished, checked file.</p>
+<p>While no model is open, the tab shows two entry points (from 0.4.0): <b>Set up with the radio</b> (loads the connected
+radio's models or leads to the connection) and <b>Prepare without a radio</b> with the list of prepared models (clickable). The <b>+ Prepare</b> button at the top next to the
+tabs opens the prepare form from anywhere.</p>
+<h3>Load models</h3>
+<ol>
+  <li>Load the model once on the radio so the Lua writes its info file (model name, window sizes, sensors).</li>
+  <li>Choose the <b>Source</b>: <b>Connected radio</b> (connect in the «Radio live» tab first), <b>SD drive</b> (radio in drive/storage mode) or <b>Folder</b> (export).</li>
+  <li>Click <b>Load models</b> and pick the model in the list.</li>
+</ol>
+<h3>Layout</h3>
+<ul>
+  <li><b>View</b> selects the window size (e.g. 784 × 316 compact or 800 × 480 full screen). The size the Lua last ran in on the radio is marked with <b>●</b> and «last shown on the radio» and is preselected when you open a model. Only changes in this view show up on the radio right away.</li>
+  <li>Drag a box to move it, the bottom right corner resizes it. <b>Add box</b> and <b>Remove box</b> (or the Delete key). At most 16 boxes per view.</li>
+  <li>On the right for the selected box: value (Lua values, own sensors, channels), display (number, ring/gauge, bar horizontal/vertical, curve, status text), label, range, colours for normal/warning/alarm/background, up to 3 colour steps (colour only) and extra line (minimum, maximum, average).</li>
+  <li>A <b>red</b> frame marks a box that is outside the edge, too small, overlaps another or lies on an area the Lua draws itself (grey hatched, e.g. the status bar). The radio discards boxes that are too small or outside the edge; overlapping ones end up underneath.</li>
+  <li>At the top right you see how much space the settings need (entries, at most 1100).</li>
+  <li>The studio draws the preview itself. It shows position, size and type; fonts and details only show on the radio (check with «Radio live» afterwards).</li>
+  <li><b>Arrange automatically</b> (from 0.4.0): one click makes all gaps between the boxes and to the edge equal and fills the area.
+      What is beside and below what stays. Next to it the mode:
+      <b>Equal width per row</b> (default: side by side equally wide, rows keep their height ratio),
+      <b>Keep proportions</b> (everything stretched in the old proportions),
+      <b>Distribute only</b> (sizes stay, every gap is exactly the gap setting, the remaining space is shared evenly at the edges; if the boxes are closer, the studio uses the largest gap that fits) and
+      <b>New grid</b> (all boxes in reading order in an even grid, for badly scattered layouts).
+      <b>Gap</b>: default 8 px in full screen, 5 px in the compact view, selectable 4–10 px. Areas the Lua draws itself stay free;
+      the column with such an area keeps its width. If a box would become too small or the boxes interlock, the studio changes
+      nothing and says why. <b>Undo</b> takes the arrangement back. Decorations stay where they are. From 0.4.1, with «New grid» the boxes of the last row fill the free space of that row, also next to an area of the Lua such as «Flights».</li>
+</ul>
+<h3>Symbols, unit and decoration (from 0.3.0)</h3>
+<p>Only with a Lua version that supports Lua-Studio format 2. Otherwise the studio shows a note and writes format 1.</p>
+<ul>
+  <li><b>Symbol</b> per box: top left in front of the title, coloured like the value (normal, warning, alarm). Size 24, 32, 48 or 64 px (on the X18RS; scaled down on X14 and X18). Tow only from 48 px.</li>
+  <li><b>Unit:</b> next to the value (as before), <b>bold top left</b> or none. Voltage, current, consumption, energy, RPM and throttle deliberately have no picture but the bold unit.</li>
+  <li><b>Unused symbols</b> (from 0.4.1): if no studio file on the radio names a symbol any more, the «Transfer» tab shows «Delete n unused symbols …» beforehand («Which files?» expands all names). They are deleted only if you tick the box, and only those files. Without the tick they stay on the SD card and do no harm.</li>
+  <li><b>Decoration:</b> <b>+ Symbol</b>, <b>+ Text</b>, <b>+ Line</b>, <b>+ Frame</b> places free elements without a value, at most 24 per view, below the boxes. Drag to move; position, size and colour on the right; Delete removes.</li>
+  <li><b>Preset</b> sets the layout to the Lua's look («Lua default» or the Lua's templates) or <b>Start empty</b>. Limits and settings stay.</li>
+</ul>
+<h3>Radio quick test (from 0.3.1)</h3>
+<p>After a transfer to a connected radio the studio checks by itself after a few seconds, once the radio has reloaded the model. With a connected radio you can press <b>Radio quick test</b> in the «Transfer» tab at any time (not available for SD drive and folder). It reads the Lua's info file and the radio's Lua log and reports:</p>
+<ul>
+  <li>whether the Lua loaded the studio file and whether it found invalid fields;</li>
+  <li>whether the Lua supports the format and found sensors;</li>
+  <li>notable log lines, e.g. Lua errors, instruction limit, memory or missing symbols;</li>
+  <li>whether the radio shows the changed view at all (otherwise you will see no change there).</li>
+</ul>
+<p>If it says «Info file not rewritten since the transfer», switch the model on the radio once and test again.</p>
+<h3>Size guard</h3>
+<p>The size guard at the bottom shows file, elements, tables, estimated Lua memory when loading, boxes, graphs, lists, decoration, symbols and bitmap memory, each with a traffic light. A <b>red</b> line blocks the transfer and states the reason.</p>
+<h3>Limits &amp; settings</h3>
+<ul>
+  <li><b>Limits</b> apply per value for the whole model, no matter in which box the value is. New models start with the Lua's factory limits. An empty field switches that level off; if <b>both</b> are empty, the radio uses the factory limit (completely off only with <b>Off</b>); «factory: …» only shows for values without an entry yet. <b>Off</b> switches an alarm off completely. For own sensors «Alarm when» must be chosen, and with «below» the alarm must be lower than the warning (with «above» higher) – otherwise the studio does not transfer.</li>
+  <li><b>Also with motor off</b> (from 0.4.1, only for Luas that support it): ticked (default), the alarm also sounds while the motor switch (e.g. SF) is off. Untick it and this alarm stays silent while the motor is off; the Studio then shows a yellow band listing all such alarms. «all» ticks or unticks every alarm. Error codes and shutdown reasons always sound and have no tick box. If the Lua on the radio does not know this setting yet, the alarm still sounds there; the band says so.</li>
+  <li><b>Adjust values:</b> factor, offset, unit and decimals of a value, e.g. RPM ÷ 2. Applies everywhere, also to the limits.</li>
+  <li><b>Settings</b> of the Lua, e.g. battery and capacity.</li>
+  <li><b>Template:</b> load «Lua default» or an own template; <b>Save as template</b>; <b>From model</b> copies everything from another model.</li>
+</ul>
+<p>Everything is saved on the PC automatically.</p>
+<h3>Transfer</h3>
+<ol>
+  <li>Tab <b>Transfer</b>, then <b>Transfer to the radio</b>.</li>
+  <li>The studio checks the file, backs up the old file on the PC, writes the new one, reads it back and compares. With a connected radio it reloads the model; otherwise switch the model on the radio once.</li>
+  <li>If you changed something in the widget menu on the radio, the studio shows the changes and takes them over when the box is ticked. Without the tick they keep applying on the radio on top of the new file.</li>
+  <li>If you only changed a view the Lua does not show on the radio right now (e.g. compact while the radio shows full screen), the studio asks before transferring.</li>
+  <li>If two models have names that differ only in upper/lower case, the studio blocks the transfer (they would share the file): rename one model.</li>
+</ol>
+<p>Backups are in the Lua-Studio user folder under <code>Studio/sicherungen</code>
+(Mac: <code>~/Library/Application Support/Lua-Studio</code>, Windows: <code>%APPDATA%\Lua-Studio</code>).</p>
+
+<h3>Prepare without a radio (from 0.3.0)</h3>
+<ol>
+  <li><b>+ Prepare</b> at the top (or <b>+ Prepare a new model</b> on the start page). As before, this also works with source «Prepared (without radio)», <b>Load models</b>, then <b>Prepare new model …</b></li>
+  <li>Enter the display group, the Lua and the model name <b>exactly as on the radio</b>. The studio shows the identifier the radio uses for the file.</li>
+  <li>Design as usual. Own sensors are only available after the first connection; the Lua's values work right away.</li>
+  <li>In <b>Transfer</b> choose an SD drive (card reader or radio as drive) or a folder. The studio writes to <code>scripts/studio/</code> and writes nothing if the same identifier exists there with different case.</li>
+  <li>Later with the radio: open the radio's model, tab «Limits &amp; settings», choose the matching entry under <b>Prepared</b> and <b>Apply</b>. The model list shows «prepared layout available» when the identifier matches.</li>
+  <li>The × in the list moves a prepared model to the trash.</li>
+</ol>
+
+<h2>7. Known limitations</h2>
+<ul>
+  <li><b>Picture rate:</b> about 25 frames per second, measured on a Mac with the X18RS. The connection on Windows has not been measured with a real radio yet.</li>
+  <li>Tested on real hardware only with the <b>X18RS</b>, Ethos 26.2.0, on a Mac. Other radios and the connection on
+      Windows are not yet tested with a real radio.</li>
+  <li>The programs are not signed (see chapter 3).</li>
+  <li>While Lua-Studio is connected, no other program (e.g. the FrSky Suite) can use the serial connection.</li>
+</ul>
+
+<h2>8. Troubleshooting</h2>
+<table>
+  <tr><th>Message or problem</th><th>What to do</th></tr>
+  <tr><td>“No radio found”</td><td>The radio's USB mode must be <b>Serial</b>. Try another cable (some only charge). Then <b>Search again</b>.</td></tr>
+  <tr><td>“Remote control was not allowed on the radio (time out)”</td><td>The prompt did not appear or was not confirmed. <b>Connect</b> again and confirm on the radio right away.</td></tr>
+  <tr><td>“Please allow remote control on the radio”, but no prompt appears on the radio</td><td>Wrong port selected or the radio is not in serial mode. <b>Disconnect</b>, plug the radio in again in <b>Serial</b> mode, choose the entry marked ●.</td></tr>
+  <tr><td>“Remote control was refused on the radio”</td><td>Connect again and allow it on the radio.</td></tr>
+  <tr><td>“Cannot open the port …”</td><td>Another program uses the radio (FrSky Suite, a second Lua-Studio). Close it, unplug and replug the radio.</td></tr>
+  <tr><td>“Connection lost”</td><td>Cable pulled or radio switched off. Plug in again, choose Serial, Connect.</td></tr>
+  <tr><td>Picture does not change</td><td>Disconnect and connect again.</td></tr>
+  <tr><td>Mac: program does not start</td><td>See chapter 3 (Open Anyway). Copy the app from the DMG into Applications first.</td></tr>
+</table>
+<h2>9. Reporting a problem (from 0.3.3)</h2>
+<p>Lua-Studio keeps an <b>error log</b> of what happens: start (version, operating system), connecting and disconnecting,
+loading models, every step of a transfer, the radio quick test, blocks by the size guard and <b>every error</b> with the
+place in the program. That way a crash can be found afterwards.</p>
+<ol>
+  <li>When something goes wrong: keep Lua-Studio open (or start it again) and, if possible, <b>keep the radio connected</b>.</li>
+  <li>Top right: <b>Help ▾ → Error log …</b> (on the Mac also in the menu bar under “Help”).</li>
+  <li>Choose <b>Save for support (ZIP) …</b>. Suggested: desktop, name “Lua-Studio Fehlerprotokoll &lt;date&gt;.zip”.</li>
+  <li>Send the ZIP file by mail or messenger, with a short note: what you did and what happened.</li>
+</ol>
+<p><b>What the ZIP contains:</b> the log (<code>lua-studio.log</code>, <code>lua-studio-alt.log</code>), <code>system.txt</code>
+(versions of Lua-Studio, operating system, radio). With a connected radio also the last 400 lines of the radio's Lua log
+and the info files of the Luas (<code>*.info.json</code>). <b>Not</b> included: studio projects, model files, serial numbers.
+The user folder is replaced by <code>~</code> everywhere. <b>But:</b> the info files list the models on the radio with model name, model location (including folder name) and sensor list (name, AppID, physical ID). This is needed to match the entries; if you do not want to pass it on, look at the ZIP first.</p>
+<p><b>Levels:</b> <i>normal</i> (default) records the events and all errors. <i>verbose</i> also records every command sent to
+the radio (shortened) and the radio's whole Lua log; only switch it on when asked to, then trigger the problem again.
+<i>off</i> records nothing, not even errors.</p>
+<p><b>Location:</b> Mac <code>~/Library/Application Support/Lua-Studio/Protokoll</code>, Windows
+<code>%APPDATA%\Lua-Studio\Protokoll</code> (button <b>Open folder</b>). At most two files of 1 MB each; when the current one is
+full it becomes the old one and the previous old one is dropped. <b>Delete</b> empties the log.</p>
+<p>With a GitHub account you can also report it as an issue with the <b>Fehler / Bug</b> template and attach the ZIP.</p>
+</body>
+</html>

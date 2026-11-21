@@ -1,0 +1,136 @@
+# Lua-Studio
+
+🇬🇧 [English](README.md) · 🇩🇪 Deutsch · Dokumentation: [Wiki (Deutsch)](wiki/Home.md#deutsch)
+
+> **Vorabversion / öffentliche Beta.** Am echten Sender nur an der X18RS getestet. Nutzung auf eigene Verantwortung.
+
+Programm für Mac und Windows zu unseren Ethos-Luas (Heli RF, Elektro, Segler, Motoren). Grundsatz: **Der PC denkt, die Funke zeigt an.**
+
+**Funke live:** Das Display deiner FrSky-Funke erscheint am Computer, und du bedienst die Funke mit Maus und Tastatur
+über USB im Serialmodus. **Modelle** (ab 0.2.0): je Modell Kästchen, Grenzwerte und Einstellungen der Luas am PC
+einstellen und auf die Funke übertragen. Später: Flüge auswerten.
+
+![Lua-Studio mit dem Display der Funke](docs/bilder/Funke%20live.png)
+
+*Bild aus dem Ethos-Simulator.*
+
+## Für welche Sender
+
+| Sender | Stand |
+|---|---|
+| X18RS, Ethos 26.2.0, am Mac | am echten Sender getestet |
+| andere Ethos-Sender ab 26.2 mit Farbdisplay | nicht getestet, sollte gleich funktionieren (gleiches Protokoll) |
+| Verbindung unter Windows | Programm startet und läuft, Verbindung mit echter Funke noch nicht getestet |
+| Ablehnen der Fernsteuerung am Sender | nur mit nachgespielter Funke getestet |
+
+## Schnellstart
+
+1. Datei aus dem neusten Release laden: `…-mac-arm64.dmg` (Mac mit Apple-Chip), `…-mac-x64.dmg` (Mac mit Intel) oder `…-win-x64.exe` (Windows).
+2. Installieren bzw. starten. Die Programme sind nicht signiert: Mac «Trotzdem öffnen», Windows «Trotzdem ausführen» (Anleitung Kapitel 3).
+3. Funke einschalten, per USB anstecken, auf der Funke **Serial** wählen.
+4. Im Studio die Funke (●) wählen und **Verbinden** klicken.
+5. Auf der Funke die Fernsteuerung **erlauben**. Das Display erscheint im Studio.
+
+**Anleitung:** [Deutsch (PDF)](docs/Lua-Studio%20-%20Anleitung.pdf) · [English (PDF)](docs/Lua-Studio%20-%20Manual.pdf) ·
+**Testen:** [TESTLEITFADEN.md](TESTLEITFADEN.md) · **Fehler melden:** in der App Hilfe › Fehlerprotokoll › «Für Support speichern (ZIP)», die ZIP schicken oder an ein Issue › Fehler / Bug hängen
+
+## Bedienung kurz
+
+| Am PC | Auf der Funke |
+|---|---|
+| Klick | tippen |
+| Rechtsklick oder lange halten | lange tippen |
+| Ziehen | wischen |
+| Mausrad, ↑ / ↓ | Drehrad |
+| Enter · Esc · Tab | ENTER · RTN · PAGE |
+| F1 · F2 · F3 | SYS · MDL · DISP |
+| Umschalt + Taste | lange drücken |
+
+Dazu: Knöpfe für alle Tasten, Textfeld für die Bildschirmtastatur, Bildschirmfoto als PNG, Lua-Log der Funke, Deutsch/Englisch.
+
+## Modelle einstellen (ab 0.2.0)
+
+Im Reiter **Modelle** stellst du je Modell ein, was das Lua zeigt: Kästchen frei anordnen (Zahl, Ring, Balken, Kurve,
+Status), Beschriftung, Bereich, Farben und Farbstufen, Grenzwerte und Einstellungen, Vorlagen. **Auf die Funke übertragen**
+prüft die Datei, sichert die alte, schreibt, liest zurück und vergleicht. Das braucht ein Lua mit Studio-Unterstützung
+(Lua-Studio-Format v1). Siehe Anleitung Kapitel 6.
+
+**Ab 0.3.0** (Lua-Studio-Format 2):
+- Symbole je Kästchen, fette Einheit, Schmuck (Symbole, Texte, Linien, Rahmen);
+- Presets der Luas;
+- ein Grössenwächter mit Ampel;
+- **ohne Funke vorbereiten**: Modell anlegen, gestalten und als Datei auf SD-Karte oder in einen Ordner exportieren.
+
+Symbole und Schmuck braucht ein Lua, das Format 2 kann. Für ältere Luas schreibt das Studio Format 1 ohne sie.
+
+## Bekannte Grenzen
+
+- **Bildtempo:** Am Mac mit der X18RS gemessen rund 25 Bilder pro Sekunde (Antwort der Funke etwa 5–20 ms). Unter Windows ist die Verbindung mit echter Funke noch nicht gemessen.
+- Am echten Sender getestet ist nur die X18RS am Mac. Siehe Tabelle oben.
+- Die Programme sind nicht signiert (keine Zertifikate von Apple und Microsoft).
+- «Modelle» schreibt nur in den Ordner `scripts/studio` der Funke (alte Dateien werden am PC gesichert) und braucht ein Lua mit Studio-Unterstützung. An der echten X18RS getestet mit Elektro 0.3.0 (Mac); die anderen Luas bisher nur im Simulator.
+
+## Unterstützte Luas
+
+| Lua | Studio-Unterstützung |
+|---|---|
+| [Elektro](https://github.com/Raffi1202/elektro-lua) 0.5.0 | format 2, «auch bei Motor aus» |
+| [Heli RF](https://github.com/Raffi1202/heli-lua) 1.12.0 | format 2, «auch bei Motor aus» |
+| [Jet](https://github.com/Raffi1202/jet-lua) 0.4.0 | format 2, «auch bei Motor aus» |
+| [Segler](https://github.com/Raffi1202/segler-lua) 0.3.0 | format 1 |
+| [Motoren ECU / Vergaser](https://github.com/Raffi1202/motoren-lua) 1.8.0 / 0.8.0 | format 1 |
+
+## Lizenz
+
+GPL-3.0-or-later, siehe [LICENSE](LICENSE). Symbole teils nach Tabler Icons (MIT, © Paweł Kuna), Liste in [src/symbole/HERKUNFT.md](src/symbole/HERKUNFT.md).
+
+## Weitere Projekte
+
+| Projekt | Wozu |
+|---|---|
+| [Elektro](https://github.com/Raffi1202/elektro-lua) | Ethos-Widget für Elektromodelle |
+| [Heli RF](https://github.com/Raffi1202/heli-lua) | Ethos-Widget für Rotorflight-Helis |
+| [Jet](https://github.com/Raffi1202/jet-lua) | Ethos-Widget für Turbinen (mehrere ECU-Hersteller) |
+| [Segler](https://github.com/Raffi1202/segler-lua) | Ethos-Widget für Segler (Vario, Thermik) |
+| [Motoren ECU / Vergaser](https://github.com/Raffi1202/motoren-lua) | Ethos-Widgets für Verbrennungsmotoren |
+| [Telemetrie-Simulator](https://github.com/Raffi1202/telemetrie-simulator) | ESP32-S3 simuliert FrSky-Telemetriesensoren |
+| [Ethos-Modell-Konverter](https://github.com/Raffi1202/ethos-modell-konverter) | Modelle zwischen Ethos-Funken umziehen |
+| [Ethos-Sensor-IDs](https://github.com/Raffi1202/ethos-sensor-ids) | Welchen Sensor Ethos je AppID anlegt |
+
+## Entwickeln
+
+```
+npm install
+npm start                     # Studio starten (ist ELECTRON_RUN_AS_NODE gesetzt: env -u ELECTRON_RUN_AS_NODE npm start)
+npm test                      # Tests; Abgleich gegen radio_remote.py, wenn ETHOS_TOOLS_DIR auf das ethos-tools plugin zeigt
+LUA_STUDIO_FORMAT=<Ordner> npm test   # zusätzlich Abgleich mit der Lua-Referenz des Formats (Ordner mit der Referenz und den Testdateien)
+npm run test:simulator        # Ablauftest gegen einen eigenen Ethos-Simulator (Port 8981, ETHOS_TOOLS_DIR)
+npm run bauen:mac             # Mac-App (.dmg) nach ~/Library/Caches/lua-studio-bau (nicht im iCloud-Desktop: Signatur)
+npm run bauen:win             # Windows-EXE (portable) nach dist/
+npm run anleitung             # Anleitung DE/EN als PDF aus docs/anleitung/*.html
+```
+
+Ohne Funke verbindet sich das Studio mit einem Ethos-Simulator («Ethos-Simulator (Test)», Port 8981). Diesen Eintrag
+zeigt nur das aus dem Quelltext gestartete Studio oder eines mit Umgebungsvariable `LUA_STUDIO_ENTWICKLER=1`.
+Dazu muss ein Simulator auf diesem Port laufen, z. B. mit `node test/simulator-ablauf.js --offen`. Der Test-Kanal
+spielt dabei die Funke-Seite des Protokolls, damit derselbe Weg wie an der echten Funke geprüft wird.
+
+GitHub Actions (`.github/workflows/bauen.yml`) baut bei jedem Tag `v*` die Windows-EXE und die Mac-DMGs und hängt sie
+an den Release. Die Mac-App wird nach dem Setzen der Electron-Fuses ad hoc signiert (`bau/adhoc-signieren.js`).
+
+## Aufbau
+
+| Datei | Inhalt |
+|---|---|
+| `src/geraet/rahmen.js` | Rahmen, CRC-16, Befehle des Ethos-Fernsteuerprotokolls (Protokoll 11) |
+| `src/geraet/bild.js` | Bildschirm: Kacheln und QOI → RGB565 → RGBA |
+| `src/geraet/funke.js` | Client: Verbinden mit Freigabe, Bildschirm, Tasten, Tippen, Wischen, Drehrad, Text, Log |
+| `src/geraet/kanal-seriell.js` | USB-Serial (Paket `serialport`), Suche nach Ethos-Funken (USB 0483:5750) |
+| `src/geraet/kanal-simulator.js` | Test-Kanal zum Ethos-Simulator (`run_wasm.js --serve`) |
+| `src/main/` | Electron-Hauptprozess und Brücke zur Oberfläche |
+| `src/oberflaeche/` | Fenster «Funke live» |
+| `src/sprachen/` | Texte Deutsch und Englisch |
+| `docs/` | Anleitung (HTML und PDF, DE/EN), Bilder |
+
+Das Protokoll ist nach `radio_remote.py` aus dem Ethos-Plugin von FrSky nachgebaut (gleiche Befehle und Rahmen).
+In dieses Repo kommen keine Modelle und keine Daten von der Funke.

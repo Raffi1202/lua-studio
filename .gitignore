@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+._*
+
+# Pakete und Bauergebnisse
+node_modules/
+dist/
+
+# Bildschirmfotos und Testausgaben (Bilder der Doku ausgenommen)
+test/ausgabe/
+*.png
+!docs/bilder/*.png
+
+# Übergabedatei: nur lokal, nie auf GitHub (User 20.11.2026)
+STAND.md

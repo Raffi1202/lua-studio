@@ -1,0 +1,14 @@
+🇬🇧 [English](../en/Layout.md) · 🇩🇪 [Deutsch](../de/Anordnung.md)
+
+# Layout & auto arrange
+
+- **View** selects the window size (e.g. 784 × 316 compact or 800 × 480 full screen). The size the Lua last ran in on the radio is marked with **●** and «last shown on the radio» and is preselected when you open a model. Only changes in this view show up on the radio right away.
+- Drag a box to move it, the bottom right corner resizes it. **Add box** and **Remove box** (or the Delete key). At most 16 boxes per view.
+- On the right for the selected box: value (Lua values, own sensors, channels), display (number, ring/gauge, bar horizontal/vertical, curve, status text), label, range, colours for normal/warning/alarm/background, up to 3 colour steps (colour only) and extra line (minimum, maximum, average).
+- A **red** frame marks a box that is outside the edge, too small, overlaps another or lies on an area the Lua draws itself (grey hatched, e.g. the status bar). The radio discards boxes that are too small or outside the edge; overlapping ones end up underneath.
+- At the top right you see how much space the settings need (entries, at most 1100).
+- The studio draws the preview itself. It shows position, size and type; fonts and details only show on the radio (check with «Radio live» afterwards).
+- **Arrange automatically** (from 0.4.0): one click makes all gaps between the boxes and to the edge equal and fills the area. What is beside and below what stays. Next to it the mode: **Equal width per row** (default: side by side equally wide, rows keep their height ratio), **Keep proportions** (everything stretched in the old proportions), **Distribute only** (sizes stay, every gap is exactly the gap setting, the remaining space is shared evenly at the edges; if the boxes are closer, the studio uses the largest gap that fits) and **New grid** (all boxes in reading order in an even grid, for badly scattered layouts). **Gap**: default 8 px in full screen, 5 px in the compact view, selectable 4–10 px. Areas the Lua draws itself stay free; the column with such an area keeps its width. If a box would become too small or the boxes interlock, the studio changes nothing and says why. **Undo** takes the arrangement back. Decorations stay where they are. From 0.4.1, with «New grid» the boxes of the last row fill the free space of that row, also next to an area of the Lua such as «Flights».
+
+---
+[← Home](../Home.md) | [Previous](Prepare-without-radio.md) | [Next →](Limits.md)

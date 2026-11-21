@@ -1,0 +1,41 @@
+{
+  "name": "lua-studio",
+  "productName": "Lua-Studio",
+  "version": "0.4.2",
+  "description": "PC app (Mac/Windows) for FrSky Ethos Lua widgets: radio live over USB, set up layout, limits and symbols per model",
+  "main": "src/main/main.js",
+  "private": true,
+  "author": "Raffi1202",
+  "license": "GPL-3.0-or-later",
+  "homepage": "https://github.com/Raffi1202/lua-studio",
+  "repository": { "type": "git", "url": "https://github.com/Raffi1202/lua-studio.git" },
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.js",
+    "test:format": "node --test test/format.test.js",
+    "test:simulator": "node test/simulator-ablauf.js",
+    "bauen:mac": "electron-builder --mac -c.directories.output=$HOME/Library/Caches/lua-studio-bau",
+    "bauen:win": "electron-builder --win",
+    "anleitung": "electron bau/anleitung-pdf.js",
+    "beschreibungen": "node bau/beschreibungen-holen.js"
+  },
+  "dependencies": {
+    "serialport": "13.0.0"
+  },
+  "devDependencies": {
+    "electron": "45.2.3",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "io.github.raffi1202.lua-studio",
+    "productName": "Lua-Studio",
+    "copyright": "© 2026 Raffi1202",
+    "electronFuses": { "runAsNode": false, "enableNodeCliInspectArguments": false },
+    "artifactName": "Lua-Studio-${version}-${os}-${arch}.${ext}",
+    "files": ["src/**/*", "package.json"],
+    "afterSign": "bau/adhoc-signieren.js",
+    "directories": { "output": "dist" },
+    "mac": { "target": [{ "target": "dmg", "arch": ["arm64", "x64"] }], "category": "public.app-category.utilities", "identity": null },
+    "win": { "target": [{ "target": "portable", "arch": ["x64"] }] }
+  }
+}

@@ -1,0 +1,1630 @@
+{
+  "lua": "jet",
+  "luaVersion": "0.4.0",
+  "formate": [
+    1,
+    2
+  ],
+  "beiMotorAus": true,
+  "hinweis": {
+    "de": "Jet zeichnet oben die Kopfleiste selbst (Modellname, Laufzeit, Turbine, Schalter, Empfang). Im Vollbild ersetzt die Ansicht nur Seite 1. Grenzwerte gelten je Wert, auch wenn er auf keinem Platz steht. Abschaltung und Turbinen-Ansagen sind fest.",
+    "en": "Jet draws the top bar itself (model name, run time, turbine, switches, signal). In full screen the view replaces page 1 only. Limits apply per value, even if it is on no field. Shutdown and turbine announcements are fixed."
+  },
+  "reserviert": [
+    {
+      "breite": 800,
+      "hoehe": 480,
+      "x": 0,
+      "y": 0,
+      "b": 800,
+      "h": 56,
+      "name": {
+        "de": "Kopfzeile",
+        "en": "Top bar"
+      }
+    },
+    {
+      "breite": 784,
+      "hoehe": 316,
+      "x": 0,
+      "y": 0,
+      "b": 784,
+      "h": 33,
+      "name": {
+        "de": "Leiste",
+        "en": "Bar"
+      }
+    },
+    {
+      "breite": 800,
+      "hoehe": 480,
+      "x": 8,
+      "y": 432,
+      "b": 232,
+      "h": 40,
+      "name": {
+        "de": "Läufe, öffnet die Flugliste",
+        "en": "Runs, opens the run list"
+      }
+    }
+  ],
+  "werte": [
+    {
+      "s": "drehzahl",
+      "name": {
+        "de": "Drehzahl",
+        "en": "RPM"
+      },
+      "einheit": "U/min",
+      "stellen": 0,
+      "min": 0,
+      "max": 300000,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ]
+    },
+    {
+      "s": "egt",
+      "name": {
+        "de": "EGT",
+        "en": "EGT"
+      },
+      "einheit": "°C",
+      "stellen": 0,
+      "min": 0,
+      "max": 1200,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ],
+      "grenzeRichtung": "ueber",
+      "ansage": true
+    },
+    {
+      "s": "kraftstoff_proz",
+      "name": {
+        "de": "Kraftstoff %",
+        "en": "Fuel %"
+      },
+      "einheit": "%",
+      "stellen": 0,
+      "min": 0,
+      "max": 100,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ],
+      "grenzeRichtung": "unter",
+      "ansage": true
+    },
+    {
+      "s": "ecu_akku",
+      "name": {
+        "de": "ECU-Akku",
+        "en": "ECU battery"
+      },
+      "einheit": "V",
+      "stellen": 1,
+      "min": 0,
+      "max": 30,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ],
+      "grenzeRichtung": "unter",
+      "ansage": true
+    },
+    {
+      "s": "fluss",
+      "name": {
+        "de": "Kraftstofffluss",
+        "en": "Fuel flow"
+      },
+      "einheit": "ml/min",
+      "stellen": 0,
+      "min": 0,
+      "max": 5000,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ]
+    },
+    {
+      "s": "pumpe",
+      "name": {
+        "de": "Pumpe",
+        "en": "Pump"
+      },
+      "einheit": "V",
+      "stellen": 2,
+      "min": 0,
+      "max": 10,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ]
+    },
+    {
+      "s": "schub",
+      "name": {
+        "de": "Schub",
+        "en": "Thrust"
+      },
+      "einheit": "N",
+      "stellen": 0,
+      "min": 0,
+      "max": 2000,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ]
+    },
+    {
+      "s": "hoehe",
+      "name": {
+        "de": "Höhe",
+        "en": "Altitude"
+      },
+      "einheit": "m",
+      "stellen": 0,
+      "min": 0,
+      "max": 2000,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ],
+      "grenzeRichtung": "ueber",
+      "ansage": true
+    },
+    {
+      "s": "speed",
+      "name": {
+        "de": "Speed",
+        "en": "Speed"
+      },
+      "einheit": "km/h",
+      "stellen": 0,
+      "min": 0,
+      "max": 600,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ],
+      "grenzeRichtung": "ueber",
+      "ansage": true
+    },
+    {
+      "s": "empfang",
+      "name": {
+        "de": "Empfang",
+        "en": "Signal"
+      },
+      "einheit": "dB",
+      "stellen": 0,
+      "min": 0,
+      "max": 100,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ],
+      "grenzeRichtung": "unter",
+      "ansage": true
+    },
+    {
+      "s": "gas_proz",
+      "name": {
+        "de": "Gas %",
+        "en": "Throttle %"
+      },
+      "einheit": "%",
+      "stellen": 0,
+      "min": 0,
+      "max": 100,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ]
+    },
+    {
+      "s": "welle",
+      "name": {
+        "de": "Welle",
+        "en": "Shaft RPM"
+      },
+      "einheit": "U/min",
+      "stellen": 0,
+      "min": 0,
+      "max": 300000,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ]
+    },
+    {
+      "s": "ecu_strom",
+      "name": {
+        "de": "ECU-Strom",
+        "en": "ECU current"
+      },
+      "einheit": "A",
+      "stellen": 1,
+      "min": 0,
+      "max": 50,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ]
+    },
+    {
+      "s": "laufzeit",
+      "name": {
+        "de": "Laufzeit",
+        "en": "Run time"
+      },
+      "einheit": "s",
+      "stellen": 0,
+      "min": 0,
+      "max": 7200,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ],
+      "zeit": true
+    },
+    {
+      "s": "kraftstoff_ml",
+      "name": {
+        "de": "Kraftstoff ml",
+        "en": "Fuel ml"
+      },
+      "einheit": "ml",
+      "stellen": 0,
+      "min": 0,
+      "max": 50000,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ]
+    },
+    {
+      "s": "rx_akku",
+      "name": {
+        "de": "Empfängerakku",
+        "en": "Receiver battery"
+      },
+      "einheit": "V",
+      "stellen": 1,
+      "min": 0,
+      "max": 20,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ],
+      "grenzeRichtung": "unter",
+      "ansage": true
+    },
+    {
+      "s": "status",
+      "name": {
+        "de": "Status",
+        "en": "Status"
+      },
+      "darstellungen": [
+        "status"
+      ],
+      "zustaende": [
+        {
+          "wert": 1,
+          "de": "aus",
+          "en": "off",
+          "farbe": [
+            150,
+            164,
+            190
+          ]
+        },
+        {
+          "wert": 2,
+          "de": "Start",
+          "en": "start",
+          "farbe": [
+            64,
+            150,
+            240
+          ]
+        },
+        {
+          "wert": 3,
+          "de": "läuft",
+          "en": "running",
+          "farbe": [
+            64,
+            220,
+            110
+          ]
+        },
+        {
+          "wert": 4,
+          "de": "Fehler",
+          "en": "fault",
+          "farbe": [
+            239,
+            60,
+            60
+          ]
+        }
+      ],
+      "immerAlarm": true
+    },
+    {
+      "s": "laeufe",
+      "name": {
+        "de": "Läufe",
+        "en": "Runs"
+      },
+      "einheit": "",
+      "stellen": 0,
+      "min": 0,
+      "max": 100,
+      "darstellungen": [
+        "zahl",
+        "ring",
+        "balken_w",
+        "balken_s",
+        "kurve"
+      ],
+      "hinweis": {
+        "de": "Antippen öffnet die Flugliste.",
+        "en": "Tap to open the run list."
+      }
+    }
+  ],
+  "einstellungen": [
+    {
+      "s": "hersteller",
+      "art": "w",
+      "name": {
+        "de": "Hersteller",
+        "en": "Manufacturer"
+      },
+      "werk": 0,
+      "auswahl": [
+        {
+          "wert": 0,
+          "name": {
+            "de": "automatisch",
+            "en": "automatic"
+          }
+        },
+        {
+          "wert": 1,
+          "name": {
+            "de": "JetCat",
+            "en": "JetCat"
+          }
+        },
+        {
+          "wert": 2,
+          "name": {
+            "de": "Xicoy",
+            "en": "Xicoy"
+          }
+        },
+        {
+          "wert": 3,
+          "name": {
+            "de": "SportECU",
+            "en": "SportECU"
+          }
+        },
+        {
+          "wert": 4,
+          "name": {
+            "de": "VSpeak-Converter",
+            "en": "VSpeak converter"
+          }
+        },
+        {
+          "wert": 5,
+          "name": {
+            "de": "von Hand",
+            "en": "manual"
+          }
+        }
+      ]
+    },
+    {
+      "s": "vs_ecu",
+      "art": "w",
+      "name": {
+        "de": "ECU am VSpeak",
+        "en": "ECU at VSpeak"
+      },
+      "werk": 0,
+      "auswahl": [
+        {
+          "wert": 0,
+          "name": {
+            "de": "nicht gewählt",
+            "en": "not selected"
+          }
+        },
+        {
+          "wert": 1,
+          "name": {
+            "de": "Kingtech",
+            "en": "Kingtech"
+          }
+        },
+        {
+          "wert": 2,
+          "name": {
+            "de": "Swiwin",
+            "en": "Swiwin"
+          }
+        },
+        {
+          "wert": 3,
+          "name": {
+            "de": "PBS",
+            "en": "PBS"
+          }
+        },
+        {
+          "wert": 4,
+          "name": {
+            "de": "evoJet",
+            "en": "evoJet"
+          }
+        },
+        {
+          "wert": 5,
+          "name": {
+            "de": "Hornet/Behotec",
+            "en": "Hornet/Behotec"
+          }
+        },
+        {
+          "wert": 6,
+          "name": {
+            "de": "Jakadofsky",
+            "en": "Jakadofsky"
+          }
+        },
+        {
+          "wert": 7,
+          "name": {
+            "de": "JetCat",
+            "en": "JetCat"
+          }
+        }
+      ]
+    },
+    {
+      "s": "kraft_art",
+      "art": "w",
+      "name": {
+        "de": "Kraftstoff ml ist",
+        "en": "Fuel ml is"
+      },
+      "werk": 0,
+      "auswahl": [
+        {
+          "wert": 0,
+          "name": {
+            "de": "nach Hersteller",
+            "en": "by manufacturer"
+          }
+        },
+        {
+          "wert": 1,
+          "name": {
+            "de": "Rest im Tank",
+            "en": "remaining"
+          }
+        },
+        {
+          "wert": 2,
+          "name": {
+            "de": "verbraucht",
+            "en": "used"
+          }
+        }
+      ]
+    },
+    {
+      "s": "rpm_faktor",
+      "art": "w",
+      "name": {
+        "de": "Drehzahl mal",
+        "en": "RPM times"
+      },
+      "werk": 1,
+      "auswahl": [
+        {
+          "wert": 1,
+          "name": {
+            "de": "1",
+            "en": "1"
+          }
+        },
+        {
+          "wert": 10,
+          "name": {
+            "de": "10",
+            "en": "10"
+          }
+        },
+        {
+          "wert": 100,
+          "name": {
+            "de": "100",
+            "en": "100"
+          }
+        }
+      ]
+    },
+    {
+      "s": "sport_hornet",
+      "art": "b",
+      "name": {
+        "de": "SportECU: Hornet-Texte",
+        "en": "SportECU: Hornet texts"
+      },
+      "werk": false
+    },
+    {
+      "s": "tank",
+      "art": "z",
+      "name": {
+        "de": "Tankgrösse",
+        "en": "Tank size"
+      },
+      "werk": 0,
+      "min": 0,
+      "max": 50000,
+      "stellen": 0,
+      "einheit": "ml"
+    },
+    {
+      "s": "ecu_art",
+      "art": "w",
+      "name": {
+        "de": "ECU-Akkuart",
+        "en": "ECU battery type"
+      },
+      "werk": 1,
+      "auswahl": [
+        {
+          "wert": 1,
+          "name": {
+            "de": "LiPo",
+            "en": "LiPo"
+          }
+        },
+        {
+          "wert": 2,
+          "name": {
+            "de": "LiFe",
+            "en": "LiFe"
+          }
+        },
+        {
+          "wert": 3,
+          "name": {
+            "de": "Li-Ion",
+            "en": "Li-Ion"
+          }
+        },
+        {
+          "wert": 4,
+          "name": {
+            "de": "NiMH",
+            "en": "NiMH"
+          }
+        }
+      ]
+    },
+    {
+      "s": "ecu_zellen",
+      "art": "z",
+      "name": {
+        "de": "ECU-Akku Zellen",
+        "en": "ECU battery cells"
+      },
+      "werk": 2,
+      "min": 1,
+      "max": 6,
+      "stellen": 0,
+      "einheit": "S"
+    },
+    {
+      "s": "leerlauf",
+      "art": "z",
+      "name": {
+        "de": "Leerlauf ab",
+        "en": "Idle from"
+      },
+      "werk": 10000,
+      "min": 500,
+      "max": 200000,
+      "stellen": 0,
+      "einheit": "U/min"
+    },
+    {
+      "s": "flug_min",
+      "art": "z",
+      "name": {
+        "de": "Lauf zählt ab",
+        "en": "Run counts from"
+      },
+      "werk": 30,
+      "min": 0,
+      "max": 600,
+      "stellen": 0,
+      "einheit": "s"
+    },
+    {
+      "s": "sw1_name",
+      "art": "t",
+      "name": {
+        "de": "Schalter 1 Name",
+        "en": "Switch 1 name"
+      },
+      "werk": "STABI"
+    },
+    {
+      "s": "sw2_name",
+      "art": "t",
+      "name": {
+        "de": "Schalter 2 Name",
+        "en": "Switch 2 name"
+      },
+      "werk": "FAHRWERK"
+    },
+    {
+      "s": "ansage",
+      "art": "b",
+      "name": {
+        "de": "Alarme ansagen",
+        "en": "Announce alarms"
+      },
+      "werk": true
+    },
+    {
+      "s": "warn_ansage",
+      "art": "b",
+      "name": {
+        "de": "Warnung auch ansagen",
+        "en": "Announce warnings too"
+      },
+      "werk": false
+    },
+    {
+      "s": "wdh",
+      "art": "z",
+      "name": {
+        "de": "Alarm wiederholen alle",
+        "en": "Repeat alarm every"
+      },
+      "werk": 10,
+      "min": 3,
+      "max": 300,
+      "stellen": 0,
+      "einheit": "s"
+    },
+    {
+      "s": "kraft_stufen",
+      "art": "b",
+      "name": {
+        "de": "Kraftstoff in Stufen",
+        "en": "Fuel in steps"
+      },
+      "werk": true
+    },
+    {
+      "s": "lauf_ans",
+      "art": "b",
+      "name": {
+        "de": "«Turbine läuft/aus»",
+        "en": "«Turbine running/off»"
+      },
+      "werk": true
+    },
+    {
+      "s": "sg_kraft",
+      "art": "b",
+      "name": {
+        "de": "Ansage: Kraftstoff",
+        "en": "Announce: fuel"
+      },
+      "werk": true
+    },
+    {
+      "s": "sg_zeit",
+      "art": "b",
+      "name": {
+        "de": "Ansage: Laufzeit",
+        "en": "Announce: run time"
+      },
+      "werk": true
+    },
+    {
+      "s": "sg_hoehe",
+      "art": "b",
+      "name": {
+        "de": "Ansage: Höhe",
+        "en": "Announce: altitude"
+      },
+      "werk": false
+    },
+    {
+      "s": "ton",
+      "art": "b",
+      "name": {
+        "de": "Ton bei Alarm",
+        "en": "Tone on alarm"
+      },
+      "werk": true
+    },
+    {
+      "s": "vibration",
+      "art": "b",
+      "name": {
+        "de": "Vibration bei Alarm",
+        "en": "Vibration on alarm"
+      },
+      "werk": false
+    },
+    {
+      "s": "sprache",
+      "art": "w",
+      "name": {
+        "de": "Sprache / Language",
+        "en": "Sprache / Language"
+      },
+      "werk": 0,
+      "auswahl": [
+        {
+          "wert": 0,
+          "name": {
+            "de": "wie der Sender",
+            "en": "as the radio"
+          }
+        },
+        {
+          "wert": 1,
+          "name": {
+            "de": "Deutsch",
+            "en": "Deutsch"
+          }
+        },
+        {
+          "wert": 2,
+          "name": {
+            "de": "English",
+            "en": "English"
+          }
+        }
+      ]
+    }
+  ],
+  "standard": {
+    "ansichten": [
+      {
+        "breite": 784,
+        "hoehe": 316,
+        "plaetze": [
+          {
+            "x": 5,
+            "y": 38,
+            "b": 189,
+            "h": 144,
+            "w": "lua:drehzahl",
+            "darstellung": "ring",
+            "min": 0,
+            "max": 130000,
+            "zusatz": "max"
+          },
+          {
+            "x": 199,
+            "y": 38,
+            "b": 189,
+            "h": 144,
+            "w": "lua:egt",
+            "darstellung": "ring",
+            "min": 350,
+            "max": 800,
+            "zusatz": "max"
+          },
+          {
+            "x": 394,
+            "y": 38,
+            "b": 189,
+            "h": 144,
+            "w": "lua:kraftstoff_proz",
+            "darstellung": "ring",
+            "min": 0,
+            "max": 100,
+            "zusatz": "keine"
+          },
+          {
+            "x": 589,
+            "y": 38,
+            "b": 189,
+            "h": 144,
+            "w": "lua:ecu_akku",
+            "darstellung": "ring",
+            "min": 6.6,
+            "max": 8.4,
+            "zusatz": "keine"
+          },
+          {
+            "x": 5,
+            "y": 187,
+            "b": 189,
+            "h": 59,
+            "w": "lua:status",
+            "darstellung": "status"
+          },
+          {
+            "x": 199,
+            "y": 187,
+            "b": 189,
+            "h": 59,
+            "w": "lua:fluss",
+            "darstellung": "zahl"
+          },
+          {
+            "x": 394,
+            "y": 187,
+            "b": 189,
+            "h": 59,
+            "w": "lua:pumpe",
+            "darstellung": "zahl"
+          },
+          {
+            "x": 589,
+            "y": 187,
+            "b": 189,
+            "h": 59,
+            "w": "lua:schub",
+            "darstellung": "zahl"
+          },
+          {
+            "x": 5,
+            "y": 251,
+            "b": 189,
+            "h": 59,
+            "w": "lua:hoehe",
+            "darstellung": "zahl"
+          },
+          {
+            "x": 199,
+            "y": 251,
+            "b": 189,
+            "h": 59,
+            "w": "lua:speed",
+            "darstellung": "zahl"
+          },
+          {
+            "x": 394,
+            "y": 251,
+            "b": 189,
+            "h": 59,
+            "w": "lua:empfang",
+            "darstellung": "zahl"
+          },
+          {
+            "x": 589,
+            "y": 251,
+            "b": 189,
+            "h": 59,
+            "w": "lua:laeufe",
+            "darstellung": "zahl"
+          }
+        ]
+      },
+      {
+        "breite": 800,
+        "hoehe": 480,
+        "plaetze": [
+          {
+            "x": 8,
+            "y": 64,
+            "b": 190,
+            "h": 198,
+            "w": "lua:drehzahl",
+            "darstellung": "ring",
+            "min": 0,
+            "max": 130000,
+            "zusatz": "max"
+          },
+          {
+            "x": 206,
+            "y": 64,
+            "b": 190,
+            "h": 198,
+            "w": "lua:egt",
+            "darstellung": "ring",
+            "min": 350,
+            "max": 800,
+            "zusatz": "max"
+          },
+          {
+            "x": 404,
+            "y": 64,
+            "b": 190,
+            "h": 198,
+            "w": "lua:kraftstoff_proz",
+            "darstellung": "ring",
+            "min": 0,
+            "max": 100,
+            "zusatz": "keine"
+          },
+          {
+            "x": 602,
+            "y": 64,
+            "b": 190,
+            "h": 198,
+            "w": "lua:ecu_akku",
+            "darstellung": "ring",
+            "min": 6.6,
+            "max": 8.4,
+            "zusatz": "keine"
+          },
+          {
+            "x": 8,
+            "y": 270,
+            "b": 232,
+            "h": 154,
+            "w": "lua:status",
+            "darstellung": "status"
+          },
+          {
+            "x": 248,
+            "y": 270,
+            "b": 176,
+            "h": 97,
+            "w": "lua:fluss",
+            "darstellung": "zahl"
+          },
+          {
+            "x": 432,
+            "y": 270,
+            "b": 176,
+            "h": 97,
+            "w": "lua:pumpe",
+            "darstellung": "zahl"
+          },
+          {
+            "x": 616,
+            "y": 270,
+            "b": 176,
+            "h": 97,
+            "w": "lua:schub",
+            "darstellung": "zahl"
+          },
+          {
+            "x": 248,
+            "y": 375,
+            "b": 176,
+            "h": 97,
+            "w": "lua:hoehe",
+            "darstellung": "zahl"
+          },
+          {
+            "x": 432,
+            "y": 375,
+            "b": 176,
+            "h": 97,
+            "w": "lua:speed",
+            "darstellung": "zahl"
+          },
+          {
+            "x": 616,
+            "y": 375,
+            "b": 176,
+            "h": 97,
+            "w": "lua:empfang",
+            "darstellung": "zahl"
+          }
+        ]
+      }
+    ],
+    "grenzen": {
+      "lua:egt": {
+        "richtung": "ueber",
+        "warnung": 720,
+        "alarm": 750,
+        "ansage": true,
+        "vibration": false
+      },
+      "lua:kraftstoff_proz": {
+        "richtung": "unter",
+        "warnung": 30,
+        "alarm": 20,
+        "ansage": true,
+        "vibration": false
+      },
+      "lua:ecu_akku": {
+        "richtung": "unter",
+        "warnung": 7.4,
+        "alarm": 7.0,
+        "ansage": true,
+        "vibration": false
+      },
+      "lua:rx_akku": {
+        "richtung": "unter",
+        "aus": true
+      },
+      "lua:empfang": {
+        "richtung": "unter",
+        "warnung": 45,
+        "alarm": 40,
+        "ansage": true,
+        "vibration": false
+      },
+      "lua:hoehe": {
+        "richtung": "ueber",
+        "warnung": 110,
+        "alarm": 120,
+        "ansage": true,
+        "vibration": false
+      },
+      "lua:speed": {
+        "richtung": "ueber",
+        "aus": true
+      }
+    }
+  },
+  "vorlagen": [
+    {
+      "s": "standard",
+      "name": {
+        "de": "Heutiges Aussehen",
+        "en": "Current look"
+      },
+      "ansichten": [
+        {
+          "breite": 784,
+          "hoehe": 316,
+          "plaetze": [
+            {
+              "x": 5,
+              "y": 38,
+              "b": 189,
+              "h": 144,
+              "w": "lua:drehzahl",
+              "darstellung": "ring",
+              "min": 0,
+              "max": 130000,
+              "zusatz": "max"
+            },
+            {
+              "x": 199,
+              "y": 38,
+              "b": 189,
+              "h": 144,
+              "w": "lua:egt",
+              "darstellung": "ring",
+              "min": 350,
+              "max": 800,
+              "zusatz": "max"
+            },
+            {
+              "x": 394,
+              "y": 38,
+              "b": 189,
+              "h": 144,
+              "w": "lua:kraftstoff_proz",
+              "darstellung": "ring",
+              "min": 0,
+              "max": 100,
+              "zusatz": "keine"
+            },
+            {
+              "x": 589,
+              "y": 38,
+              "b": 189,
+              "h": 144,
+              "w": "lua:ecu_akku",
+              "darstellung": "ring",
+              "min": 6.6,
+              "max": 8.4,
+              "zusatz": "keine"
+            },
+            {
+              "x": 5,
+              "y": 187,
+              "b": 189,
+              "h": 59,
+              "w": "lua:status",
+              "darstellung": "status"
+            },
+            {
+              "x": 199,
+              "y": 187,
+              "b": 189,
+              "h": 59,
+              "w": "lua:fluss",
+              "darstellung": "zahl"
+            },
+            {
+              "x": 394,
+              "y": 187,
+              "b": 189,
+              "h": 59,
+              "w": "lua:pumpe",
+              "darstellung": "zahl"
+            },
+            {
+              "x": 589,
+              "y": 187,
+              "b": 189,
+              "h": 59,
+              "w": "lua:schub",
+              "darstellung": "zahl"
+            },
+            {
+              "x": 5,
+              "y": 251,
+              "b": 189,
+              "h": 59,
+              "w": "lua:hoehe",
+              "darstellung": "zahl"
+            },
+            {
+              "x": 199,
+              "y": 251,
+              "b": 189,
+              "h": 59,
+              "w": "lua:speed",
+              "darstellung": "zahl"
+            },
+            {
+              "x": 394,
+              "y": 251,
+              "b": 189,
+              "h": 59,
+              "w": "lua:empfang",
+              "darstellung": "zahl"
+            },
+            {
+              "x": 589,
+              "y": 251,
+              "b": 189,
+              "h": 59,
+              "w": "lua:laeufe",
+              "darstellung": "zahl"
+            }
+          ]
+        },
+        {
+          "breite": 800,
+          "hoehe": 480,
+          "plaetze": [
+            {
+              "x": 8,
+              "y": 64,
+              "b": 190,
+              "h": 198,
+              "w": "lua:drehzahl",
+              "darstellung": "ring",
+              "min": 0,
+              "max": 130000,
+              "zusatz": "max"
+            },
+            {
+              "x": 206,
+              "y": 64,
+              "b": 190,
+              "h": 198,
+              "w": "lua:egt",
+              "darstellung": "ring",
+              "min": 350,
+              "max": 800,
+              "zusatz": "max"
+            },
+            {
+              "x": 404,
+              "y": 64,
+              "b": 190,
+              "h": 198,
+              "w": "lua:kraftstoff_proz",
+              "darstellung": "ring",
+              "min": 0,
+              "max": 100,
+              "zusatz": "keine"
+            },
+            {
+              "x": 602,
+              "y": 64,
+              "b": 190,
+              "h": 198,
+              "w": "lua:ecu_akku",
+              "darstellung": "ring",
+              "min": 6.6,
+              "max": 8.4,
+              "zusatz": "keine"
+            },
+            {
+              "x": 8,
+              "y": 270,
+              "b": 232,
+              "h": 154,
+              "w": "lua:status",
+              "darstellung": "status"
+            },
+            {
+              "x": 248,
+              "y": 270,
+              "b": 176,
+              "h": 97,
+              "w": "lua:fluss",
+              "darstellung": "zahl"
+            },
+            {
+              "x": 432,
+              "y": 270,
+              "b": 176,
+              "h": 97,
+              "w": "lua:pumpe",
+              "darstellung": "zahl"
+            },
+            {
+              "x": 616,
+              "y": 270,
+              "b": 176,
+              "h": 97,
+              "w": "lua:schub",
+              "darstellung": "zahl"
+            },
+            {
+              "x": 248,
+              "y": 375,
+              "b": 176,
+              "h": 97,
+              "w": "lua:hoehe",
+              "darstellung": "zahl"
+            },
+            {
+              "x": 432,
+              "y": 375,
+              "b": 176,
+              "h": 97,
+              "w": "lua:speed",
+              "darstellung": "zahl"
+            },
+            {
+              "x": 616,
+              "y": 375,
+              "b": 176,
+              "h": 97,
+              "w": "lua:empfang",
+              "darstellung": "zahl"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "s": "mit_symbolen",
+      "name": {
+        "de": "Mit Symbolen",
+        "en": "With symbols"
+      },
+      "hinweis": {
+        "de": "Wie das heutige Aussehen, mit Bildsymbolen für Gegenstände und fetter Einheit für Messwerte. Braucht Format 2.",
+        "en": "Same as the current look, with picture symbols for objects and a bold unit for measurements. Needs format 2."
+      },
+      "ansichten": [
+        {
+          "breite": 784,
+          "hoehe": 316,
+          "plaetze": [
+            {
+              "x": 5,
+              "y": 38,
+              "b": 189,
+              "h": 144,
+              "w": "lua:drehzahl",
+              "darstellung": "ring",
+              "min": 0,
+              "max": 130000,
+              "zusatz": "max",
+              "einheitZeigen": "fett"
+            },
+            {
+              "x": 199,
+              "y": 38,
+              "b": 189,
+              "h": 144,
+              "w": "lua:egt",
+              "darstellung": "ring",
+              "min": 350,
+              "max": 800,
+              "zusatz": "max",
+              "symbol": "temperatur",
+              "symbolPx": 48
+            },
+            {
+              "x": 394,
+              "y": 38,
+              "b": 189,
+              "h": 144,
+              "w": "lua:kraftstoff_proz",
+              "darstellung": "ring",
+              "min": 0,
+              "max": 100,
+              "zusatz": "keine",
+              "symbol": "tank",
+              "symbolPx": 48
+            },
+            {
+              "x": 589,
+              "y": 38,
+              "b": 189,
+              "h": 144,
+              "w": "lua:ecu_akku",
+              "darstellung": "ring",
+              "min": 6.6,
+              "max": 8.4,
+              "zusatz": "keine",
+              "einheitZeigen": "fett"
+            },
+            {
+              "x": 5,
+              "y": 187,
+              "b": 189,
+              "h": 59,
+              "w": "lua:status",
+              "darstellung": "status",
+              "symbol": "turbine",
+              "symbolPx": 24
+            },
+            {
+              "x": 199,
+              "y": 187,
+              "b": 189,
+              "h": 59,
+              "w": "lua:fluss",
+              "darstellung": "zahl",
+              "einheitZeigen": "fett"
+            },
+            {
+              "x": 394,
+              "y": 187,
+              "b": 189,
+              "h": 59,
+              "w": "lua:pumpe",
+              "darstellung": "zahl",
+              "einheitZeigen": "fett"
+            },
+            {
+              "x": 589,
+              "y": 187,
+              "b": 189,
+              "h": 59,
+              "w": "lua:schub",
+              "darstellung": "zahl",
+              "einheitZeigen": "fett"
+            },
+            {
+              "x": 5,
+              "y": 251,
+              "b": 189,
+              "h": 59,
+              "w": "lua:hoehe",
+              "darstellung": "zahl",
+              "symbol": "hoehe",
+              "symbolPx": 24
+            },
+            {
+              "x": 199,
+              "y": 251,
+              "b": 189,
+              "h": 59,
+              "w": "lua:speed",
+              "darstellung": "zahl",
+              "symbol": "speed",
+              "symbolPx": 24
+            },
+            {
+              "x": 394,
+              "y": 251,
+              "b": 189,
+              "h": 59,
+              "w": "lua:empfang",
+              "darstellung": "zahl",
+              "symbol": "empfang",
+              "symbolPx": 24
+            },
+            {
+              "x": 589,
+              "y": 251,
+              "b": 189,
+              "h": 59,
+              "w": "lua:laeufe",
+              "darstellung": "zahl",
+              "symbol": "fluege",
+              "symbolPx": 24
+            }
+          ]
+        },
+        {
+          "breite": 800,
+          "hoehe": 480,
+          "plaetze": [
+            {
+              "x": 8,
+              "y": 64,
+              "b": 190,
+              "h": 198,
+              "w": "lua:drehzahl",
+              "darstellung": "ring",
+              "min": 0,
+              "max": 130000,
+              "zusatz": "max",
+              "einheitZeigen": "fett"
+            },
+            {
+              "x": 206,
+              "y": 64,
+              "b": 190,
+              "h": 198,
+              "w": "lua:egt",
+              "darstellung": "ring",
+              "min": 350,
+              "max": 800,
+              "zusatz": "max",
+              "symbol": "temperatur",
+              "symbolPx": 48
+            },
+            {
+              "x": 404,
+              "y": 64,
+              "b": 190,
+              "h": 198,
+              "w": "lua:kraftstoff_proz",
+              "darstellung": "ring",
+              "min": 0,
+              "max": 100,
+              "zusatz": "keine",
+              "symbol": "tank",
+              "symbolPx": 48
+            },
+            {
+              "x": 602,
+              "y": 64,
+              "b": 190,
+              "h": 198,
+              "w": "lua:ecu_akku",
+              "darstellung": "ring",
+              "min": 6.6,
+              "max": 8.4,
+              "zusatz": "keine",
+              "einheitZeigen": "fett"
+            },
+            {
+              "x": 8,
+              "y": 270,
+              "b": 232,
+              "h": 154,
+              "w": "lua:status",
+              "darstellung": "status",
+              "symbol": "turbine",
+              "symbolPx": 48
+            },
+            {
+              "x": 248,
+              "y": 270,
+              "b": 176,
+              "h": 97,
+              "w": "lua:fluss",
+              "darstellung": "zahl",
+              "einheitZeigen": "fett"
+            },
+            {
+              "x": 432,
+              "y": 270,
+              "b": 176,
+              "h": 97,
+              "w": "lua:pumpe",
+              "darstellung": "zahl",
+              "einheitZeigen": "fett"
+            },
+            {
+              "x": 616,
+              "y": 270,
+              "b": 176,
+              "h": 97,
+              "w": "lua:schub",
+              "darstellung": "zahl",
+              "einheitZeigen": "fett"
+            },
+            {
+              "x": 248,
+              "y": 375,
+              "b": 176,
+              "h": 97,
+              "w": "lua:hoehe",
+              "darstellung": "zahl",
+              "symbol": "hoehe",
+              "symbolPx": 32
+            },
+            {
+              "x": 432,
+              "y": 375,
+              "b": 176,
+              "h": 97,
+              "w": "lua:speed",
+              "darstellung": "zahl",
+              "symbol": "speed",
+              "symbolPx": 32
+            },
+            {
+              "x": 616,
+              "y": 375,
+              "b": 176,
+              "h": 97,
+              "w": "lua:empfang",
+              "darstellung": "zahl",
+              "symbol": "empfang",
+              "symbolPx": 32
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

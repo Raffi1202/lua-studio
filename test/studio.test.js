@@ -1,0 +1,125 @@
+'use strict'
+// Studio-Kern: Modelle aus Info-Dateien, neues Projekt, Übertragen auf ein Ordner-Ziel mit Sicherung und .funke.lua.
+
+const test = require('node:test')
+const assert = require('node:assert')
+const fs = require('fs')
+const os = require('os')
+const path = require('path')
+const S = require('../src/studio/studio')
+const { ordnerZiel } = require('../src/studio/ziel')
+const F = require('../src/format/format')
+
+const B = S.beschreibungenLaden(path.join(__dirname, 'vorlagen'))
+
+function umgebung() {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'lua-studio-studio-'))
+  const sd = path.join(tmp, 'ETHOS_SD')
+  fs.mkdirSync(path.join(sd, 'scripts', 'studio'), { recursive: true })
+  const info = { format: 1, lua: 'testlua', luaVersion: '0.0.1', formate: [1], modell: 'Möwe 3S', kennung: 'M__we_3S',
+    funke: 'X18RS', ethos: '26.2.0', fenster: [{ breite: 784, hoehe: 316 }, { breite: 800, hoehe: 480 }], studioDatei: 'fehlt', sensoren: [] }
+  fs.writeFileSync(path.join(sd, 'scripts', 'studio', 'M__we_3S.testlua.info.json'), JSON.stringify(info))
+  return { tmp, sd, ziel: ordnerZiel('laufwerk', sd), ablage: new S.Ablage(path.join(tmp, 'ablage')), info }
+}
+
+test('Beschreibung laden, Modelle aus Info-Dateien, neues Projekt mit Fenstern', async () => {
+  assert.ok(B.testlua)
+  const u = umgebung()
+  const m = await S.modelleLesen(u.ziel)
+  assert.strictEqual(m.length, 1)
+  assert.strictEqual(m[0].info.modell, 'Möwe 3S')
+  assert.strictEqual(F.kennung(m[0].info.modell), m[0].kennung)
+  const p = S.neuesProjekt(B.testlua, m[0].info)
+  assert.strictEqual(p.einstellungen.kapaz, 4500)
+  assert.deepStrictEqual(p.ansichten.map((a) => `${a.breite}x${a.hoehe}`), ['784x316', '800x480'])
+  assert.strictEqual(p.ansichten[0].plaetze.length, 3)
+  fs.rmSync(u.tmp, { recursive: true, force: true })
+})
+
+test('Übertragen: schreiben, zurücklesen, Sicherung der alten Datei, .funke.lua übernehmen und löschen', async () => {
+  const u = umgebung()
+  const projekt = S.neuesProjekt(B.testlua, u.info)
+  projekt.grenzen['lua:akku_proz'] = { richtung: 'unter', warnung: 30, alarm: 20 }
+  const meta = { studioVersion: '0.2.0', funke: 'X18RS', modell: 'Möwe 3S', luaVersion: '0.0.1' }
+  const schritte = []
+  let r = await S.uebertragen({ ziel: u.ziel, ablage: u.ablage, funkeName: 'X18RS', kennung: 'M__we_3S', lua: 'testlua', projekt, meta, funkeUebernehmen: true, schritt: (t) => schritte.push(t) })
+  assert.ok(r.ok)
+  const datei = path.join(u.sd, 'scripts', 'studio', 'M__we_3S.testlua.lua')
+  assert.strictEqual(F.pruefenWieFunke(fs.readFileSync(datei, 'utf8')), null)
+  assert.ok(schritte.includes('nichtsZuSichern') && schritte.includes('modellSelbstLaden'))
+
+  // Änderung an der Funke simulieren, dann erneut übertragen
+  fs.writeFileSync(path.join(u.sd, 'scripts', 'studio', 'M__we_3S.testlua.funke.lua'), F.dateiText({ einstellungen: { kapaz: 3300 }, grenzen: { 'lua:akku_proz': { warnung: 35 } } }))
+  schritte.length = 0
+  r = await S.uebertragen({ ziel: u.ziel, ablage: u.ablage, funkeName: 'X18RS', kennung: 'M__we_3S', lua: 'testlua', projekt, meta, funkeUebernehmen: true, schritt: (t) => schritte.push(t) })
+  const neu = F.lesen(fs.readFileSync(datei, 'utf8'))
+  assert.strictEqual(neu.einstellungen.kapaz, 3300)
+  assert.deepStrictEqual(neu.grenzen['lua:akku_proz'], { richtung: 'unter', warnung: 35, alarm: 20 })
+  assert.ok(!fs.existsSync(path.join(u.sd, 'scripts', 'studio', 'M__we_3S.testlua.funke.lua')), '.funke.lua muss gelöscht sein')
+  assert.ok(r.sicherung && fs.existsSync(r.sicherung), 'alte Datei muss gesichert sein')
+  fs.rmSync(u.tmp, { recursive: true, force: true })
+})
+
+test('Übertragen bricht ab, wenn die Datei zu gross würde, und schreibt nichts', async () => {
+  const u = umgebung()
+  const projekt = S.neuesProjekt(B.testlua, u.info)
+  const voll = (i) => ({ x: 0, y: 0, b: 90, h: 50, w: 'lua:strom', farbe: [1, 2, 3], farbeWarn: [1, 2, 3], farbeAlarm: [1, 2, 3], hintergrund: [1, 2, 3], stufen: [{ ab: 1, farbe: [1, 1, 1] }, { ab: 2, farbe: [1, 1, 1] }, { ab: 3, farbe: [1, 1, 1] }], titel: `T${i}` })
+  projekt.ansichten = [{ breite: 784, hoehe: 316, plaetze: Array.from({ length: 16 }, (_, i) => voll(i)) }, { breite: 800, hoehe: 480, plaetze: Array.from({ length: 16 }, (_, i) => voll(i)) }]
+  await assert.rejects(S.uebertragen({ ziel: u.ziel, ablage: u.ablage, funkeName: 'X18RS', kennung: 'M__we_3S', lua: 'testlua', projekt, meta: {}, funkeUebernehmen: false }), /pruefen\|/)
+  assert.ok(!fs.existsSync(path.join(u.sd, 'scripts', 'studio', 'M__we_3S.testlua.lua')))
+  fs.rmSync(u.tmp, { recursive: true, force: true })
+})
+
+test('.funke.lua: «warnung = false» schaltet nur die Warnung aus, der Alarm bleibt (auch ohne Eintrag in der Studio-Datei)', () => {
+  const projekt = { einstellungen: {}, werte: {}, grenzen: { 'lua:strom': { richtung: 'ueber', warnung: 80, alarm: 100 } }, ansichten: [] }
+  const werk = { 'lua:akku_proz': { richtung: 'unter', warnung: 30, alarm: 20 } }
+  const p = S.funkeAenderungenUebernehmen(projekt, { grenzen: { 'lua:strom': { warnung: false }, 'lua:akku_proz': { warnung: false } } }, werk)
+  assert.deepStrictEqual(p.grenzen['lua:strom'], { richtung: 'ueber', warnung: false, alarm: 100 })
+  assert.deepStrictEqual(p.grenzen['lua:akku_proz'], { richtung: 'unter', warnung: false, alarm: 20 })
+  // ungültige Typen werden nicht übernommen
+  const q = S.funkeAenderungenUebernehmen(projekt, { grenzen: { 'lua:strom': { warnung: 'x', aus: 1 } } }, werk)
+  assert.deepStrictEqual(q.grenzen['lua:strom'], { richtung: 'ueber', warnung: 80, alarm: 100 })
+  const s = F.dateiText({ grenzen: { 'lua:x': { warnung: false } } })
+  assert.strictEqual(F.pruefenWieFunke(s), null)
+  assert.strictEqual(F.lesen(s).grenzen['lua:x'].warnung, false)
+})
+
+test('Leere Ansichten werden nicht geschrieben (sonst zeigte das Lua ein leeres Widget statt seiner Belegung)', () => {
+  const d = S.dateiDaten({ einstellungen: {}, werte: {}, grenzen: {}, ansichten: [{ breite: 784, hoehe: 316, plaetze: [] }, { breite: 800, hoehe: 480, plaetze: [{ x: 0, y: 0, b: 100, h: 60, w: 'lua:strom' }] }] }, {})
+  assert.deepStrictEqual(d.ansichten.map((a) => a.breite), [800])
+})
+
+test('Doppelte Kennungen ohne Rücksicht auf Gross/Klein werden markiert', async () => {
+  // nachgebildetes Ziel: das Mac-Dateisystem selbst unterscheidet Gross/Klein nicht, die Funke kann beide Namen liefern
+  const namen = ['Extra', 'EXTRA', 'Andere'].map((k) => ({ name: `${k}.testlua.info.json` }))
+  const ziel = { liste: async () => namen, lesen: async () => Buffer.from('{}') }
+  const m = await S.modelleLesen(ziel)
+  assert.deepStrictEqual(m.filter((x) => x.doppelt).map((x) => x.kennung).sort(), ['EXTRA', 'Extra'])
+})
+
+test('Format-Prüfung wie die Funke: Unicode-Leerraum und Bytes über 0x7F abgelehnt; lesen() bricht sauber ab', () => {
+  assert.notStrictEqual(F.pruefenWieFunke('return {\u00a0a = 1 }'), null)
+  assert.notStrictEqual(F.pruefenWieFunke('return {\u2028a = 1 }'), null)
+  assert.throws(() => F.lesen('return { a = "\\65'))
+})
+
+test('«auch bei Motor aus» (Format 2 §3.5): nur false wird geschrieben, .funke.lua je Feld, Datei besteht die Funken-Prüfung', () => {
+  const projekt = { einstellungen: {}, werte: {}, ansichten: [{ breite: 800, hoehe: 480, plaetze: [{ x: 0, y: 0, b: 100, h: 60, w: 'lua:strom' }] }],
+    grenzen: { 'lua:strom': { richtung: 'ueber', warnung: 80, alarm: 100, beiMotorAus: false }, 'lua:temp': { richtung: 'ueber', alarm: 90, beiMotorAus: true }, 'lua:zelle': { richtung: 'unter', alarm: 3.3 } } }
+  const d = S.dateiDaten(projekt, {})
+  assert.strictEqual(d.grenzen['lua:strom'].beiMotorAus, false)
+  assert.ok(!('beiMotorAus' in d.grenzen['lua:temp']), 'true wird weggelassen (fehlt = true)')
+  assert.ok(!('beiMotorAus' in d.grenzen['lua:zelle']))
+  assert.strictEqual(projekt.grenzen['lua:temp'].beiMotorAus, true, 'Projekt bleibt unverändert')
+  const s = F.dateiText(d)
+  assert.strictEqual(F.pruefenWieFunke(s), null)
+  assert.match(s, /beiMotorAus = false/)
+  assert.strictEqual((s.match(/beiMotorAus/g) || []).length, 1)
+  assert.strictEqual(F.lesen(s).grenzen['lua:strom'].beiMotorAus, false)
+  // .funke.lua: true hebt ein false auf, falscher Typ wird nicht übernommen, neuer Eintrag beginnt mit den Werkgrenzen
+  const werk = { 'lua:akku_proz': { richtung: 'unter', warnung: 30, alarm: 20 } }
+  const p = S.funkeAenderungenUebernehmen(projekt, { grenzen: { 'lua:strom': { beiMotorAus: true }, 'lua:zelle': { beiMotorAus: 0 }, 'lua:akku_proz': { beiMotorAus: false } } }, werk)
+  assert.strictEqual(p.grenzen['lua:strom'].beiMotorAus, true)
+  assert.ok(!('beiMotorAus' in p.grenzen['lua:zelle']))
+  assert.deepStrictEqual(p.grenzen['lua:akku_proz'], { richtung: 'unter', warnung: 30, alarm: 20, beiMotorAus: false })
+})

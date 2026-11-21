@@ -1,0 +1,27 @@
+{
+  "lua": "testlua",
+  "luaVersion": "0.0.1",
+  "formate": [1, 2],
+  "beiMotorAus": true,
+  "werte": [
+    { "s": "abschalt", "name": { "de": "Abschaltgrund", "en": "Shutdown reason" }, "einheit": "", "stellen": 0, "min": 0, "max": 10, "darstellungen": ["zahl"], "grenzeRichtung": "ueber", "immerAlarm": true },
+    { "s": "akku_proz", "name": { "de": "Akku %", "en": "Battery %" }, "einheit": "%", "stellen": 0, "min": 0, "max": 100,
+      "darstellungen": ["zahl", "ring", "balken_w", "balken_s", "kurve"], "grenzeRichtung": "unter", "ansage": true },
+    { "s": "strom", "name": { "de": "Strom", "en": "Current" }, "einheit": "A", "stellen": 1, "min": 0, "max": 150,
+      "darstellungen": ["zahl", "ring", "balken_w", "balken_s", "kurve"], "grenzeRichtung": "ueber", "ansage": true },
+    { "s": "zustand", "name": { "de": "Zustand", "en": "State" }, "darstellungen": ["status"],
+      "zustaende": [ { "wert": 0, "de": "AUS", "en": "OFF", "farbe": [128, 128, 128] }, { "wert": 1, "de": "AN", "en": "ON", "farbe": [40, 200, 80] } ] }
+  ],
+  "einstellungen": [
+    { "s": "kapaz", "art": "z", "name": { "de": "Kapazität", "en": "Capacity" }, "werk": 4500, "min": 0, "max": 50000, "einheit": "mAh" },
+    { "s": "warnton", "art": "b", "name": { "de": "Warnton", "en": "Warning tone" }, "werk": true },
+    { "s": "akkuart", "art": "w", "name": { "de": "Akkuart", "en": "Battery type" }, "werk": 1, "auswahl": [ { "wert": 1, "de": "LiPo", "en": "LiPo" }, { "wert": 2, "de": "LiFe", "en": "LiFe" } ] }
+  ],
+  "standard": { "grenzen": { "lua:akku_proz": { "richtung": "unter", "warnung": 30, "alarm": 20, "ansage": true, "vibration": true }, "lua:strom": { "richtung": "ueber", "warnung": 80, "alarm": 100, "ansage": true, "vibration": true } }, "ansichten": [
+    { "breite": 784, "hoehe": 316, "plaetze": [
+      { "x": 0, "y": 0, "b": 196, "h": 158, "w": "lua:akku_proz", "darstellung": "ring" },
+      { "x": 196, "y": 0, "b": 196, "h": 158, "w": "lua:strom", "darstellung": "balken_s" },
+      { "x": 392, "y": 0, "b": 196, "h": 79, "w": "lua:zustand", "darstellung": "status" }
+    ] }
+  ] }
+}

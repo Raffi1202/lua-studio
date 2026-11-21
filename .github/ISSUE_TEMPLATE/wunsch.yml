@@ -1,0 +1,20 @@
+name: Wunsch / Idee
+description: Vorschlag für eine neue Funktion oder Verbesserung (feature request)
+title: "[Wunsch] "
+labels: ["wunsch"]
+body:
+  - type: textarea
+    id: wunsch
+    attributes:
+      label: Was wünschst du dir? / What would you like?
+    validations:
+      required: true
+  - type: textarea
+    id: wozu
+    attributes:
+      label: Wozu? / Why?
+      description: In welcher Situation würde es helfen?
+  - type: input
+    id: sender
+    attributes:
+      label: Sender / Radio

@@ -1,0 +1,1211 @@
+{
+ "lua": "elektro",
+ "luaVersion": "0.5.0",
+ "formate": [
+  1,
+  2
+ ],
+ "beiMotorAus": true,
+ "hinweis": {
+  "de": "Elektro zeichnet oben die Kopfleiste selbst (Modellname, Flugzeit, Schalter, Empfang). Grenzwerte gelten je Wert, auch wenn er auf keinem Platz steht.",
+  "en": "Elektro draws the top bar itself (model name, flight time, switches, signal). Limits apply per value, even if it is on no field."
+ },
+ "reserviert": [
+  {
+   "breite": 800,
+   "hoehe": 480,
+   "x": 0,
+   "y": 0,
+   "b": 800,
+   "h": 56,
+   "was": {
+    "de": "Kopfzeile",
+    "en": "Top bar"
+   }
+  },
+  {
+   "breite": 784,
+   "hoehe": 316,
+   "x": 0,
+   "y": 0,
+   "b": 784,
+   "h": 33,
+   "was": {
+    "de": "Leiste",
+    "en": "Bar"
+   }
+  },
+  {
+   "breite": 800,
+   "hoehe": 480,
+   "x": 8,
+   "y": 432,
+   "b": 232,
+   "h": 40,
+   "was": {
+    "de": "Flüge, öffnet die Flugliste",
+    "en": "Flights, opens the flight list"
+   }
+  }
+ ],
+ "werte": [
+  {
+   "s": "akku_proz",
+   "name": {
+    "de": "Akku %",
+    "en": "Battery %"
+   },
+   "einheit": "%",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "unter",
+   "ansage": true
+  },
+  {
+   "s": "strom",
+   "name": {
+    "de": "Strom",
+    "en": "Current"
+   },
+   "einheit": "A",
+   "stellen": 0,
+   "min": 0,
+   "max": 120,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "ueber",
+   "ansage": true
+  },
+  {
+   "s": "drehzahl",
+   "name": {
+    "de": "Drehzahl",
+    "en": "RPM"
+   },
+   "einheit": "U/min",
+   "stellen": 0,
+   "min": 0,
+   "max": 12000,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "ansage": false
+  },
+  {
+   "s": "reglertemp",
+   "name": {
+    "de": "Reglertemp.",
+    "en": "ESC temp."
+   },
+   "einheit": "°C",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "ueber",
+   "ansage": true
+  },
+  {
+   "s": "zelle",
+   "name": {
+    "de": "Zelle",
+    "en": "Cell"
+   },
+   "einheit": "V",
+   "stellen": 2,
+   "min": 3.3,
+   "max": 4.2,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "unter",
+   "ansage": true,
+   "hinweis": {
+    "de": "Mittlere Zelle (ohne Zellensensor) bzw. tiefste Zelle (mit Zellensensor). Ohne Eintrag in den Grenzen folgt die Werkgrenze der Akkuart (LiPo/LiHV 3,50/3,30 V, LiFe 3,00/2,80 V, Li-Ion 3,20/3,00 V, NiMH 1,10/1,00 V).",
+    "en": "Average cell (without cell sensor) or lowest cell (with cell sensor). Without an entry in the limits, the factory limit follows the battery type (LiPo/LiHV 3.50/3.30 V, LiFe 3.00/2.80 V, Li-Ion 3.20/3.00 V, NiMH 1.10/1.00 V)."
+   }
+  },
+  {
+   "s": "zelle_diff",
+   "name": {
+    "de": "Zellendifferenz",
+    "en": "Cell difference"
+   },
+   "einheit": "V",
+   "stellen": 2,
+   "min": 0,
+   "max": 0.5,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "ueber",
+   "ansage": true,
+   "hinweis": {
+    "de": "Nur mit Zellensensor.",
+    "en": "Cell sensor only."
+   }
+  },
+  {
+   "s": "spannung",
+   "name": {
+    "de": "Gesamtspannung",
+    "en": "Pack voltage"
+   },
+   "einheit": "V",
+   "stellen": 1,
+   "min": 0,
+   "max": 60,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "ansage": false
+  },
+  {
+   "s": "verbraucht",
+   "name": {
+    "de": "Verbraucht",
+    "en": "Used"
+   },
+   "einheit": "mAh",
+   "stellen": 0,
+   "min": 0,
+   "max": 5000,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "ansage": false
+  },
+  {
+   "s": "verbraucht_proz",
+   "name": {
+    "de": "Verbraucht %",
+    "en": "Used %"
+   },
+   "einheit": "%",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "ueber",
+   "ansage": true,
+   "hinweis": {
+    "de": "Verbraucht in % der Kapazität.",
+    "en": "Used in % of capacity."
+   }
+  },
+  {
+   "s": "leistung",
+   "name": {
+    "de": "Leistung",
+    "en": "Power"
+   },
+   "einheit": "W",
+   "stellen": 0,
+   "min": 0,
+   "max": 3000,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "ansage": false
+  },
+  {
+   "s": "energie",
+   "name": {
+    "de": "Energie",
+    "en": "Energy"
+   },
+   "einheit": "Wh",
+   "stellen": 1,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "ansage": false
+  },
+  {
+   "s": "hoehe",
+   "name": {
+    "de": "Höhe",
+    "en": "Altitude"
+   },
+   "einheit": "m",
+   "stellen": 0,
+   "min": 0,
+   "max": 200,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "ueber",
+   "ansage": true
+  },
+  {
+   "s": "vario",
+   "name": {
+    "de": "Vario",
+    "en": "Vario"
+   },
+   "einheit": "m/s",
+   "stellen": 1,
+   "min": -5,
+   "max": 5,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "ansage": false
+  },
+  {
+   "s": "speed",
+   "name": {
+    "de": "Speed",
+    "en": "Speed"
+   },
+   "einheit": "km/h",
+   "stellen": 0,
+   "min": 0,
+   "max": 200,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "ansage": false
+  },
+  {
+   "s": "rssi",
+   "name": {
+    "de": "Empfang (RSSI)",
+    "en": "Signal (RSSI)"
+   },
+   "einheit": "dB",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "unter",
+   "ansage": true,
+   "hinweis": {
+    "de": "Bei Empfängern mit dBm (ELRS, Crossfire) intern dBm + 120, z. B. 40 = -80 dBm; Grenzen in dieser Einheit.",
+    "en": "For receivers with dBm (ELRS, Crossfire) internally dBm + 120, e.g. 40 = -80 dBm; limits in this unit."
+   }
+  },
+  {
+   "s": "lq",
+   "name": {
+    "de": "Empfang (LQ)",
+    "en": "Link quality"
+   },
+   "einheit": "%",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "unter",
+   "ansage": true
+  },
+  {
+   "s": "bec",
+   "name": {
+    "de": "BEC",
+    "en": "BEC"
+   },
+   "einheit": "V",
+   "stellen": 1,
+   "min": 0,
+   "max": 8.4,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "unter",
+   "ansage": true
+  },
+  {
+   "s": "flugzeit",
+   "name": {
+    "de": "Flugzeit",
+    "en": "Flight time"
+   },
+   "einheit": "s",
+   "stellen": 0,
+   "min": 0,
+   "max": 600,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s"
+   ],
+   "ansage": false
+  },
+  {
+   "s": "gas_proz",
+   "name": {
+    "de": "Gas %",
+    "en": "Throttle %"
+   },
+   "einheit": "%",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "ansage": false
+  },
+  {
+   "s": "fluege",
+   "name": {
+    "de": "Flüge",
+    "en": "Flights"
+   },
+   "einheit": "",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl"
+   ],
+   "ansage": false
+  },
+  {
+   "s": "motor",
+   "name": {
+    "de": "Motor",
+    "en": "Motor"
+   },
+   "darstellungen": [
+    "status"
+   ],
+   "zustaende": [
+    {
+     "wert": 0,
+     "de": "MOTOR AUS",
+     "en": "MOTOR OFF",
+     "farbe": [
+      150,
+      164,
+      190
+     ]
+    },
+    {
+     "wert": 1,
+     "de": "SCHARF",
+     "en": "ARMED",
+     "farbe": [
+      64,
+      220,
+      110
+     ]
+    }
+   ],
+   "hinweis": {
+    "de": "Nur mit Motorschalter.",
+    "en": "Motor switch only."
+   }
+  }
+ ],
+ "einstellungen": [
+  {
+   "s": "akkuart",
+   "art": "w",
+   "gruppe": "Akku",
+   "name": {
+    "de": "Akkuart",
+    "en": "Battery type"
+   },
+   "werk": 1,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "LiPo",
+      "en": "LiPo"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "LiHV",
+      "en": "LiHV"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "LiFe",
+      "en": "LiFe"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Li-Ion",
+      "en": "Li-Ion"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "NiMH",
+      "en": "NiMH"
+     }
+    }
+   ]
+  },
+  {
+   "s": "zellenzahl",
+   "art": "z",
+   "gruppe": "Akku",
+   "name": {
+    "de": "Zellenzahl (0 = auto)",
+    "en": "Cell count (0 = auto)"
+   },
+   "werk": 0,
+   "min": 0,
+   "max": 14,
+   "einheit": "S"
+  },
+  {
+   "s": "kapaz",
+   "art": "z",
+   "gruppe": "Akku",
+   "name": {
+    "de": "Kapazität",
+    "en": "Capacity"
+   },
+   "werk": 4500,
+   "min": 0,
+   "max": 50000,
+   "einheit": "mAh"
+  },
+  {
+   "s": "proz_quelle",
+   "art": "w",
+   "gruppe": "Akku",
+   "name": {
+    "de": "Akku % kommt von",
+    "en": "Battery % from"
+   },
+   "werk": 1,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "Regler, sonst gerechnet",
+      "en": "ESC, else calculated"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "immer gerechnet",
+      "en": "always calculated"
+     }
+    }
+   ],
+   "lua": "prozQuelle"
+  },
+  {
+   "s": "polpaare",
+   "art": "z",
+   "gruppe": "Akku",
+   "name": {
+    "de": "Drehzahl teilen durch",
+    "en": "Divide RPM by"
+   },
+   "werk": 1,
+   "min": 1,
+   "max": 30
+  },
+  {
+   "s": "sw1_name",
+   "art": "t",
+   "gruppe": "Schalter",
+   "name": {
+    "de": "Schalter 1 Name",
+    "en": "Switch 1 name"
+   },
+   "werk": "SCHALTER 1",
+   "max": 12,
+   "lua": "sw1Name"
+  },
+  {
+   "s": "sw2_name",
+   "art": "t",
+   "gruppe": "Schalter",
+   "name": {
+    "de": "Schalter 2 Name",
+    "en": "Switch 2 name"
+   },
+   "werk": "SCHALTER 2",
+   "max": 12,
+   "lua": "sw2Name"
+  },
+  {
+   "s": "erkennung",
+   "art": "w",
+   "gruppe": "Flug",
+   "name": {
+    "de": "Flug erkennen über",
+    "en": "Detect flight by"
+   },
+   "werk": 1,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "Motorschalter",
+      "en": "Motor switch"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Strom oder Gas",
+      "en": "Current or throttle"
+     }
+    }
+   ]
+  },
+  {
+   "s": "flug_strom",
+   "art": "z",
+   "gruppe": "Flug",
+   "name": {
+    "de": "Flug ab Strom",
+    "en": "Flight from current"
+   },
+   "werk": 3,
+   "min": 1,
+   "max": 200,
+   "einheit": "A",
+   "lua": "flugStrom"
+  },
+  {
+   "s": "gas_schwelle",
+   "art": "z",
+   "gruppe": "Flug",
+   "name": {
+    "de": "Flug ab Gas",
+    "en": "Flight from throttle"
+   },
+   "werk": 10,
+   "min": 1,
+   "max": 100,
+   "einheit": "%",
+   "lua": "gasSchwelle"
+  },
+  {
+   "s": "pause_s",
+   "art": "z",
+   "gruppe": "Flug",
+   "name": {
+    "de": "Pause nach",
+    "en": "Pause after"
+   },
+   "werk": 20,
+   "min": 5,
+   "max": 300,
+   "einheit": "s",
+   "lua": "pauseS"
+  },
+  {
+   "s": "flug_min",
+   "art": "z",
+   "gruppe": "Flug",
+   "name": {
+    "de": "Flug zählt ab",
+    "en": "Flight counts from"
+   },
+   "werk": 30,
+   "min": 0,
+   "max": 600,
+   "einheit": "s",
+   "lua": "flugMin"
+  },
+  {
+   "s": "akku_ende",
+   "art": "b",
+   "gruppe": "Flug",
+   "name": {
+    "de": "Akkuwechsel beendet Flug",
+    "en": "Battery change ends flight"
+   },
+   "werk": true,
+   "lua": "akkuEnde"
+  },
+  {
+   "s": "ansage",
+   "art": "b",
+   "gruppe": "Ansagen",
+   "name": {
+    "de": "Alarme ansagen",
+    "en": "Announce alarms"
+   },
+   "werk": true
+  },
+  {
+   "s": "warn_ansage",
+   "art": "b",
+   "gruppe": "Ansagen",
+   "name": {
+    "de": "Warnung auch ansagen",
+    "en": "Announce warnings too"
+   },
+   "werk": false,
+   "lua": "warnAnsage"
+  },
+  {
+   "s": "wdh",
+   "art": "z",
+   "gruppe": "Ansagen",
+   "name": {
+    "de": "Alarm wiederholen alle",
+    "en": "Repeat alarm every"
+   },
+   "werk": 10,
+   "min": 3,
+   "max": 300,
+   "einheit": "s"
+  },
+  {
+   "s": "schritt",
+   "art": "w",
+   "gruppe": "Ansagen",
+   "name": {
+    "de": "Akku % ansagen alle",
+    "en": "Announce battery % every"
+   },
+   "werk": 10,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "aus",
+      "en": "off"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "5 %",
+      "en": "5 %"
+     }
+    },
+    {
+     "wert": 10,
+     "name": {
+      "de": "10 %",
+      "en": "10 %"
+     }
+    },
+    {
+     "wert": 20,
+     "name": {
+      "de": "20 %",
+      "en": "20 %"
+     }
+    }
+   ]
+  },
+  {
+   "s": "motor_aus",
+   "art": "b",
+   "gruppe": "Ansagen",
+   "name": {
+    "de": "«Motor aus» ansagen",
+    "en": "Announce «motor off»"
+   },
+   "werk": true,
+   "lua": "motorAus"
+  },
+  {
+   "s": "sg_proz",
+   "art": "b",
+   "gruppe": "Ansagen",
+   "name": {
+    "de": "Ansage: Akku %",
+    "en": "Announce: battery %"
+   },
+   "werk": true,
+   "lua": "sgProz"
+  },
+  {
+   "s": "sg_zeit",
+   "art": "b",
+   "gruppe": "Ansagen",
+   "name": {
+    "de": "Ansage: Flugzeit",
+    "en": "Announce: flight time"
+   },
+   "werk": true,
+   "lua": "sgZeit"
+  },
+  {
+   "s": "sg_hoehe",
+   "art": "b",
+   "gruppe": "Ansagen",
+   "name": {
+    "de": "Ansage: Höhe",
+    "en": "Announce: altitude"
+   },
+   "werk": false,
+   "lua": "sgHoehe"
+  },
+  {
+   "s": "sg_mah",
+   "art": "b",
+   "gruppe": "Ansagen",
+   "name": {
+    "de": "Ansage: Verbraucht",
+    "en": "Announce: used"
+   },
+   "werk": false,
+   "lua": "sgMah"
+  },
+  {
+   "s": "ton",
+   "art": "b",
+   "gruppe": "Ansagen",
+   "name": {
+    "de": "Ton bei Alarm",
+    "en": "Tone on alarm"
+   },
+   "werk": true
+  },
+  {
+   "s": "vibration",
+   "art": "b",
+   "gruppe": "Ansagen",
+   "name": {
+    "de": "Vibration bei Alarm",
+    "en": "Vibration on alarm"
+   },
+   "werk": false
+  },
+  {
+   "s": "sprache",
+   "art": "w",
+   "gruppe": "Anzeige",
+   "name": {
+    "de": "Sprache / Language",
+    "en": "Sprache / Language"
+   },
+   "werk": 0,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "wie der Sender",
+      "en": "as the radio"
+     }
+    },
+    {
+     "wert": 1,
+     "name": {
+      "de": "Deutsch",
+      "en": "Deutsch"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "English",
+      "en": "English"
+     }
+    }
+   ]
+  }
+ ],
+ "standard": {
+  "grenzen": {
+   "lua:akku_proz": {
+    "richtung": "unter",
+    "warnung": 30,
+    "alarm": 20,
+    "ansage": true,
+    "vibration": false
+   },
+   "lua:zelle": {
+    "richtung": "unter",
+    "warnung": 3.5,
+    "alarm": 3.3,
+    "ansage": true,
+    "vibration": false
+   },
+   "lua:zelle_diff": {
+    "richtung": "ueber",
+    "warnung": 0.1,
+    "alarm": 0.2,
+    "ansage": true,
+    "vibration": false
+   },
+   "lua:reglertemp": {
+    "richtung": "ueber",
+    "warnung": 70,
+    "alarm": 85,
+    "ansage": true,
+    "vibration": false
+   },
+   "lua:strom": {
+    "richtung": "ueber",
+    "warnung": 80,
+    "alarm": 100,
+    "ansage": true,
+    "vibration": false
+   },
+   "lua:verbraucht_proz": {
+    "richtung": "ueber",
+    "warnung": 70,
+    "alarm": 80,
+    "ansage": true,
+    "vibration": false
+   },
+   "lua:bec": {
+    "richtung": "unter",
+    "ansage": true,
+    "vibration": false
+   },
+   "lua:hoehe": {
+    "richtung": "ueber",
+    "warnung": 110,
+    "alarm": 120,
+    "ansage": true,
+    "vibration": false
+   },
+   "lua:rssi": {
+    "richtung": "unter",
+    "warnung": 45,
+    "alarm": 40,
+    "ansage": true,
+    "vibration": false
+   },
+   "lua:lq": {
+    "richtung": "unter",
+    "warnung": 70,
+    "alarm": 50,
+    "ansage": true,
+    "vibration": false
+   }
+  },
+  "ansichten": [
+   {
+    "breite": 784,
+    "hoehe": 316,
+    "plaetze": [
+     {
+      "x": 5,
+      "y": 38,
+      "b": 189,
+      "h": 144,
+      "w": "lua:akku_proz",
+      "darstellung": "ring",
+      "min": 0,
+      "max": 100,
+      "zusatz": "keine"
+     },
+     {
+      "x": 199,
+      "y": 38,
+      "b": 189,
+      "h": 144,
+      "w": "lua:strom",
+      "darstellung": "ring",
+      "min": 0,
+      "max": 120,
+      "zusatz": "max"
+     },
+     {
+      "x": 394,
+      "y": 38,
+      "b": 189,
+      "h": 144,
+      "w": "lua:drehzahl",
+      "darstellung": "ring",
+      "min": 0,
+      "max": 12000,
+      "zusatz": "max"
+     },
+     {
+      "x": 589,
+      "y": 38,
+      "b": 189,
+      "h": 144,
+      "w": "lua:reglertemp",
+      "darstellung": "ring",
+      "min": 0,
+      "max": 100,
+      "zusatz": "max"
+     },
+     {
+      "x": 5,
+      "y": 187,
+      "b": 189,
+      "h": 59,
+      "w": "lua:gas_proz",
+      "darstellung": "zahl",
+      "zusatz": "keine"
+     },
+     {
+      "x": 199,
+      "y": 187,
+      "b": 189,
+      "h": 59,
+      "w": "lua:zelle",
+      "darstellung": "zahl",
+      "zusatz": "min"
+     },
+     {
+      "x": 394,
+      "y": 187,
+      "b": 189,
+      "h": 59,
+      "w": "lua:verbraucht",
+      "darstellung": "zahl",
+      "zusatz": "keine"
+     },
+     {
+      "x": 589,
+      "y": 187,
+      "b": 189,
+      "h": 59,
+      "w": "lua:leistung",
+      "darstellung": "zahl",
+      "zusatz": "keine"
+     },
+     {
+      "x": 5,
+      "y": 251,
+      "b": 189,
+      "h": 59,
+      "w": "lua:hoehe",
+      "darstellung": "zahl",
+      "zusatz": "max"
+     },
+     {
+      "x": 199,
+      "y": 251,
+      "b": 189,
+      "h": 59,
+      "w": "lua:speed",
+      "darstellung": "zahl",
+      "zusatz": "max"
+     },
+     {
+      "x": 394,
+      "y": 251,
+      "b": 189,
+      "h": 59,
+      "w": "lua:rssi",
+      "darstellung": "zahl",
+      "zusatz": "min"
+     },
+     {
+      "x": 589,
+      "y": 251,
+      "b": 189,
+      "h": 59,
+      "w": "lua:fluege",
+      "darstellung": "zahl",
+      "zusatz": "keine"
+     }
+    ]
+   },
+   {
+    "breite": 800,
+    "hoehe": 480,
+    "plaetze": [
+     {
+      "x": 8,
+      "y": 64,
+      "b": 190,
+      "h": 198,
+      "w": "lua:akku_proz",
+      "darstellung": "ring",
+      "min": 0,
+      "max": 100,
+      "zusatz": "keine"
+     },
+     {
+      "x": 206,
+      "y": 64,
+      "b": 190,
+      "h": 198,
+      "w": "lua:strom",
+      "darstellung": "ring",
+      "min": 0,
+      "max": 120,
+      "zusatz": "max"
+     },
+     {
+      "x": 404,
+      "y": 64,
+      "b": 190,
+      "h": 198,
+      "w": "lua:drehzahl",
+      "darstellung": "ring",
+      "min": 0,
+      "max": 12000,
+      "zusatz": "max"
+     },
+     {
+      "x": 602,
+      "y": 64,
+      "b": 190,
+      "h": 198,
+      "w": "lua:reglertemp",
+      "darstellung": "ring",
+      "min": 0,
+      "max": 100,
+      "zusatz": "max"
+     },
+     {
+      "x": 8,
+      "y": 270,
+      "b": 232,
+      "h": 154,
+      "w": "lua:gas_proz",
+      "darstellung": "balken_w"
+     },
+     {
+      "x": 248,
+      "y": 270,
+      "b": 176,
+      "h": 97,
+      "w": "lua:zelle",
+      "darstellung": "zahl",
+      "zusatz": "min"
+     },
+     {
+      "x": 432,
+      "y": 270,
+      "b": 176,
+      "h": 97,
+      "w": "lua:verbraucht",
+      "darstellung": "zahl",
+      "zusatz": "keine"
+     },
+     {
+      "x": 616,
+      "y": 270,
+      "b": 176,
+      "h": 97,
+      "w": "lua:leistung",
+      "darstellung": "zahl",
+      "zusatz": "keine"
+     },
+     {
+      "x": 248,
+      "y": 375,
+      "b": 176,
+      "h": 97,
+      "w": "lua:hoehe",
+      "darstellung": "zahl",
+      "zusatz": "max"
+     },
+     {
+      "x": 432,
+      "y": 375,
+      "b": 176,
+      "h": 97,
+      "w": "lua:speed",
+      "darstellung": "zahl",
+      "zusatz": "max"
+     },
+     {
+      "x": 616,
+      "y": 375,
+      "b": 176,
+      "h": 97,
+      "w": "lua:rssi",
+      "darstellung": "zahl",
+      "zusatz": "min"
+     }
+    ]
+   }
+  ]
+ }
+}

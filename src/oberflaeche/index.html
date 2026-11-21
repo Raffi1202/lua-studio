@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'">
+  <title>Lua-Studio</title>
+  <link rel="stylesheet" href="stil.css">
+</head>
+<body>
+  <header class="kopf">
+    <div class="marke">Lua-Studio</div>
+    <nav class="reiter"><button class="reiter-knopf aktiv" data-reiter="live" data-t="reiterLive"></button><button class="reiter-knopf" data-reiter="studio" data-t="reiterModelle"></button><button id="vorbereitenOben" class="neben vorbereiten-oben" data-t="vorbereitenOben"></button></nav>
+    <div class="verbindung">
+      <label for="ziel" data-t="verbindung"></label>
+      <select id="ziel"></select>
+      <input id="simPort" type="number" min="1024" max="65535" value="8981" hidden>
+      <button id="suchen" class="neben" data-t="aktualisieren"></button>
+      <button id="verbinden" class="haupt" data-t="verbinden"></button>
+    </div>
+    <div class="hilfe-menue">
+      <button id="hilfeKnopf" class="neben" data-t="hilfeMenue" aria-haspopup="true"></button>
+      <div id="hilfeListe" class="hilfe-liste" hidden><button id="protokollAuf" data-t="protokollMenue"></button></div>
+    </div>
+    <div class="sprache">
+      <button data-sprache="de">DE</button><button data-sprache="en">EN</button>
+    </div>
+  </header>
+
+  <dialog id="protokollFenster" class="protokoll-fenster">
+    <div class="protokoll-kopf">
+      <h2 data-t="protokollTitel"></h2>
+      <span class="fuellen"></span>
+      <label for="protokollStufe" data-t="protokollStufe"></label>
+      <select id="protokollStufe">
+        <option value="aus" data-t="stufeAus"></option>
+        <option value="normal" data-t="stufeNormal"></option>
+        <option value="ausfuehrlich" data-t="stufeAusfuehrlich"></option>
+      </select>
+    </div>
+    <p class="leise klein"><span data-t="protokollHinweis"></span> <code id="protokollOrdner"></code></p>
+    <pre id="protokollText" class="log protokoll-text"></pre>
+    <div class="zeile">
+      <button id="protokollSupport" class="haupt" data-t="protokollSupport"></button>
+      <button id="protokollOrdnerAuf" class="neben" data-t="protokollOrdner"></button>
+      <button id="protokollNeu" class="neben" data-t="protokollNeu"></button>
+      <button id="protokollLoeschen" class="neben" data-t="protokollLoeschen"></button>
+      <span class="fuellen"></span>
+      <button id="protokollZu" class="neben" data-t="schliessen"></button>
+    </div>
+    <p id="protokollMeldung" class="leise klein"></p>
+  </dialog>
+
+  <div class="statusleiste">
+    <span id="punkt" class="punkt"></span>
+    <span id="statusText"></span>
+    <span id="info" class="leise"></span>
+    <span class="fuellen"></span>
+    <span id="takt" class="leise"></span>
+  </div>
+
+  <main class="live" id="bereichLive">
+    <section class="anzeige">
+      <div class="anzeige-werkzeuge">
+        <label for="zoom" data-t="groesse"></label>
+        <select id="zoom">
+          <option value="fit" data-t="einpassen"></option>
+          <option value="1">100 %</option>
+          <option value="1.5">150 %</option>
+          <option value="2">200 %</option>
+        </select>
+        <button id="foto" class="neben" data-t="foto" disabled></button>
+        <span id="fotoMeldung" class="leise"></span>
+      </div>
+      <div id="buehne" class="buehne">
+        <canvas id="bild" width="800" height="480" tabindex="0" hidden></canvas>
+        <p id="leer" class="leer" data-t="leer"></p>
+      </div>
+    </section>
+
+    <aside class="seite">
+      <section class="block">
+        <h2 data-t="tasten"></h2>
+        <div class="tasten">
+          <button data-taste="SYS">SYS</button>
+          <button data-taste="MDL">MDL</button>
+          <button data-taste="DISP">DISP</button>
+          <button data-taste="RTN">RTN</button>
+          <button data-taste="PAGE">PAGE</button>
+          <button data-taste="ENTER">ENTER</button>
+        </div>
+        <label class="haken"><input id="lang" type="checkbox"> <span data-t="lang"></span></label>
+        <h2 data-t="drehrad"></h2>
+        <div class="tasten zwei">
+          <button data-drehen="-1">⟲ −1</button>
+          <button data-drehen="1">⟳ +1</button>
+        </div>
+        <h2 data-t="textEingeben"></h2>
+        <form id="textForm" class="textzeile">
+          <input id="textFeld" type="text" autocomplete="off">
+          <button type="submit" data-t="senden"></button>
+        </form>
+        <p id="eingabeMeldung" class="leise klein"></p>
+      </section>
+      <section class="block">
+        <h2 data-t="hilfeTitel"></h2>
+        <ul id="hilfe" class="hilfe"></ul>
+      </section>
+      <section class="block log-block">
+        <div class="log-kopf"><h2 data-t="log"></h2><button id="logLeeren" class="neben klein" data-t="logLeeren"></button></div>
+        <pre id="log" class="log"></pre>
+      </section>
+    </aside>
+  </main>
+  <main class="studio" id="bereichStudio" hidden>
+    <aside class="modelle">
+      <div class="block">
+        <h2 data-t="quelle"></h2>
+        <select id="quelle"></select>
+        <div class="zeile"><button id="quelleSuchen" class="neben" data-t="aktualisieren"></button><button id="modelleLaden" class="haupt" data-t="modelleLaden"></button></div>
+        <p id="quelleMeldung" class="leise klein"></p>
+      </div>
+      <div class="block" id="vorbereitenBlock" hidden>
+        <button id="vorbereitenAuf" class="neben" data-t="vorbereitenNeu"></button>
+        <div id="vorbereitenForm" hidden>
+          <label class="klein leise" data-t="gruppe"></label><select id="vGruppe"></select>
+          <label class="klein leise" data-t="luaWahl"></label><select id="vLua"></select>
+          <label class="klein leise" data-t="modellnameFunke"></label><input id="vName" type="text" maxlength="40">
+          <p class="leise klein"><span data-t="kennung"></span>: <code id="vKennung"></code></p>
+          <div class="zeile"><button id="vAnlegen" class="haupt" data-t="anlegen"></button><button id="vAbbrechen" class="neben" data-t="abbrechen"></button></div>
+          <p id="vMeldung" class="leise klein"></p>
+        </div>
+      </div>
+      <div class="block modell-liste-block">
+        <h2 data-t="modelle"></h2>
+        <ul id="modellListe" class="modell-liste"></ul>
+        <p id="keineModelle" class="leise klein" data-t="keineModelle"></p>
+      </div>
+    </aside>
+    <section class="editor" id="editor" hidden>
+      <div class="editor-kopf">
+        <div><strong id="modellName"></strong> <span id="modellUnter" class="leise"></span></div>
+        <nav class="unterreiter">
+          <button class="aktiv" data-unter="anordnung" data-t="anordnung"></button>
+          <button data-unter="grenzen" data-t="grenzenEinstellungen"></button>
+          <button data-unter="uebertragen" data-t="uebertragen"></button>
+        </nav>
+        <span id="zaehlung" class="leise klein"></span>
+      </div>
+
+      <div class="unter" id="unterAnordnung">
+        <div class="werkzeuge">
+          <label data-t="ansicht"></label><select id="ansicht"></select>
+          <button id="platzNeu" class="neben" data-t="platzNeu"></button>
+          <button id="platzWeg" class="neben" data-t="platzWeg" disabled></button>
+          <button id="anordnenKnopf" class="neben" data-t="anordnen"></button>
+          <select id="anordnenArt" aria-label="Art">
+            <option value="gleich" data-t="artGleich"></option>
+            <option value="verhaeltnis" data-t="artVerhaeltnis"></option>
+            <option value="verteilen" data-t="artVerteilen"></option>
+            <option value="raster" data-t="artRaster"></option>
+          </select>
+          <span class="zusammen"><label for="abstandG" data-t="abstandG"></label>
+          <select id="abstandG">
+            <option value="auto" data-t="abstandAuto"></option>
+            <option value="4">4 px</option><option value="5">5 px</option><option value="6">6 px</option><option value="8">8 px</option><option value="10">10 px</option>
+          </select></span>
+          <button id="zentrieren" class="neben" data-t="zentrieren" disabled></button>
+          <button id="rueckgaengig" class="neben" data-t="rueckgaengig" disabled></button>
+          <span id="anordnungMeldung" class="leise klein"></span>
+        </div>
+        <div class="werkzeuge">
+          <label data-t="preset"></label><select id="presetWahl"></select>
+          <button id="presetAnwenden" class="neben" data-t="presetAnwenden"></button>
+          <span id="dekoWerkzeuge"><label data-t="schmuck"></label>
+            <button id="dekoSymbol" class="neben klein" data-t="dekoSymbol"></button>
+            <button id="dekoText" class="neben klein" data-t="dekoText"></button>
+            <button id="dekoLinie" class="neben klein" data-t="dekoLinie"></button>
+            <button id="dekoRahmen" class="neben klein" data-t="dekoRahmen"></button>
+          </span>
+          <span id="format2Hinweis" class="leise klein"></span>
+          <span id="presetInfo" class="leise klein"></span>
+        </div>
+        <p id="luaHinweis" class="leise klein"></p>
+        <div class="anordnung">
+          <div class="flaeche-rahmen" id="flaecheRahmen"><div class="flaeche" id="flaeche"></div></div>
+          <div class="eigenschaften" id="eigenschaften"><p class="leise klein" data-t="platzWaehlen"></p></div>
+        </div>
+      </div>
+
+      <div class="unter" id="unterGrenzen" hidden>
+        <div class="werkzeuge">
+          <label data-t="vorlage"></label><select id="vorlage"></select>
+          <button id="vorlageLaden" class="neben" data-t="vorlageLaden"></button>
+          <input id="vorlageName" type="text" maxlength="40" data-tp="vorlageName">
+          <button id="vorlageSpeichern" class="neben" data-t="vorlageSpeichern"></button>
+          <label data-t="vonModell"></label><select id="vonModell"></select>
+          <button id="vonModellKopieren" class="neben" data-t="kopieren"></button>
+          <span id="vorbereitungZeile"><label data-t="vonVorbereitet"></label><select id="vonVorbereitet"></select>
+          <button id="vonVorbereitetKopieren" class="neben" data-t="uebernehmen"></button></span>
+        </div>
+        <h2 data-t="grenzwerte"></h2>
+        <p class="leise klein" data-t="tonBleibt"></p>
+        <div id="motorAusBand" class="motor-aus-band" role="alert" hidden></div>
+        <table class="tabelle" id="tabGrenzen"></table>
+        <h2 data-t="werteAnpassen"></h2>
+        <table class="tabelle" id="tabWerte"></table>
+        <h2 data-t="einstellungen"></h2>
+        <table class="tabelle" id="tabEinstellungen"></table>
+      </div>
+
+      <div class="unter" id="unterUebertragen" hidden>
+        <p id="zielText"></p>
+        <p id="exportZeile" hidden><label data-t="exportZiel"></label> <select id="exportZiel"></select></p>
+        <label class="haken" id="funkeUebernehmenZeile" hidden><input id="funkeUebernehmen" type="checkbox" checked> <span data-t="funkeUebernehmen"></span></label>
+        <label class="haken" id="symboleLoeschenZeile" hidden><input id="symboleLoeschen" type="checkbox"> <span id="symboleLoeschenText"></span></label>
+        <details id="symboleListe" class="leise klein" hidden><summary data-t="symboleNamenZeigen"></summary><p id="symboleNamen"></p></details>
+        <p id="funkeHinweis" class="leise klein"></p>
+        <button id="uebertragenKnopf" class="haupt" data-t="uebertragenKnopf"></button>
+        <ol id="schritte" class="schritte"></ol>
+        <p><button id="schnelltestKnopf" class="neben" data-t="schnelltest"></button> <span class="leise klein" data-t="schnelltestHinweis"></span></p>
+        <ul id="schnelltestListe" class="schritte"></ul>
+      </div>
+      <div class="waechter" id="waechter"></div>
+    </section>
+    <section class="start-seite" id="startSeite">
+      <div class="start-karte">
+        <h3 data-t="startFunkeTitel"></h3>
+        <p class="leise" id="startFunkeText"></p>
+        <button id="startFunke" class="haupt"></button>
+      </div>
+      <div class="start-karte">
+        <h3 data-t="startVorbereitenTitel"></h3>
+        <p class="leise" data-t="startVorbereitenText"></p>
+        <button id="startVorbereiten" class="haupt" data-t="startVorbereitenKnopf"></button>
+        <p class="leise klein" id="startVorbereitete"></p>
+      </div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+  <script src="studio.js"></script>
+  <script src="protokoll.js"></script>
+</body>
+</html>

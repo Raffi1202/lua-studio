@@ -1,0 +1,53 @@
+# Baut die Windows-EXE und die Mac-App bei jedem Versions-Tag (v*) und hängt sie an den GitHub-Release dieses Tags.
+# (Release statt Artefakt: Das Artefakt-Kontingent des Kontos ist begrenzt.)
+# Von Hand: Actions › Bauen › Run workflow, Tag angeben (z. B. v0.1.0).
+name: Bauen
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release-Tag, an den die Dateien kommen (z. B. v0.1.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  bauen:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      TAG: ${{ github.event.inputs.tag || github.ref_name }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm test
+      - name: Release anlegen (falls noch nicht da)
+        shell: bash
+        run: |
+          # Text: Abschnitt der Version aus CHANGELOG.md und «Bekannte Grenzen» aus README.md
+          { awk '/^## /{n++} n==1' CHANGELOG.md; echo; awk '/^## Bekannte Grenzen/{p=1} /^## /&&!/Bekannte Grenzen/{p=0} p' README.md; } > notizen.md
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "Lua-Studio ${TAG#v}" --notes-file notizen.md || true
+      - name: Windows-EXE
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          npx electron-builder --win --publish never
+          gh release upload "$TAG" dist/*.exe --clobber
+      - name: Mac-App
+        if: runner.os == 'macOS'
+        run: |
+          npx electron-builder --mac --publish never
+          gh release upload "$TAG" dist/*.dmg --clobber
