@@ -2,6 +2,12 @@
 
 New entries in English. Older entries in German.
 
+## 0.6.0 (21 Nov 2026)
+
+- **Preview like the Lua (Electric first):** the preview draws every box, the top bar and the «Flights» field the way Electric 0.6.1 draws a studio file on the radio (its drawing rules from `ansicht.lua` / `zeichnen.lua`: colours, tile frame, title size, ring with unit below, bars, graph, extra line MAX/MIN/Ø, symbols, bold unit). Example values; Ethos font sizes approximated from simulator pictures. Other Luas keep the simple preview for now.
+- **Template «Original (like the Lua)»** for Electric: layout and colours of the built-in display, for all six window sizes (X14/X18 scaled from the X18RS). Only fields Electric 0.6.1 already reads – the Luas are not changed. Not possible via the studio file: footers like «6S 23,1V», the «AUF 0» button (reset), colour stripes, titles that follow the radio language (listed in the template hint). On X14/X18 sizes the «Flights» field becomes a normal box.
+- English interface: «Vorbereitet L» is shown as «prepared · X18RS / X20S / X20PRO», the unit «U/min» as «rpm».
+
 ## 0.5.1 (21 Nov 2026)
 
 - **Heli RF → Heli** (`helirf` → `heli`): description of Heli 1.13.0 included. Projects and templates on the PC move from `helirf` to `heli` once at start; an old `<id>.helirf.lua` on the radio is recognised and stays there.

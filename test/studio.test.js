@@ -153,3 +153,22 @@ test('Umbenennung: alte Studio-Datei auf der Funke wird erkannt und bleibt beim 
   assert.ok(fs.existsSync(path.join(tmp, 'Extra.electric.lua')) && fs.existsSync(path.join(tmp, 'Extra.elektro.lua')))
   assert.ok(schritte.includes('alteDateiBleibt|Extra.elektro.lua'))
 })
+
+test('Vorlage «Original» (0.6.0): Electric mit Farben wie die eingebaute Anzeige, alle 6 Fenstergrössen, gültig', () => {
+  const b = S.beschreibungenLaden(path.join(__dirname, '..', 'src', 'luas'))
+  const p = S.presets(b.electric)
+  assert.strictEqual(p[0].s, 'original')
+  assert.deepStrictEqual(p[0].verworfen, [])
+  assert.deepStrictEqual(p[0].ansichten.map((a) => `${a.breite}x${a.hoehe}`).sort(), ['472x210', '480x320', '630x258', '640x360', '784x316', '800x480'])
+  for (const a of p[0].ansichten) {
+    for (const q of a.plaetze) assert.ok(q.x >= 0 && q.y >= 0 && q.x + q.b <= a.breite && q.y + q.h <= a.hoehe)
+    for (const q of a.plaetze) for (const r of a.plaetze) if (q !== r) assert.ok(!(q.x < r.x + r.b && r.x < q.x + q.b && q.y < r.y + r.h && r.y < q.y + q.h))
+  }
+  const akku = p[0].ansichten.find((a) => a.breite === 800).plaetze.find((q) => q.w === 'lua:akku_proz')
+  assert.deepStrictEqual(akku.farbe, [64, 220, 110])
+  // Datei mit der Vorlage besteht die Prüfung wie die Funke (Format 2, nur bekannte Felder)
+  const d = S.dateiDaten({ einstellungen: {}, werte: {}, grenzen: {}, ansichten: p[0].ansichten.filter((a) => a.breite >= 784) }, { formate: [1, 2] })
+  assert.strictEqual(F.pruefenWieFunke(F.dateiText(d)), null)
+  // Luas ohne Original-Vorlage: unverändert
+  assert.ok(!S.presets(b.jet).some((x) => x.s === 'original'))
+})

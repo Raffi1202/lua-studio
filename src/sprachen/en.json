@@ -160,6 +160,7 @@
   "alarmAus": "Switch this alarm off completely",
   "g_aus": "Off",
   "beideLeerWerk": "Both levels empty: the radio uses the factory limit. Completely off only with «Off».",
+  "vorbereitetKurz": "prepared",
   "keinAlarmEingestellt": "No alarm set: enter a warning or alarm first",
   "g_beiMotorAus": "also with motor off",
   "alle": "all",

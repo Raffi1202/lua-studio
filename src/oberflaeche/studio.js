@@ -87,6 +87,14 @@ async function symbolGrau(n, k) {
 // Sichtbare Namen der Luas (Umbenennung 21.11.2026); unbekannte zeigen ihren Schlüssel
 const LUA_NAME = { electric: 'Electric', glider: 'Glider', heli: 'Heli', helirf: 'Heli', gas_ecu: 'Gas Engine ECU', gas_carb: 'Gas Engine Carb', jet: 'Jet' }
 function luaName(k) { return LUA_NAME[k] || k }
+// «Vorbereitet L» ist der interne Ablagename vorbereiteter Modelle; angezeigt wird er übersetzt mit dem Namen der Displaygruppe
+function funkeAnzeige(f) {
+  const m = /^Vorbereitet ([LMS])$/.exec(String(f || ''))
+  return m ? `${t('vorbereitetKurz')} · ${(st.gruppen[m[1]] || {}).name || m[1]}` : (f || '')
+}
+// Einheiten aus den Beschreibungen sind deutsch; in der englischen Oberfläche wie das Lua auf Englisch
+const EINHEIT_EN = { 'U/min': 'rpm' }
+function einheitAnzeige(e) { return sprache === 'en' && EINHEIT_EN[e] ? EINHEIT_EN[e] : e }
 function beschreibung() { return st.m ? st.luas[st.m.lua] : null }
 function ansichtAktuell() { return st.projekt ? st.projekt.ansichten[st.ansicht] : null }
 
@@ -233,7 +241,7 @@ async function modellOeffnen(m) {
   st.presets = await api.studio('presets', m.lua)
   $('editor').hidden = false
   $('modellName').textContent = (m.info && m.info.modell) || m.kennung
-  $('modellUnter').textContent = `${luaName(m.lua)} ${(m.info && m.info.luaVersion) || ''} · ${(m.info && m.info.funke) || ''}`
+  $('modellUnter').textContent = `${luaName(m.lua)} ${(m.info && m.info.luaVersion) || ''} · ${funkeAnzeige(m.info && m.info.funke)}`
   const b = beschreibung()
   $('luaHinweis').textContent = b && b.hinweis ? name(b.hinweis) : ''
   modellListeZeigen()
@@ -281,8 +289,18 @@ function flaecheZeigen() {
   f.style.width = a.breite * s + 'px'
   f.style.height = a.hoehe * s + 'px'
   const probleme = anordnungPruefen(a)
+  // Vorschau wie im Lua: Hintergrund, Kopfzeile und feste Felder echt gezeichnet (statt schraffiert)
+  const stil = st.m && window.LUA_VORSCHAU && LUA_VORSCHAU.stil(st.m.lua)
+  f.style.background = stil ? stil.hintergrund : ''
+  if (stil) {
+    const g = document.createElementNS(SVG, 'svg')
+    g.setAttribute('viewBox', `0 0 ${a.breite} ${a.hoehe}`)
+    g.setAttribute('class', 'lua-grund')
+    stil.flaeche(g, a, luaKontext(stil, a))
+    f.appendChild(g)
+  }
   for (const r of reserviert(a)) {
-    const z = el('div', { class: 'reserviert', text: name(r.name) })
+    const z = el('div', { class: 'reserviert' + (stil ? ' lua' : ''), text: name(r.name), title: name(r.was || r.name) || undefined })
     z.style.left = r.x * s + 'px'; z.style.top = r.y * s + 'px'; z.style.width = r.b * s + 'px'; z.style.height = r.h * s + 'px'
     f.appendChild(z)
   }
@@ -290,8 +308,10 @@ function flaecheZeigen() {
   a.plaetze.forEach((p, i) => {
     const k = el('div', { class: 'kasten' + (i === st.gewaehlt ? ' gewaehlt' : '') + (probleme.has(i) ? ' fehler' : ''), title: probleme.get(i) || '' })
     k.style.left = p.x * s + 'px'; k.style.top = p.y * s + 'px'; k.style.width = p.b * s + 'px'; k.style.height = p.h * s + 'px'
-    k.style.background = rgbHex(p.hintergrund, '#1d2026')
-    k.appendChild(vorschau(p))
+    if (stil) { k.classList.add('lua'); k.appendChild(luaPlatz(stil, p, a)) } else {
+      k.style.background = rgbHex(p.hintergrund, '#1d2026')
+      k.appendChild(vorschau(p))
+    }
     const griff = el('div', { class: 'griff' })
     k.appendChild(griff)
     k.addEventListener('pointerdown', (ev) => ziehenStart(ev, i, ev.target === griff))
@@ -335,6 +355,65 @@ function anordnungPruefen(a) {
   return m
 }
 
+// ---------- Vorschau wie im Lua (lua-vorschau.js) ----------
+function luaKontext(stil, a) {
+  const T = (stil.texte && (stil.texte[sprache] || stil.texte.en)) || {}
+  return { ansicht: a, T, modell: String((st.m && st.m.info && st.m.info.modell) || 'DEMO').toUpperCase(),
+    symbol: (svg, q, farbe) => symbolUndEinheit(svg, q.p, farbe, q.einheit, q.zeit || q.darstellung === 'status') }
+}
+// Symbol und fette Einheit oben links (Format 2 §5, wie studio_symbole.lua); Rückgabe Einzug des Titels und ob die Einheit am Wert steht
+function symbolUndEinheit(svg, p, farbe, einheit, zeitOderStatus) {
+  if (!kann2()) return { ein: 0, amWert: true }
+  const B = displayBreite(ansichtAktuell().breite)
+  const r = Math.round(4 * B / 800)
+  const fett = p.einheitZeigen === 'fett' && einheit && !zeitOderStatus
+  let x = r, hoch = 0, da = false
+  if (p.symbol && katalog(p.symbol)) {
+    const k = kante(p.symbolPx || 24, B)
+    const e = svgSymbol(p.symbol, r, r, k, farbe)
+    if (e) { svg.appendChild(e); x = r + k + r; hoch = k; da = true }
+  }
+  if (fett) {
+    const gr = hoch >= kante(32, B) ? 16 : 12
+    const e = document.createElementNS(SVG, 'text')
+    e.setAttribute('x', x); e.setAttribute('y', r + Math.max(hoch, gr) / 2 + gr * 0.35); e.setAttribute('font-size', gr); e.setAttribute('font-weight', 'bold')
+    e.setAttribute('fill', farbe); e.setAttribute('font-family', 'sans-serif'); e.textContent = einheit
+    svg.appendChild(e)
+    x += Math.round(einheit.length * gr * 0.62) + r
+    da = true
+  }
+  return { ein: da ? x : 0, amWert: !(p.einheitZeigen === false || fett) }
+}
+// Angaben eines Platzes für die Vorschau (Beispielwert 62 % des Bereichs)
+function platzInfo(p, stil) {
+  const w = wertInfo(p.w)
+  const def = (w && w.def) || {}
+  const lo = p.min !== undefined ? p.min : (def.min !== undefined ? def.min : 0)
+  let hi = p.max !== undefined ? p.max : (def.max !== undefined ? def.max : 100)
+  if (hi <= lo) hi = lo + 1
+  const wert = lo + (hi - lo) * 0.62
+  const einheit = (st.projekt.werte[p.w] && st.projekt.werte[p.w].einheit) || einheitAnzeige(def.einheit) || (w && w.sensor && w.sensor.einheit) || (p.w && p.w.startsWith('kanal') ? '%' : '')
+  const stellen = (st.projekt.werte[p.w] && st.projekt.werte[p.w].stellen) ?? def.stellen ?? 0
+  let zahlText = wert.toFixed(stellen)
+  if (stil && stil.zahlKomma && sprache === 'de' && stellen > 0) zahlText = zahlText.replace('.', ',')
+  const mmss = (s) => { s = Math.round(s); const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), x = String(s % 60).padStart(2, '0'); return h ? `${h}:${String(m).padStart(2, '0')}:${x}` : `${m}:${x}` }
+  let farbeWert = p.farbe ? rgbHex(p.farbe) : null
+  for (const z of p.stufen || []) if (wert >= z.ab) farbeWert = rgbHex(z.farbe)
+  const T = (stil && stil.texte && (stil.texte[sprache] || stil.texte.en)) || {}
+  let statusText = def.zustaende && def.zustaende[1] ? name({ de: def.zustaende[1].de, en: def.zustaende[1].en }) : t('status')
+  let statusFarbe = def.zustaende && def.zustaende[1] && def.zustaende[1].farbe ? rgbHex(def.zustaende[1].farbe) : null
+  if (p.w === 'lua:motor' && T.scharf) { statusText = T.scharf; statusFarbe = null }
+  return { p, w: p.w, leer: !p.w || p.w === 'leer', darstellung: p.darstellung || 'zahl', titel: p.titel || (def.titelLaufend ? name(def.titelLaufend) : (w ? w.text : '—')),
+    einheit, zeit: !!def.zeit, zahlText, zeitText: mmss(wert), anteil: Math.max(0, Math.min(1, (wert - lo) / (hi - lo))),
+    farbeWert, hintergrund: p.hintergrund ? rgbHex(p.hintergrund) : null, zusatz: p.zusatz, statusText, statusFarbe }
+}
+function luaPlatz(stil, p, a) {
+  const svg = document.createElementNS(SVG, 'svg')
+  svg.setAttribute('viewBox', `0 0 ${p.b} ${p.h}`)
+  stil.platz(svg, p.b, p.h, platzInfo(p, stil), luaKontext(stil, a))
+  return svg
+}
+
 // Vorschau eines Kästchens (Annäherung; die genaue Darstellung zeigt die Funke)
 function vorschau(p) {
   const w = wertInfo(p.w)
@@ -342,7 +421,7 @@ function vorschau(p) {
   const min = p.min !== undefined ? p.min : (def.min !== undefined ? def.min : 0)
   const max = p.max !== undefined ? p.max : (def.max !== undefined ? def.max : 100)
   const wert = min + (max - min) * 0.62
-  const einheit = (st.projekt.werte[p.w] && st.projekt.werte[p.w].einheit) || def.einheit || (w && w.sensor && w.sensor.einheit) || (p.w && p.w.startsWith('kanal') ? '%' : '')
+  const einheit = (st.projekt.werte[p.w] && st.projekt.werte[p.w].einheit) || einheitAnzeige(def.einheit) || (w && w.sensor && w.sensor.einheit) || (p.w && p.w.startsWith('kanal') ? '%' : '')
   const stellen = (st.projekt.werte[p.w] && st.projekt.werte[p.w].stellen) ?? def.stellen ?? 0
   const titel = p.titel || (def.titelLaufend ? name(def.titelLaufend) : (w ? w.text : '—'))
   const farbe = rgbHex(p.farbe, '#30c060')
@@ -775,7 +854,7 @@ function grenzenZeigen() {
       if (f === 'stellen' && v !== undefined) v = Math.max(0, Math.min(3, Math.round(v)))
       setze(f, v)
     } })
-    const einheit = el('input', { type: 'text', value: a.einheit || '', placeholder: (w && w.def && w.def.einheit) || (w && w.sensor && w.sensor.einheit) || '', oninput: (e) => {
+    const einheit = el('input', { type: 'text', value: a.einheit || '', placeholder: einheitAnzeige(w && w.def && w.def.einheit) || (w && w.sensor && w.sensor.einheit) || '', oninput: (e) => {
       let v = e.target.value; while (bytes(v) > 8) v = v.slice(0, -1); if (v !== e.target.value) e.target.value = v; setze('einheit', v || undefined)
     } })
     tw.appendChild(el('tr', {}, [el('td', { text: w ? w.text : k }), el('td', {}, [zahl('faktor', '1')]), el('td', {}, [zahl('versatz', '0')]), el('td', {}, [einheit]), el('td', {}, [zahl('stellen', String((w && w.def && w.def.stellen) ?? 0), { min: 0, max: 3 })])]))

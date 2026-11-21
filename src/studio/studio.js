@@ -299,7 +299,14 @@ function presets(beschreibung) {
     if (!ansichten.length) continue
     r.push({ s: v.s, name: v.name, hinweis: v.hinweis, ansichten, verworfen: [...new Set(verworfen)] })
   }
-  if (!r.length && beschreibung && beschreibung.standard && Array.isArray(beschreibung.standard.ansichten)) {
+  // Vorlage «Original» (wie die eingebaute Anzeige des Luas) zuerst, falls das Studio sie für dieses Lua kennt
+  const orig = require('./original').original(beschreibung)
+  if (orig) {
+    verworfen = []
+    const ansichten = sauber(orig.ansichten)
+    if (ansichten.length) r.unshift({ s: orig.s, name: orig.name, hinweis: orig.hinweis, ansichten, verworfen: [...new Set(verworfen)] })
+  }
+  if (!r.some((x) => x.s !== 'original') && beschreibung && beschreibung.standard && Array.isArray(beschreibung.standard.ansichten)) {
     verworfen = []
     const ansichten = sauber(beschreibung.standard.ansichten)
     if (ansichten.length) r.push({ s: 'standard', name: { de: 'Standard des Luas', en: 'Lua default' }, ansichten, verworfen: [...new Set(verworfen)] })
