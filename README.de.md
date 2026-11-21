@@ -78,7 +78,7 @@ Symbole und Schmuck braucht ein Lua, das Format 2 kann. Für ältere Luas schrei
 | Lua | Studio-Unterstützung |
 |---|---|
 | [Electric](https://github.com/Raffi1202/electric-lua) 0.6.1 | format 2, «auch bei Motor aus» |
-| [Heli](https://github.com/Raffi1202/heli-lua) 1.12.0 | format 2, «auch bei Motor aus» |
+| [Heli](https://github.com/Raffi1202/heli-lua) 1.13.0 | format 2, «auch bei Motor aus» |
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.4.0 | format 2, «auch bei Motor aus» |
 | [Glider](https://github.com/Raffi1202/glider-lua) 0.5.0 | format 1, «auch bei Motor aus» |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.10.0 / 0.10.0 | format 1, «auch bei Motor aus» |

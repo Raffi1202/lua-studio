@@ -1,14 +1,14 @@
 {
- "lua": "helirf",
- "luaVersion": "1.12.0",
+ "lua": "heli",
+ "luaVersion": "1.13.0",
  "formate": [
   1,
   2
  ],
  "beiMotorAus": true,
  "hinweis": {
-  "de": "Heli RF zeichnet oben die Kopfzeile bzw. Leiste selbst. Im Vollbild ersetzt die Ansicht nur Seite 1 (die Flugliste bleibt; Wischen nach links oder Drehrad öffnet sie). Grenzwerte gelten je Wert, auch wenn er auf keinem Platz steht. Der Flugmodus ist kein Studio-Wert. Weitere Grenzen (Sensoren, Kanäle) melden mit Ton und Vibration, ohne Ansage, alle 10 s.",
-  "en": "Heli RF draws the top bar itself. In full screen the view replaces page 1 only (the flight list stays; swipe left or the rotary encoder opens it). Limits apply per value, even if it is on no field. The flight mode is not a Studio value. Further limits (sensors, channels) alert with tone and vibration, without callout, every 10 s."
+  "de": "Heli zeichnet oben die Kopfzeile bzw. Leiste selbst. Im Vollbild ersetzt die Ansicht nur Seite 1 (die Flugliste bleibt; Wischen nach links oder Drehrad öffnet sie). Grenzwerte gelten je Wert, auch wenn er auf keinem Platz steht. Der Flugmodus ist kein Studio-Wert. Weitere Grenzen (Sensoren, Kanäle) melden mit Ton und Vibration, ohne Ansage, alle 10 s.",
+  "en": "Heli draws the top bar itself. In full screen the view replaces page 1 only (the flight list stays; swipe left or the rotary encoder opens it). Limits apply per value, even if it is on no field. The flight mode is not a Studio value. Further limits (sensors, channels) alert with tone and vibration, without callout, every 10 s."
  },
  "reserviert": [
   {

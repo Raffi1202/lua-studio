@@ -40,7 +40,7 @@ A program for Mac and Windows that belongs to our FrSky Ethos Lua widgets (Elect
 | Lua | Studio support |
 |---|---|
 | [Electric](https://github.com/Raffi1202/electric-lua) 0.6.1 | format 2, «also when motor off» |
-| [Heli](https://github.com/Raffi1202/heli-lua) 1.12.0 | format 2, «also when motor off» |
+| [Heli](https://github.com/Raffi1202/heli-lua) 1.13.0 | format 2, «also when motor off» |
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.4.0 | format 2, «also when motor off» |
 | [Glider](https://github.com/Raffi1202/glider-lua) 0.5.0 | format 1, «also when motor off» |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.10.0 / 0.10.0 | format 1, «also when motor off» |

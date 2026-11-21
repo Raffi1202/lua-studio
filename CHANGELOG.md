@@ -2,6 +2,11 @@
 
 New entries in English. Older entries in German.
 
+## 0.5.1 (21 Nov 2026)
+
+- **Heli RF → Heli** (`helirf` → `heli`): description of Heli 1.13.0 included. Projects and templates on the PC move from `helirf` to `heli` once at start; an old `<id>.helirf.lua` on the radio is recognised and stays there.
+- Glider description updated (reports version 0.5.0).
+
 ## 0.5.0 (21 Nov 2026)
 
 - **Luas renamed to English:** Elektro → **Electric** (`electric`), Segler → **Glider** (`glider`), Motoren ECU → **Gas Engine ECU** (`gas_ecu`), Motoren Vergaser → **Gas Engine Carb** (`gas_carb`). Heli RF → **Heli** (`heli`) follows as soon as Heli 1.13.0 is released; until then Lua-Studio keeps `helirf` and shows it as «Heli».
