@@ -1,6 +1,6 @@
 'use strict'
 // Studio-Datei nach Lua-Studio-Format v1 schreiben und mit denselben Regeln prüfen wie die Funke
-// (FrSky Koordination/Lua-Studio-Format v1.md, Abschnitte 2.1, 4, 6; Referenz studio_laden.lua).
+// (Lua-Studio-Format v1.md, Abschnitte 2.1, 4, 6; Referenz studio_laden.lua).
 
 const FORMAT = 1
 const GRENZE_FUNKE = { byte: 16384, elemente: 1200, tabellen: 240 }

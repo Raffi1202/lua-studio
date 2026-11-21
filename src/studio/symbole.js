@@ -1,5 +1,5 @@
 'use strict'
-// Symbole für Format 2 (FrSky Koordination/Lua-Studio-Format 2.md, Abschnitte 2–4):
+// Symbole für Format 2 (Lua-Studio-Format 2.md, Abschnitte 2–4):
 // Katalog, Kantenlänge je Display, Graustufen-PNG schreiben und prüfen, Liste «symbole» einer Studio-Datei bilden.
 
 const zlib = require('zlib')

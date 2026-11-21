@@ -171,7 +171,7 @@ Nach der Rückmeldung des Users vom 21.11.2026 und dem Konzeptblatt «Lua-Studio
   - schreibt, liest zurück und vergleicht
   - übernimmt auf Wunsch Änderungen von der Funke
   - lädt das Modell neu
-- Dateien nach dem Lua-Studio-Format v1 (FrSky Koordination), abgeglichen mit der Lua-Referenzfunktion: höchstens 15 KB und 1100 Angaben.
+- Dateien nach dem Lua-Studio-Format v1, abgeglichen mit der Lua-Referenzfunktion: höchstens 15 KB und 1100 Angaben.
 - Beschreibungen der Luas Elektro 0.3.0, Motoren ECU 1.8.0, Motoren Vergaser 0.8.0, Segler 0.3.0 und Jet 0.1.1 sind dabei. Heli folgt.
 - **Funke live flüssig:** Auf dem Mac kamen die Antworten der Funke stark verspätet an, weil die Seriell-Bibliothek
   neue Daten zu spät meldete. Das Studio liest jetzt selbst alle 5 ms, wie FrSkys radio_remote.py. Ergebnis an der X18RS:
