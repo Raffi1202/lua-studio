@@ -13,6 +13,8 @@
 | Bild bleibt stehen | Trennen und neu verbinden. |
 | Mac: Programm startet nicht | Kapitel 3 (Trotzdem öffnen). Programm aus dem DMG zuerst in «Programme» kopieren. |
 
+**«Modelle laden» bleibt leer** (ab 0.8.2 mit Hinweis): Das Lua schreibt seine Info-Datei erst, wenn das Modell mit dem Widget einmal auf der Funke geladen war. Lua-Studio sucht sie im Ordner `scripts/studio` auf der SD-Karte und im internen Speicher. **Notlösung:** Im Reiter «Übertragen» **Als Datei speichern …** und die Datei `&lt;Kennung>.&lt;lua>.lua` von Hand nach `scripts/studio` kopieren (Ordner `studio` neben dem Lua-Ordner), dann das Modell einmal wechseln. Symbole sind in dieser Datei nicht enthalten.
+
 ## Lua-Speicher
 
 Die Luas teilen sich den Lua-Speicher der Funke (rund 2048 KB auf der X18RS). Meldet die Funke «Zu wenig Lua-Speicher» bzw. «too much RAM», die Funke aus- und einschalten.

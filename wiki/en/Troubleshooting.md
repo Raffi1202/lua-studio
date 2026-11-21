@@ -13,6 +13,8 @@
 | Picture does not change | Disconnect and connect again. |
 | Mac: program does not start | See chapter 3 (Open Anyway). Copy the app from the DMG into Applications first. |
 
+**«Load models» stays empty** (from 0.8.2 with a hint): the Lua writes its info file only after the model with the widget has been loaded once on the radio. Lua-Studio looks for it in `scripts/studio` on the SD card and in internal storage. **Fallback:** in the «Transfer» tab use **Save as file …** and copy the file `&lt;id>.&lt;lua>.lua` by hand to `scripts/studio` (folder `studio` next to the Lua folder), then change the model once. Symbols are not included in this file.
+
 ## Lua memory
 
 The Luas share the Lua memory of the radio (about 2048 KB on the X18RS). If the radio reports «too much RAM», switch the radio off and on.

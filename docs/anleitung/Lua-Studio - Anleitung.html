@@ -22,7 +22,7 @@
 </head>
 <body>
 <h1>Lua-Studio – Anleitung</h1>
-<p class="unter">Version 0.8.1 · Stand 21.11.2026 · English manual: «Lua-Studio - Manual»</p>
+<p class="unter">Version 0.8.2 · Stand 21.11.2026 · English manual: «Lua-Studio - Manual»</p>
 
 <h2>1. Was ist Lua-Studio?</h2>
 <p>Lua-Studio ist ein Programm für Mac und Windows. Es gehört zu unseren Ethos-Luas (Electric, Heli, Jet, Glider, Gas Engine).
@@ -38,9 +38,9 @@ bedienst die Funke mit Maus und Tastatur. Das geht über ein USB-Kabel im <b>Ser
   <li>Mac (Apple-Chip oder Intel) oder Windows-PC (64 Bit), USB-Datenkabel.</li>
   <li>Die passende Datei aus dem GitHub-Release (Seite «Releases» rechts im Repo):
     <ul>
-      <li>Mac mit Apple-Chip: <code>Lua-Studio-0.8.1-mac-arm64.dmg</code></li>
-      <li>Mac mit Intel: <code>Lua-Studio-0.8.1-mac-x64.dmg</code></li>
-      <li>Windows: <code>Lua-Studio-0.8.1-win-x64.exe</code></li>
+      <li>Mac mit Apple-Chip: <code>Lua-Studio-0.8.2-mac-arm64.dmg</code></li>
+      <li>Mac mit Intel: <code>Lua-Studio-0.8.2-mac-x64.dmg</code></li>
+      <li>Windows: <code>Lua-Studio-0.8.2-win-x64.exe</code></li>
     </ul>
   </li>
 </ul>
@@ -203,6 +203,7 @@ Reitern öffnet das Vorbereiten-Formular von überall.</p>
   <tr><td>Mac: Programm startet nicht</td><td>Kapitel 3 (Trotzdem öffnen). Programm aus dem DMG zuerst in «Programme» kopieren.</td></tr>
 </table>
 
+<p><b>«Modelle laden» bleibt leer</b> (ab 0.8.2 mit Hinweis): Das Lua schreibt seine Info-Datei erst, wenn das Modell mit dem Widget einmal auf der Funke geladen war. Lua-Studio sucht sie im Ordner <code>scripts/studio</code> auf der SD-Karte und im internen Speicher. <b>Notlösung:</b> Im Reiter «Übertragen» <b>Als Datei speichern …</b> und die Datei <code>&lt;Kennung&gt;.&lt;lua&gt;.lua</code> von Hand nach <code>scripts/studio</code> kopieren (Ordner <code>studio</code> neben dem Lua-Ordner), dann das Modell einmal wechseln. Symbole sind in dieser Datei nicht enthalten.</p>
 <h2>9. Fehler melden (ab 0.3.3)</h2>
 <p>Lua-Studio schreibt in einem <b>Fehlerprotokoll</b> mit, was passiert: Start (Version, Betriebssystem), Verbinden und Trennen,
 Modelle laden, jeden Schritt beim Übertragen, Funken-Schnelltest, Sperren des Grössenwächters und <b>jeden Fehler</b> mit

@@ -217,7 +217,8 @@ async function modelleLaden() {
   $('quelleMeldung').textContent = t('lade')
   const r = await api.studio('modelle', q)
   if (!r.ok) { $('quelleMeldung').textContent = `${t('fehler')}: ${fehlerText(r.fehler)}`; return }
-  $('quelleMeldung').textContent = ''
+  // Keine Info-Datei gefunden: klar sagen, was zu tun ist (Befund 0.8.1, X20 Pro)
+  $('quelleMeldung').textContent = r.modelle.length || q.art !== 'funke' ? '' : t('keineInfoDateien')
   st.modelle = r.modelle
   modellListeZeigen()
 }
@@ -1129,11 +1130,16 @@ async function exportZieleZeigen() {
   st.exportZiele = z.laufwerke.map((w) => ({ art: 'laufwerk', wurzel: w, text: `${t('quelleLaufwerk')} ${w}` }))
   if (alt && alt.art === 'ordner') st.exportZiele.push(alt)
   st.exportZiele.push({ art: 'ordnerWaehlen', text: t('ordnerWaehlen') })
+  // Platzhalter zuerst: sonst ist «Ordner wählen …» schon gewählt und ein Klick darauf löst nichts aus (Befund 0.8.1)
+  // nur ohne erkanntes Laufwerk; sonst ist wie bisher das erste Laufwerk vorgewählt
+  const ohneLaufwerk = !z.laufwerke.length
+  if (ohneLaufwerk) sel.appendChild(el('option', { value: '', text: t('zielWaehlen'), selected: !alt }))
   st.exportZiele.forEach((q, i) => sel.appendChild(el('option', { value: i, text: q.text, selected: alt && q.text === alt.text })))
-  st.exportSpec = st.exportZiele[Number(sel.value)]
+  st.exportSpec = sel.value === '' ? null : st.exportZiele[Number(sel.value)]
   if (st.exportSpec && st.exportSpec.art === 'ordnerWaehlen') st.exportSpec = null
 }
 $('exportZiel').addEventListener('change', async (e) => {
+  if (e.target.value === '') { st.exportSpec = null; uebertragenZeigen(); return }
   const q = st.exportZiele[Number(e.target.value)]
   if (q.art === 'ordnerWaehlen') {
     const p = await api.studio('ordnerWaehlen')
@@ -1142,6 +1148,18 @@ $('exportZiel').addEventListener('change', async (e) => {
   } else st.exportSpec = q
   uebertragenZeigen()
 })
+
+// Notlösung: Studio-Datei als Datei speichern (Speichern-Dialog), danach von Hand auf die SD-Karte kopieren
+async function exportDatei() {
+  if (!st.m || !st.projekt) return
+  const r = await api.studio('exportDatei', { lua: st.m.lua, kennung: st.m.kennung, projekt: st.projekt, meta: meta() })
+  if (r.abgebrochen) return
+  $('schritte').textContent = ''
+  if (!r.ok) { $('schritte').appendChild(el('li', { class: 'fehler', text: `${t('fehler')}: ${fehlerText(String(r.fehler).startsWith('pruefen|') ? r.fehler : 'u_' + r.fehler)}` })); return }
+  $('schritte').appendChild(el('li', { class: 'gut', text: t('exportDateiOk').replace('{pfad}', r.pfad).replace('{datei}', `${st.m.kennung}.${st.m.lua}.lua`) }))
+  if (r.symbole) $('schritte').appendChild(el('li', { class: 'warn', text: t('exportDateiSymbole') }))
+}
+$('exportDateiKnopf').addEventListener('click', exportDatei)
 
 async function uebertragenZeigen() {
   const vorbereitet = st.m && st.m.vorbereitet

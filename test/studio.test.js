@@ -224,3 +224,15 @@ test('Darstellungen des Luas (Gas Engine 1.11.0 / 0.11.0 «zylinder», «tank»)
   // Electric (ohne darstellungenExtra) bekommt keine Gas-Darstellung über eine Vorlage
   assert.ok(!S.presets(b.electric).some((x) => x.ansichten.some((a) => a.plaetze.some((p) => p.darstellung === 'zylinder'))))
 })
+
+test('Funke (0.8.2): Studio-Ordner dort, wo das Lua seine Info-Datei geschrieben hat (auch interner Speicher), sonst neben dem Lua-Ordner', async () => {
+  const { funkenZiel } = require('../src/studio/ziel')
+  const baum = { 'SD:/scripts': [{ name: 'electric', ordner: true }], 'RADIO:/scripts/studio': [{ name: 'Bobber.gas_carb.info.json', groesse: 300 }] }
+  const funke = { dateien: async (o) => (baum[o] ? { status: 0, liste: baum[o] } : (o.startsWith('RADIO:') || o.startsWith('/') || o.startsWith('SD:') ? { status: -2, liste: [] } : (() => { throw new Error('x') })())) }
+  assert.strictEqual(await funkenZiel(funke, 'gas_carb').basis(), 'RADIO:/scripts/studio')
+  assert.strictEqual(await funkenZiel(funke, 'electric').basis(), 'SD:/scripts/studio')
+  assert.strictEqual(await funkenZiel(funke, 'jet').basis(), '/scripts/studio')
+  // Pfad, den die Funke nicht kennt (Fehler beim Lesen), wird übersprungen
+  const wirft = { dateien: async (o) => { if (o.startsWith('RADIO:')) throw new Error('unbekannt'); return { status: -2, liste: [] } } }
+  assert.strictEqual(await funkenZiel(wirft, 'gas_carb').basis(), '/scripts/studio')
+})

@@ -22,7 +22,7 @@
 </head>
 <body>
 <h1>Lua-Studio – Manual</h1>
-<p class="unter">Version 0.8.1 · 21 Nov 2026 · Deutsche Anleitung: «Lua-Studio - Anleitung»</p>
+<p class="unter">Version 0.8.2 · 21 Nov 2026 · Deutsche Anleitung: «Lua-Studio - Anleitung»</p>
 
 <h2>1. What is Lua-Studio?</h2>
 <p>Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Electric, Heli, Jet, Glider, Gas Engine).
@@ -38,9 +38,9 @@ operate the radio with mouse and keyboard, over a USB cable in the radio's <b>se
   <li>Mac (Apple silicon or Intel) or Windows PC (64-bit), USB data cable.</li>
   <li>The matching file from the GitHub release (“Releases” on the right of the repository page):
     <ul>
-      <li>Mac with Apple silicon: <code>Lua-Studio-0.8.1-mac-arm64.dmg</code></li>
-      <li>Mac with Intel: <code>Lua-Studio-0.8.1-mac-x64.dmg</code></li>
-      <li>Windows: <code>Lua-Studio-0.8.1-win-x64.exe</code></li>
+      <li>Mac with Apple silicon: <code>Lua-Studio-0.8.2-mac-arm64.dmg</code></li>
+      <li>Mac with Intel: <code>Lua-Studio-0.8.2-mac-x64.dmg</code></li>
+      <li>Windows: <code>Lua-Studio-0.8.2-win-x64.exe</code></li>
     </ul>
   </li>
 </ul>
@@ -200,6 +200,7 @@ tabs opens the prepare form from anywhere.</p>
   <tr><td>Picture does not change</td><td>Disconnect and connect again.</td></tr>
   <tr><td>Mac: program does not start</td><td>See chapter 3 (Open Anyway). Copy the app from the DMG into Applications first.</td></tr>
 </table>
+<p><b>«Load models» stays empty</b> (from 0.8.2 with a hint): the Lua writes its info file only after the model with the widget has been loaded once on the radio. Lua-Studio looks for it in <code>scripts/studio</code> on the SD card and in internal storage. <b>Fallback:</b> in the «Transfer» tab use <b>Save as file …</b> and copy the file <code>&lt;id&gt;.&lt;lua&gt;.lua</code> by hand to <code>scripts/studio</code> (folder <code>studio</code> next to the Lua folder), then change the model once. Symbols are not included in this file.</p>
 <h2>9. Reporting a problem (from 0.3.3)</h2>
 <p>Lua-Studio keeps an <b>error log</b> of what happens: start (version, operating system), connecting and disconnecting,
 loading models, every step of a transfer, the radio quick test, blocks by the size guard and <b>every error</b> with the

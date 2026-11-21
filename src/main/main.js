@@ -273,10 +273,25 @@ function fehlerAntwort(e) { P.fehler('studio', e); return { ok: false, fehler: S
 ipcMain.handle('studio:beschreibungen', () => beschreibungen())
 ipcMain.handle('studio:ziele', () => ({ funke: !!(funke && !funke.getrennt), funkeName: funke && funke.hallo ? funke.hallo.board : null, laufwerke: laufwerkeSuchen() }))
 ipcMain.handle('studio:ordnerWaehlen', async () => {
-  const r = await dialog.showOpenDialog(fenster, { properties: ['openDirectory', 'createDirectory'] })
+  P.info('ordner', 'Ordner wählen geöffnet')
+  const r = await dialog.showOpenDialog(fenster && !fenster.isDestroyed() ? fenster : undefined, { properties: ['openDirectory', 'createDirectory'] })
   if (r.canceled) return null
   erlaubteOrdner.add(r.filePaths[0])
   return r.filePaths[0]
+})
+// Notlösung (0.8.2): Studio-Datei per Speichern-Dialog als Datei sichern; danach von Hand nach SD:/scripts/studio kopieren
+ipcMain.handle('studio:exportDatei', async (_e, a) => {
+  try {
+    namePruefen(a.lua, a.kennung)
+    const b = beschreibungen()[a.lua] || {}
+    const gebaut = S.bauenMitWaechter(a.projekt, { ...(a.meta || {}), studioVersion: VERSION, immerAlarm: immerAlarm(a.lua), extra: S.extraDarstellungen(b, (a.meta || {}).luaVersion) })
+    if (gebaut.fehler.length) return { ok: false, fehler: `pruefen|${gebaut.fehler.join('; ')}` }
+    const r = await dialog.showSaveDialog(fenster && !fenster.isDestroyed() ? fenster : undefined, { defaultPath: `${a.kennung}.${a.lua}.lua`, filters: [{ name: 'Lua-Studio', extensions: ['lua'] }] })
+    if (r.canceled || !r.filePath) return { ok: false, abgebrochen: true }
+    fs.writeFileSync(r.filePath, gebaut.text, 'utf8')
+    P.info('export', `Datei gespeichert: ${a.kennung}.${a.lua}.lua (${gebaut.zaehlung.byte} Byte, Format ${gebaut.daten.format}, ${(gebaut.daten.symbole || []).length} Symbole)`)
+    return { ok: true, pfad: r.filePath, symbole: (gebaut.daten.symbole || []).length }
+  } catch (e) { return fehlerAntwort(e) }
 })
 ipcMain.handle('studio:modelle', async (_e, spec) => {
   try {

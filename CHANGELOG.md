@@ -2,6 +2,14 @@
 
 New entries in English. Older entries in German.
 
+## 0.8.2 (21 Nov 2026)
+
+Fixes after the first user report (Windows, X20 Pro AW, COM3):
+- **«Load models» stayed empty:** the Luas write their info file to `SCRIPTS:/studio`, i.e. where the radio keeps its scripts (SD card or internal storage). Lua-Studio now looks in `SD:/scripts/studio`, `/scripts/studio` and `RADIO:/scripts/studio` and uses the folder that holds the Lua's info files; otherwise, as before, the one next to the Lua folder. If no model is found, a hint says to load the model with the widget once on the radio.
+- **«Choose folder» did nothing:** the target list started with «Choose folder …» already selected, so choosing it again fired no event (all systems when no SD card drive is found). The list now starts with «— choose target —».
+- **New fallback «Save as file …»** in the «Transfer» tab: saves `<id>.<lua>.lua` with a save dialog; copy it by hand to `scripts/studio` on the radio (symbols are not included).
+- Drive search also recognises radio drives with `bitmaps`, `logs`, `screenshots` or `firmware` next to `scripts`.
+
 ## 0.8.1 (21 Nov 2026)
 
 - **Gas Engine ECU 1.11.0 / Carb 0.11.0:** descriptions included. New displays from the Lua (`darstellungenExtra`): **cylinders** (`lua:cht_max`) and **tank** (`lua:tank_proz`, with «REFUELLED»), at most once per view, minimum 160 × 220 at 800 px width. Offered only for Luas whose description lists them **and** whose version on the radio is at least that version (1.11.0 / 0.11.0); otherwise, and for a second one in the same view, the display is dropped when writing (default «number»).
