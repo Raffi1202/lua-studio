@@ -264,7 +264,8 @@ function versionKleiner(a, b) {
 }
 function extraDarstellungen(b, luaVersion) {
   if (!b || !b.darstellungenExtra) return []
-  if (luaVersion && b.luaVersion && versionKleiner(luaVersion, b.luaVersion)) return []
+  // ohne Version der Funke (alte Info-Datei) keine Darstellungen des Luas; vorbereitete Modelle tragen die Version der Beschreibung
+  if (!luaVersion || (b.luaVersion && versionKleiner(luaVersion, b.luaVersion))) return []
   return Object.keys(b.darstellungenExtra).filter((d) => !d.startsWith('_'))
 }
 // extra: zusätzliche Darstellungen des Luas (beschreibung.json «darstellungenExtra», z. B. Gas Engine «zylinder», «tank»)
@@ -306,7 +307,7 @@ function presets(beschreibung) {
       p.x >= 0 && p.y >= 0 && p.x + p.b <= a.breite && p.y + p.h <= a.hoehe)
     if (gut.length !== a.plaetze.length || gut.length > 16) verworfen.push('platz')
     const plaetze = gut.slice(0, 16).map((p) => {
-      const q = platzSauber(JSON.parse(JSON.stringify(p)), verworfen, extraDarstellungen(beschreibung))
+      const q = platzSauber(JSON.parse(JSON.stringify(p)), verworfen, extraDarstellungen(beschreibung, beschreibung && beschreibung.luaVersion))
       if (q.symbol !== undefined && (!Y.imKatalog(q.symbol) || (q.symbolPx || 24) < Y.imKatalog(q.symbol).minPx)) { verworfen.push('symbol'); delete q.symbol; delete q.symbolPx }
       return q
     })

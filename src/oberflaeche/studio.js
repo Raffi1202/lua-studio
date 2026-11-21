@@ -91,8 +91,10 @@ function luaName(k) { return LUA_NAME[k] || k }
 // Darstellungen des Luas, die das Lua auf der Funke kennt (Version aus der Info-Datei; vorbereitete Modelle: Version der Beschreibung)
 function extraErlaubt() {
   const b = beschreibung() || {}
-  const v = st.m && st.m.info && !st.m.info.vorbereitet ? st.m.info.luaVersion : null
+  const vorb = !!(st.m && st.m.info && st.m.info.vorbereitet)
+  const v = st.m && st.m.info && !vorb ? st.m.info.luaVersion : null
   if (!b.darstellungenExtra) return []
+  if (!vorb && !v) return []
   if (v && b.luaVersion) {
     const x = String(v).split('.').map(Number), y = String(b.luaVersion).split('.').map(Number)
     for (let i = 0; i < 3; i++) if ((x[i] || 0) !== (y[i] || 0)) { if ((x[i] || 0) < (y[i] || 0)) return []; break }

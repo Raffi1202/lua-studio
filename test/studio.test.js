@@ -197,7 +197,7 @@ test('Vorlagen «Original» von Electric, Jet und Heli: jede Grösse gültig (Ra
         assert.ok(!res.some((r) => ue(p, r)), `${wo} auf reservierter Fläche`)
         assert.ok(!a.plaetze.some((q) => q !== p && ue(p, q)), `${wo} überlappt`)
       }
-      const d = S.dateiDaten({ einstellungen: {}, werte: {}, grenzen: {}, ansichten: [a] }, { formate: [1, 2], extra: S.extraDarstellungen(b[lua]) })
+      const d = S.dateiDaten({ einstellungen: {}, werte: {}, grenzen: {}, ansichten: [a] }, { formate: [1, 2], extra: S.extraDarstellungen(b[lua], b[lua].luaVersion) })
       assert.strictEqual(F.pruefenWieFunke(F.dateiText(d)), null, `${lua} ${a.breite}x${a.hoehe}`)
     }
   }
@@ -216,6 +216,7 @@ test('Darstellungen des Luas (Gas Engine 1.11.0 / 0.11.0 «zylinder», «tank»)
   assert.ok(r.verworfen.includes('darstellung'))
   // Lua auf der Funke älter als die Beschreibung (Gas ECU 1.10.0): keine Darstellungen des Luas; zweite gleiche Darstellung fällt weg
   assert.deepStrictEqual(S.extraDarstellungen(b.gas_ecu, '1.10.0'), [])
+  assert.deepStrictEqual(S.extraDarstellungen(b.gas_ecu), [], 'ohne Version der Funke keine')
   assert.deepStrictEqual(S.extraDarstellungen(b.gas_ecu, '1.11.0').sort(), ['tank', 'zylinder'])
   const zwei = { ...projekt, ansichten: [{ breite: 800, hoehe: 480, plaetze: [projekt.ansichten[0].plaetze[0], { x: 300, y: 90, b: 248, h: 300, w: 'lua:cht_max', darstellung: 'zylinder' }] }] }
   assert.deepStrictEqual(S.dateiDaten(zwei, { extra: ['zylinder'] }).ansichten[0].plaetze.map((p) => p.darstellung), ['zylinder', undefined])
