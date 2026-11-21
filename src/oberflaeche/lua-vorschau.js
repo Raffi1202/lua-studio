@@ -237,5 +237,10 @@
       texte: { de: { scharf: 'SCHARF', motorAus: 'MOTOR AUS', fluege: '8 Flüge' }, en: { scharf: 'ARMED', motorAus: 'MOTOR OFF', fluege: '8 flights' } } },
   }
 
+  // Jet 0.4.0: ansicht.lua und zeichnen.lua wie Electric (gleiche Farben, Kacheln, Kopfzeile); anders sind die
+  // Turbinen-Pille (Beispiel: läuft, grün), die Laufzeit statt Flugzeit und das Feld «Läufe» statt «Flüge»
+  STILE.jet = { ...STILE.electric, name: 'Jet 0.4.0',
+    texte: { de: { scharf: 'LÄUFT', fluege: '8 Läufe' }, en: { scharf: 'RUNNING', fluege: '8 runs' } } }
+
   window.LUA_VORSCHAU = { stil: (lua) => STILE[lua] || null, layout }
 })()

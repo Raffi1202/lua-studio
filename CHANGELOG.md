@@ -2,6 +2,13 @@
 
 New entries in English. Older entries in German.
 
+## 0.7.0 (21 Nov 2026)
+
+- **«Start empty» removed** (decision of the user): the templates are well prepared, you rather delete or move boxes. New models now start with the template «Original» where Lua-Studio has one. «Remove box» stays.
+- **Jet:** preview like the Lua and template «Original (like the Lua)» for all six window sizes, as for Electric (Jet 0.4.0 draws its studio file like Electric; pill «RUNNING», «8 runs» field). On X14/X18 sizes the «runs» field becomes a normal box.
+- Heli, Glider and Gas Engine follow in a later version (they keep the simple preview for now). **Until then Glider and Gas Engine still start with an empty full-screen view** (their descriptions only have a compact layout); their template «Original» comes with that version.
+- Heli is described as «helicopters with telemetry (any flybarless system)»; value hints of Heli no longer name a flight controller.
+
 ## 0.6.0 (21 Nov 2026)
 
 - **Preview like the Lua (Electric first):** the preview draws every box, the top bar and the «Flights» field the way Electric 0.6.1 draws a studio file on the radio (its drawing rules from `ansicht.lua` / `zeichnen.lua`: colours, tile frame, title size, ring with unit below, bars, graph, extra line MAX/MIN/Ø, symbols, bold unit). Example values; Ethos font sizes approximated from simulator pictures. Other Luas keep the simple preview for now.

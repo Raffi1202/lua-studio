@@ -919,7 +919,6 @@ function presetsZeigen() {
   const sel = $('presetWahl')
   sel.textContent = ''
   for (const p of st.presets) sel.appendChild(el('option', { value: 'p:' + p.s, text: name(p.name) }))
-  sel.appendChild(el('option', { value: 'leer', text: t('leerAnfangen') }))
   presetHinweis()
 }
 function presetHinweis() {
@@ -934,7 +933,7 @@ async function presetAnwenden() {
   const v = $('presetWahl').value
   if (!v || !confirm(t('presetFrage'))) return
   const fenster = (st.m.info && st.m.info.fenster) || []
-  const r = v === 'leer' ? await api.studio('leer', { projekt: st.projekt }) : await api.studio('presetAnwenden', { lua: st.m.lua, s: v.slice(2), projekt: st.projekt, fenster })
+  const r = await api.studio('presetAnwenden', { lua: st.m.lua, s: v.slice(2), projekt: st.projekt, fenster })
   if (!r.ok) return
   st.projekt = r.projekt
   st.gewaehlt = -1; st.gewaehltDeko = -1; ansichtVorwaehlen()

@@ -149,7 +149,6 @@ test('Presets: Vorlagen aus beschreibung.json geprüft, sonst Standard des Luas;
   assert.strictEqual(v[0].ansichten[0].deko.length, 1)
   const p = S.presetAnwenden(projekt([]), v[0], [{ breite: 784, hoehe: 316 }, { breite: 800, hoehe: 480 }])
   assert.deepStrictEqual(p.ansichten.map((a) => `${a.breite}x${a.hoehe}:${a.plaetze.length}`), ['784x316:1', '800x480:0'])
-  assert.deepStrictEqual(S.leer(p).ansichten.map((a) => a.plaetze.length), [0, 0])
 })
 
 test('Ohne Funke vorbereiten: Kennung nach Format v1 §2.1, Fenster der Displaygruppe, formate aus der Beschreibung', () => {

@@ -511,8 +511,8 @@
     }
    ],
    "hinweis": {
-    "de": "Nur mit Rotorflight (AppID 0x5125). «Drehzahl verloren» meldet Heli immer mit Ton, Vibration und Ansage; das ist keine Grenze und nicht abschaltbar.",
-    "en": "Rotorflight only (AppID 0x5125). Heli always reports «lost headspeed» with tone, vibration and callout; this is not a limit and cannot be switched off."
+    "de": "Nur mit Governor-Telemetrie (AppID 0x5125). «Drehzahl verloren» meldet Heli immer mit Ton, Vibration und Ansage; das ist keine Grenze und nicht abschaltbar.",
+    "en": "Only with governor telemetry (AppID 0x5125). Heli always reports «lost headspeed» with tone, vibration and callout; this is not a limit and cannot be switched off."
    }
   },
   {
@@ -547,8 +547,8 @@
     }
    ],
    "hinweis": {
-    "de": "Rotorflight-Arming (AppID 0x5122, Bit 0), ohne Rotorflight der Motorschalter.",
-    "en": "Rotorflight arming (AppID 0x5122, bit 0), without Rotorflight the motor switch."
+    "de": "Arming aus der Telemetrie (AppID 0x5122, Bit 0), sonst der Motorschalter.",
+    "en": "Arming from telemetry (AppID 0x5122, bit 0), otherwise the motor switch."
    }
   }
  ],

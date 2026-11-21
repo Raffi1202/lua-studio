@@ -153,7 +153,9 @@ async function modelleLesen(ziel) {
 
 // Neues Projekt aus der Beschreibung (Standardbelegung) und den Fenstergrössen der Info-Datei
 function neuesProjekt(beschreibung, info) {
-  const standard = (beschreibung.standard && beschreibung.standard.ansichten) || []
+  // Start mit der Vorlage «Original», wenn das Studio sie für dieses Lua kennt (ab 0.7.0; «Leer anfangen» gibt es nicht mehr)
+  const orig = require('./original').original(beschreibung)
+  const standard = (orig && orig.ansichten) || (beschreibung.standard && beschreibung.standard.ansichten) || []
   const einstellungen = {}
   for (const e of beschreibung.einstellungen || []) einstellungen[e.s] = e.werk
   let ansichten = standard.map((a) => JSON.parse(JSON.stringify(a)))
@@ -322,13 +324,6 @@ function presetAnwenden(projekt, preset, fenster) {
   const groessen = (fenster && fenster.length ? fenster : (projekt.ansichten || [])).map((f) => ({ breite: f.breite, hoehe: f.hoehe }))
   if (!groessen.length) { p.ansichten = quelle.slice(0, 2); return p }
   p.ansichten = groessen.slice(0, 2).map((g) => quelle.find((a) => a.breite === g.breite && a.hoehe === g.hoehe) || { ...g, plaetze: [] })
-  return p
-}
-
-// «Leer anfangen»: gleiche Grössen, keine Kästchen
-function leer(projekt) {
-  const p = JSON.parse(JSON.stringify(projekt))
-  p.ansichten = (p.ansichten || []).map((a) => ({ breite: a.breite, hoehe: a.hoehe, plaetze: [] }))
   return p
 }
 
@@ -568,5 +563,5 @@ async function schnelltest({ ziel, kennung, lua, format, vorher, logZeilen, groe
   return { ok: !punkte.some((x) => x.stufe === 'fehler'), unsicher: alt, punkte }
 }
 
-module.exports = { ALIAS, aliasAktiv, ablageUmziehen, grenzenSchreiben, symboleUnbenutzt, beschreibungenLaden, Ablage, modelleLesen, neuesProjekt, dateiDaten, dateiDatenMitInfo, bauenMitWaechter, presets, presetAnwenden, leer,
+module.exports = { ALIAS, aliasAktiv, ablageUmziehen, grenzenSchreiben, symboleUnbenutzt, beschreibungenLaden, Ablage, modelleLesen, neuesProjekt, dateiDaten, dateiDatenMitInfo, bauenMitWaechter, presets, presetAnwenden,
   GRUPPEN, VORBEREITET, gruppeVonFenster, vorbereitetInfo, symboleSchreiben, symboleAufraeumen, schnelltest, funkeAenderungenUebernehmen, uebertragen }

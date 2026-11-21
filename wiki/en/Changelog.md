@@ -4,6 +4,7 @@
 
 All changes: [CHANGELOG.md](../../CHANGELOG.md) (German). Releases: see the GitHub releases of this repository.
 
+- 0.7.0 (21 Nov 2026)
 - 0.6.0 (21 Nov 2026)
 - 0.5.1 (21 Nov 2026)
 - 0.5.0 (21 Nov 2026)

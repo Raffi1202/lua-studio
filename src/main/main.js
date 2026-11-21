@@ -406,7 +406,6 @@ ipcMain.handle('studio:anordnen', (_e, d) => {
   P.info('anordnen', `${d && d.art} G=${d && d.G} ${d && d.ansicht ? d.ansicht.breite + '×' + d.ansicht.hoehe : ''}: ${r.ok ? 'ok' + (r.hinweise.length ? ' (' + r.hinweise.join(', ') + ')' : '') : r.grund + (r.index !== undefined ? ' Kästchen ' + (r.index + 1) : '')}`)
   return r
 })
-ipcMain.handle('studio:leer', (_e, { projekt }) => ({ ok: true, projekt: S.leer(projekt) }))
 
 // Ohne Funke vorbereiten: Projekte unter «Vorbereitet <Gruppe>», Info im Projekt mitgespeichert
 ipcMain.handle('studio:gruppen', () => S.GRUPPEN)

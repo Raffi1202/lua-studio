@@ -170,5 +170,9 @@ test('Vorlage «Original» (0.6.0): Electric mit Farben wie die eingebaute Anzei
   const d = S.dateiDaten({ einstellungen: {}, werte: {}, grenzen: {}, ansichten: p[0].ansichten.filter((a) => a.breite >= 784) }, { formate: [1, 2] })
   assert.strictEqual(F.pruefenWieFunke(F.dateiText(d)), null)
   // Luas ohne Original-Vorlage: unverändert
-  assert.ok(!S.presets(b.jet).some((x) => x.s === 'original'))
+  assert.ok(S.presets(b.jet)[0].s === 'original' && S.presets(b.jet)[0].ansichten.length === 6, 'Jet hat ab 0.7.0 eine Vorlage «Original»')
+  assert.ok(!S.presets(b.glider).some((x) => x.s === 'original'))
+  // Neue Modelle beginnen mit der Vorlage «Original»
+  const np = S.neuesProjekt(b.electric, S.vorbereitetInfo('M', b.electric, 'Neu'))
+  assert.deepStrictEqual(np.ansichten.map((a) => a.plaetze.length > 0), [true, true])
 })

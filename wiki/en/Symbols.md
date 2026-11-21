@@ -8,7 +8,7 @@ Only with a Lua version that supports Lua-Studio format 2. Otherwise the studio 
 - **Unit:** next to the value (as before), **bold top left** or none. Voltage, current, consumption, energy, RPM and throttle deliberately have no picture but the bold unit.
 - **Unused symbols** (from 0.4.1): if no studio file on the radio names a symbol any more, the «Transfer» tab shows «Delete n unused symbols …» beforehand («Which files?» expands all names). They are deleted only if you tick the box, and only those files. Without the tick they stay on the SD card and do no harm.
 - **Decoration:** **+ Symbol**, **+ Text**, **+ Line**, **+ Frame** places free elements without a value, at most 24 per view, below the boxes. Drag to move; position, size and colour on the right; Delete removes.
-- **Preset** sets the layout to the Lua's look («Lua default» or the Lua's templates) or **Start empty**. Limits and settings stay.
+- **Preset** sets the layout to the Lua's look («Lua default» or the Lua's templates). New models start with the template «Original» where Lua-Studio has one; to change it, delete or move boxes. Limits and settings stay.
 
 ---
 [← Home](../Home.md) | [Previous](Limits.md) | [Next →](Error-log.md)

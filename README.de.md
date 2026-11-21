@@ -92,7 +92,7 @@ GPL-3.0-or-later, siehe [LICENSE](LICENSE). Symbole teils nach Tabler Icons (MIT
 | Projekt | Wozu |
 |---|---|
 | [Electric](https://github.com/Raffi1202/electric-lua) | Ethos-Widget für Elektromodelle |
-| [Heli](https://github.com/Raffi1202/heli-lua) | Ethos-Widget für Helis (Rotorflight) |
+| [Heli](https://github.com/Raffi1202/heli-lua) | Ethos-Widget für Helis mit Telemetrie (jedes Flybarless-System) |
 | [Jet](https://github.com/Raffi1202/jet-lua) | Ethos-Widget für Turbinen (mehrere ECU-Hersteller) |
 | [Glider](https://github.com/Raffi1202/glider-lua) | Ethos-Widget für Segler (Vario, Thermik) |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) | Ethos-Widgets für Verbrennungsmotoren |

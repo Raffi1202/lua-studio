@@ -9,10 +9,17 @@ const W = [255, 255, 255], GRUEN = [64, 220, 110], BLAU = [64, 150, 240], HBLAU 
 const FARBEN = {
   electric: { 'lua:akku_proz': GRUEN, 'lua:strom': BLAU, 'lua:drehzahl': HBLAU, 'lua:reglertemp': GRUEN, 'lua:gas_proz': HBLAU,
     'lua:zelle': GRUEN, 'lua:verbraucht': W, 'lua:leistung': W, 'lua:hoehe': W, 'lua:speed': W, 'lua:rssi': GRUEN, 'lua:fluege': W },
+  // Jet 0.4.0 (seite1.lua): Ringe Drehzahl hellblau, EGT/Kraftstoff/ECU-Akku grün; Zahlen weiss, Empfang grün
+  jet: { 'lua:drehzahl': HBLAU, 'lua:egt': GRUEN, 'lua:kraftstoff_proz': GRUEN, 'lua:ecu_akku': GRUEN, 'lua:fluss': W, 'lua:pumpe': W,
+    'lua:schub': W, 'lua:hoehe': W, 'lua:speed': W, 'lua:empfang': GRUEN, 'lua:laeufe': W },
 }
 
 // Was über die Studio-Datei nicht geht (das Lua zeichnet es nur in seiner eingebauten Anzeige)
 const HINWEIS = {
+  jet: {
+    de: 'Wie die eingebaute Seite 1 von Jet. Nicht einstellbar über die Studio-Datei: Fusszeilen der eingebauten Anzeige, die Farbstreifen oben an den Kästchen und Titel, die mit der Sprache der Funke wechseln. Seite 2 (Turbinen) und 3 (Flugliste) bleiben wie im Lua.',
+    en: 'Like the built-in page 1 of Jet. Not adjustable via the studio file: footers of the built-in display, the colour stripes on top of the boxes and titles that follow the language of the radio. Pages 2 (turbines) and 3 (flight list) stay as in the Lua.',
+  },
   electric: {
     de: 'Wie die eingebaute Anzeige von Electric. Nicht einstellbar über die Studio-Datei: Fusszeilen wie «6S 23,1V», «bei 46 A», «0,6 Wh», der Knopf «AUF 0», die Farbstreifen oben an den Kästchen und Titel, die mit der Sprache der Funke wechseln.',
     en: 'Like the built-in display of Electric. Not adjustable via the studio file: footers like «6S 23.1V», «at 46 A», «0.6 Wh», the «AUF 0» button, the colour stripes on top of the boxes and titles that follow the language of the radio.',
@@ -36,7 +43,7 @@ function skaliert(a, breite, hoehe) {
 
 // Feste Felder des Luas, die es nur in einer Grösse selbst zeichnet (Electric: «Flüge» nur bei 800 × 480, ansicht.lua).
 // In umgerechneten Grössen wird daraus ein normaler Platz mit diesem Wert.
-const FESTE_ALS_PLATZ = { electric: { von: [800, 480], w: 'lua:fluege' } }
+const FESTE_ALS_PLATZ = { electric: { von: [800, 480], w: 'lua:fluege' }, jet: { von: [800, 480], w: 'lua:laeufe' } }
 const MIN_ZAHL = [90, 50]   // Mindestgrösse «zahl» bei 800 px Breite (wie die Prüfung der Oberfläche)
 
 function festesFeldAlsPlatz(beschreibung, quelle, ziel) {
