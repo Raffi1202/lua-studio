@@ -255,6 +255,7 @@
   "f_u_wegfall": "Format 1 written, dropped",
   "f_u_symbole": "Symbols written",
   "f_u_symboleGeloescht": "Unused symbols deleted",
+  "f_u_alteDateiBleibt": "Old studio file with the former Lua name stays on the radio",
   "f_u_symboleBleiben": "Unused symbols stay on the radio",
   "symboleNamenZeigen": "Which files? (all names)",
   "symboleLoeschen": "Delete {n} unused symbols from the radio when transferring (no studio file names them any more)",

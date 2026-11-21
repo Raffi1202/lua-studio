@@ -123,3 +123,33 @@ test('«auch bei Motor aus» (Format 2 §3.5): nur false wird geschrieben, .funk
   assert.ok(!('beiMotorAus' in p.grenzen['lua:zelle']))
   assert.deepStrictEqual(p.grenzen['lua:akku_proz'], { richtung: 'unter', warnung: 30, alarm: 20, beiMotorAus: false })
 })
+
+test('Umbenennung 21.11.2026: Projekte und Vorlagen am PC ziehen auf den neuen Lua-Namen um, alte Datei als Sicherung', () => {
+  const w = fs.mkdtempSync(path.join(os.tmpdir(), 'ls-alias-'))
+  fs.mkdirSync(path.join(w, 'modelle', 'X18RS'), { recursive: true })
+  fs.writeFileSync(path.join(w, 'modelle', 'X18RS', 'Extra.elektro.json'), JSON.stringify({ grenzen: {}, info: { lua: 'elektro' } }))
+  fs.writeFileSync(path.join(w, 'modelle', 'X18RS', 'Goblin.helirf.json'), '{}')
+  fs.mkdirSync(path.join(w, 'vorlagen', 'segler'), { recursive: true })
+  fs.writeFileSync(path.join(w, 'vorlagen', 'segler', 'Thermik.json'), '{}')
+  const u = S.ablageUmziehen(w, ['electric', 'glider', 'helirf', 'jet'])
+  assert.deepStrictEqual(u.sort(), ['X18RS/Extra.elektro.json', 'vorlagen/segler/Thermik.json'])
+  assert.strictEqual(JSON.parse(fs.readFileSync(path.join(w, 'modelle', 'X18RS', 'Extra.electric.json'), 'utf8')).info.lua, 'electric')
+  assert.ok(fs.existsSync(path.join(w, 'vor-umbenennung', 'modelle', 'X18RS', 'Extra.elektro.json')), 'alte Datei gesichert')
+  assert.ok(fs.existsSync(path.join(w, 'modelle', 'X18RS', 'Goblin.helirf.json')), 'helirf bleibt, solange heli nicht bekannt ist')
+  assert.ok(fs.existsSync(path.join(w, 'vorlagen', 'glider', 'Thermik.json')))
+  assert.deepStrictEqual(S.ablageUmziehen(w, ['electric', 'glider']), [], 'zweiter Lauf: nichts mehr')
+})
+
+test('Umbenennung: alte Studio-Datei auf der Funke wird erkannt und bleibt beim Übertragen liegen', async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ls-alias2-'))
+  const ziel = ordnerZiel('ordner', tmp)
+  fs.writeFileSync(path.join(tmp, 'Extra.electric.info.json'), JSON.stringify({ format: 1, lua: 'electric', modell: 'Extra', kennung: 'Extra', fenster: [{ breite: 800, hoehe: 480 }], formate: [1] }))
+  fs.writeFileSync(path.join(tmp, 'Extra.elektro.lua'), F.dateiText({ format: 1, ansichten: [] }))
+  const m = await S.modelleLesen(ziel)
+  assert.strictEqual(m[0].alteStudioDatei, 'Extra.elektro.lua')
+  const schritte = []
+  await S.uebertragen({ ziel, ablage: new S.Ablage(path.join(tmp, 'pc')), funkeName: 'X18RS', kennung: 'Extra', lua: 'electric', meta: { formate: [1] }, funkeUebernehmen: false, werkGrenzen: {},
+    projekt: { einstellungen: {}, werte: {}, grenzen: {}, ansichten: [{ breite: 800, hoehe: 480, plaetze: [{ x: 0, y: 60, b: 100, h: 60, w: 'lua:strom' }] }] }, schritt: (t) => schritte.push(t) })
+  assert.ok(fs.existsSync(path.join(tmp, 'Extra.electric.lua')) && fs.existsSync(path.join(tmp, 'Extra.elektro.lua')))
+  assert.ok(schritte.includes('alteDateiBleibt|Extra.elektro.lua'))
+})

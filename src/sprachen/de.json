@@ -255,6 +255,7 @@
   "f_u_wegfall": "Format 1 geschrieben, weggelassen",
   "f_u_symbole": "Symbole geschrieben",
   "f_u_symboleGeloescht": "Nicht mehr benutzte Symbole gelöscht",
+  "f_u_alteDateiBleibt": "Alte Studio-Datei mit dem früheren Lua-Namen bleibt auf der Funke",
   "f_u_symboleBleiben": "Nicht mehr benutzte Symbole bleiben auf der Funke",
   "symboleNamenZeigen": "Welche Dateien? (alle Namen)",
   "symboleLoeschen": "{n} nicht mehr benutzte Symbole beim Übertragen von der Funke löschen (keine Studio-Datei nennt sie mehr)",

@@ -109,7 +109,7 @@ test('Löschen und nicht beschreibbarer Ordner', () => {
 
 test('CRC32 und ZIP lassen sich lesen', () => {
   assert.strictEqual(crc32(Buffer.from('123456789')), 0xCBF43926)
-  const dateien = [{ name: 'lua-studio.log', daten: 'Zeile ä\n'.repeat(500) }, { name: 'funke-info/SD_scripts_studio/m1.elektro.info.json', daten: Buffer.from('{"a":1}') }]
+  const dateien = [{ name: 'lua-studio.log', daten: 'Zeile ä\n'.repeat(500) }, { name: 'funke-info/SD_scripts_studio/m1.electric.info.json', daten: Buffer.from('{"a":1}') }]
   const zip = zipBauen(dateien, uhr())
   // selbst lesen: lokale Köpfe der Reihe nach
   let lage = 0

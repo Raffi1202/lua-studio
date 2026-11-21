@@ -3,7 +3,7 @@
 🇬🇧 English · 🇩🇪 Deutsch
 
 ## English
-Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Heli RF, Elektro, Segler, Motoren). **Radio live**: your FrSky radio's display appears on the computer and you operate the radio with mouse and keyboard, over a USB cable in the radio's **serial mode**.
+Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Electric, Heli, Jet, Glider, Gas Engine). **Radio live**: your FrSky radio's display appears on the computer and you operate the radio with mouse and keyboard, over a USB cable in the radio's **serial mode**.
 
 **Tested on a real radio only on the X18RS** (Ethos 26.2.0, Mac). Other radios and Windows only partly or in the simulator.
 
@@ -20,7 +20,7 @@ Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Heli
 - [Changelog](en/Changelog.md)
 
 ## Deutsch
-Lua-Studio ist ein Programm für Mac und Windows. Es gehört zu unseren Ethos-Luas (Heli RF, Elektro, Segler, Motoren). **Funke live**: Das Display deiner FrSky-Funke erscheint am Computer, und du bedienst die Funke mit Maus und Tastatur. Das geht über ein USB-Kabel im **Serialmodus** der Funke.
+Lua-Studio ist ein Programm für Mac und Windows. Es gehört zu unseren Ethos-Luas (Electric, Heli, Jet, Glider, Gas Engine). **Funke live**: Das Display deiner FrSky-Funke erscheint am Computer, und du bedienst die Funke mit Maus und Tastatur. Das geht über ein USB-Kabel im **Serialmodus** der Funke.
 
 **Echt getestet nur an der X18RS** (Ethos 26.2.0, Mac). Andere Funken und Windows nur teilweise oder im Simulator.
 
@@ -40,12 +40,13 @@ Lua-Studio ist ein Programm für Mac und Windows. Es gehört zu unseren Ethos-Lu
 
 | Project | What it does |
 |---|---|
-| [Elektro](https://github.com/Raffi1202/elektro-lua) | Ethos widget for electric models |
-| [Heli RF](https://github.com/Raffi1202/heli-lua) | Ethos widget for Rotorflight helicopters |
+| [Electric](https://github.com/Raffi1202/electric-lua) | Ethos widget for electric models |
+| [Heli](https://github.com/Raffi1202/heli-lua) | Ethos widget for helicopters (Rotorflight) |
 | [Jet](https://github.com/Raffi1202/jet-lua) | Ethos widget for turbines (several ECU brands) |
-| [Segler](https://github.com/Raffi1202/segler-lua) | Ethos widget for gliders (vario, thermals) |
-| [Motoren ECU / Vergaser](https://github.com/Raffi1202/motoren-lua) | Ethos widgets for gas engines |
+| [Glider](https://github.com/Raffi1202/glider-lua) | Ethos widget for gliders (vario, thermals) |
+| [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) | Ethos widgets for gas engines |
 | [Telemetry simulator](https://github.com/Raffi1202/telemetrie-simulator) | ESP32-S3 that simulates FrSky telemetry sensors |
 | [Ethos model converter](https://github.com/Raffi1202/ethos-modell-konverter) | Move models between Ethos radios |
 | [Ethos sensor IDs](https://github.com/Raffi1202/ethos-sensor-ids) | Which sensor Ethos creates for each AppID |
+
 

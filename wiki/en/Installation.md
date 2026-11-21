@@ -8,9 +8,9 @@
 - Mac (Apple silicon or Intel) or Windows PC (64-bit), USB data cable.
 - The matching file from the GitHub release (“Releases” on the right of the repository page):
 
-- Mac with Apple silicon: `Lua-Studio-0.4.2-mac-arm64.dmg`
-- Mac with Intel: `Lua-Studio-0.4.2-mac-x64.dmg`
-- Windows: `Lua-Studio-0.4.2-win-x64.exe`
+- Mac with Apple silicon: `Lua-Studio-0.5.0-mac-arm64.dmg`
+- Mac with Intel: `Lua-Studio-0.5.0-mac-x64.dmg`
+- Windows: `Lua-Studio-0.5.0-win-x64.exe`
 
 «Radio live» only reads the display and sends keys and touches, the same as operating the radio by hand. «Models» only writes to the folder `scripts/studio` on the radio and backs up the old files on the PC first. Lua-Studio never changes models themselves.
 

@@ -44,8 +44,8 @@ test('Verhältnis behalten und Nur verteilen', () => {
   assert.strictEqual(n.abstand, 5)
 })
 
-test('Elektro 800 × 480 bleibt Pixel für Pixel gleich (mit Kopfzeile und Flüge-Feld)', () => {
-  const b = JSON.parse(fs.readFileSync(path.join(__dirname, '../src/luas/elektro.json'), 'utf8'))
+test('Electric 800 × 480 bleibt Pixel für Pixel gleich (mit Kopfzeile und Flüge-Feld)', () => {
+  const b = JSON.parse(fs.readFileSync(path.join(__dirname, '../src/luas/electric.json'), 'utf8'))
   const a = b.standard.ansichten.find((x) => x.breite === 800)
   const res = b.reserviert.filter((x) => x.breite === 800 && x.hoehe === 480)
   for (const art of ['gleich', 'verhaeltnis']) {
@@ -132,8 +132,8 @@ test('Nachprüfung 0.4.0: alle Standardbelegungen mit allen Arten ok; Nur vertei
       }
     }
   }
-  // Elektro 800 × 480 bleibt auch bei «Nur verteilen» gleich
-  const b = JSON.parse(fs.readFileSync(path.join(dir, 'elektro.json'), 'utf8'))
+  // Electric 800 × 480 bleibt auch bei «Nur verteilen» gleich
+  const b = JSON.parse(fs.readFileSync(path.join(dir, 'electric.json'), 'utf8'))
   const a = b.standard.ansichten.find((x) => x.breite === 800)
   const r = anordnen({ ansicht: a, reserviert: b.reserviert.filter((x) => x.breite === 800), G: 8, art: 'verteilen', mindest: mindest(800) })
   r.plaetze.forEach((q, i) => assert.deepStrictEqual([q.x, q.y], [a.plaetze[i].x, a.plaetze[i].y]))
@@ -150,9 +150,9 @@ test('Nachprüfung 0.4.0: Überlappung und reservierte Fläche werden vorher gem
   assert.deepStrictEqual([r.grund, r.index], ['reserviert', 0])
 })
 
-test('Raster: unvollständige letzte Zeile füllt den freien Platz der Zeile (Sendertest 21.11.: 11 Kästchen Elektro 800 × 480)', () => {
+test('Raster: unvollständige letzte Zeile füllt den freien Platz der Zeile (Sendertest 21.11.: 11 Kästchen Electric 800 × 480)', () => {
   const AN = require('../src/studio/anordnen')
-  const b = require('../src/luas/elektro.json')
+  const b = require('../src/luas/electric.json')
   const res = b.reserviert.filter((r) => r.breite === 800 && r.hoehe === 480)
   const plaetze = Array.from({ length: 11 }, (_, i) => ({ x: (i % 5) * 150, y: 60 + Math.floor(i / 5) * 130, b: 140, h: 120, darstellung: 'zahl' }))
   const r = AN.raster({ ansicht: { breite: 800, hoehe: 480, plaetze }, reserviert: res, G: 8, mindest: { zahl: [60, 40] } })
@@ -176,7 +176,7 @@ test('Raster: unvollständige letzte Zeile füllt den freien Platz der Zeile (Se
 
 test('Raster: Lücke neben «Flüge» wird auch gefüllt, wenn die letzte Zeile gleich viele Kästchen wie freie Zellen hat (Prüfbefund 0.4.1)', () => {
   const AN = require('../src/studio/anordnen')
-  const res = require('../src/luas/elektro.json').reserviert.filter((r) => r.breite === 800 && r.hoehe === 480)
+  const res = require('../src/luas/electric.json').reserviert.filter((r) => r.breite === 800 && r.hoehe === 480)
   for (const n of [3, 10]) {
     const plaetze = Array.from({ length: n }, (_, i) => ({ x: (i % 4) * 190, y: 60 + Math.floor(i / 4) * 130, b: 180, h: 120, darstellung: 'zahl' }))
     const r = AN.raster({ ansicht: { breite: 800, hoehe: 480, plaetze }, reserviert: res, G: 8, mindest: { zahl: [60, 40] } })

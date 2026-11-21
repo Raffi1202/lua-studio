@@ -1,14 +1,14 @@
 {
- "lua": "elektro",
- "luaVersion": "0.5.0",
+ "lua": "electric",
+ "luaVersion": "0.6.1",
  "formate": [
   1,
   2
  ],
  "beiMotorAus": true,
  "hinweis": {
-  "de": "Elektro zeichnet oben die Kopfleiste selbst (Modellname, Flugzeit, Schalter, Empfang). Grenzwerte gelten je Wert, auch wenn er auf keinem Platz steht.",
-  "en": "Elektro draws the top bar itself (model name, flight time, switches, signal). Limits apply per value, even if it is on no field."
+  "de": "Electric zeichnet oben die Kopfleiste selbst (Modellname, Flugzeit, Schalter, Empfang). Grenzwerte gelten je Wert, auch wenn er auf keinem Platz steht.",
+  "en": "Electric draws the top bar itself (model name, flight time, switches, signal). Limits apply per value, even if it is on no field."
  },
  "reserviert": [
   {

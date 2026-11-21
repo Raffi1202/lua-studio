@@ -4,7 +4,7 @@
 
 > **Vorabversion / öffentliche Beta.** Am echten Sender nur an der X18RS getestet. Nutzung auf eigene Verantwortung.
 
-Programm für Mac und Windows zu unseren Ethos-Luas (Heli RF, Elektro, Segler, Motoren). Grundsatz: **Der PC denkt, die Funke zeigt an.**
+Programm für Mac und Windows zu unseren Ethos-Luas (Electric, Heli, Jet, Glider, Gas Engine). Grundsatz: **Der PC denkt, die Funke zeigt an.**
 
 **Funke live:** Das Display deiner FrSky-Funke erscheint am Computer, und du bedienst die Funke mit Maus und Tastatur
 über USB im Serialmodus. **Modelle** (ab 0.2.0): je Modell Kästchen, Grenzwerte und Einstellungen der Luas am PC
@@ -13,6 +13,9 @@ einstellen und auf die Funke übertragen. Später: Flüge auswerten.
 ![Lua-Studio mit dem Display der Funke](docs/bilder/Funke%20live.png)
 
 *Bild aus dem Ethos-Simulator.*
+
+
+> **Umbenannt am 21.11.2026:** Elektro → Electric, Segler → Glider, Motoren ECU/Vergaser → Gas Engine ECU/Carb, Heli RF → Heli. Lua-Studio 0.5.0 zieht deine Projekte am PC auf die neuen Namen um und erkennt alte Studio-Dateien auf der Funke.
 
 ## Für welche Sender
 
@@ -68,17 +71,17 @@ Symbole und Schmuck braucht ein Lua, das Format 2 kann. Für ältere Luas schrei
 - **Bildtempo:** Am Mac mit der X18RS gemessen rund 25 Bilder pro Sekunde (Antwort der Funke etwa 5–20 ms). Unter Windows ist die Verbindung mit echter Funke noch nicht gemessen.
 - Am echten Sender getestet ist nur die X18RS am Mac. Siehe Tabelle oben.
 - Die Programme sind nicht signiert (keine Zertifikate von Apple und Microsoft).
-- «Modelle» schreibt nur in den Ordner `scripts/studio` der Funke (alte Dateien werden am PC gesichert) und braucht ein Lua mit Studio-Unterstützung. An der echten X18RS getestet mit Elektro 0.3.0 (Mac); die anderen Luas bisher nur im Simulator.
+- «Modelle» schreibt nur in den Ordner `scripts/studio` der Funke (alte Dateien werden am PC gesichert) und braucht ein Lua mit Studio-Unterstützung. An der echten X18RS getestet mit Electric (damals Elektro 0.3.0) (Mac); die anderen Luas bisher nur im Simulator.
 
 ## Unterstützte Luas
 
 | Lua | Studio-Unterstützung |
 |---|---|
-| [Elektro](https://github.com/Raffi1202/elektro-lua) 0.5.0 | format 2, «auch bei Motor aus» |
-| [Heli RF](https://github.com/Raffi1202/heli-lua) 1.12.0 | format 2, «auch bei Motor aus» |
+| [Electric](https://github.com/Raffi1202/electric-lua) 0.6.1 | format 2, «auch bei Motor aus» |
+| [Heli](https://github.com/Raffi1202/heli-lua) 1.12.0 | format 2, «auch bei Motor aus» |
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.4.0 | format 2, «auch bei Motor aus» |
-| [Segler](https://github.com/Raffi1202/segler-lua) 0.3.0 | format 1 |
-| [Motoren ECU / Vergaser](https://github.com/Raffi1202/motoren-lua) 1.8.0 / 0.8.0 | format 1 |
+| [Glider](https://github.com/Raffi1202/glider-lua) 0.5.0 | format 1, «auch bei Motor aus» |
+| [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.10.0 / 0.10.0 | format 1, «auch bei Motor aus» |
 
 ## Lizenz
 
@@ -88,11 +91,11 @@ GPL-3.0-or-later, siehe [LICENSE](LICENSE). Symbole teils nach Tabler Icons (MIT
 
 | Projekt | Wozu |
 |---|---|
-| [Elektro](https://github.com/Raffi1202/elektro-lua) | Ethos-Widget für Elektromodelle |
-| [Heli RF](https://github.com/Raffi1202/heli-lua) | Ethos-Widget für Rotorflight-Helis |
+| [Electric](https://github.com/Raffi1202/electric-lua) | Ethos-Widget für Elektromodelle |
+| [Heli](https://github.com/Raffi1202/heli-lua) | Ethos-Widget für Helis (Rotorflight) |
 | [Jet](https://github.com/Raffi1202/jet-lua) | Ethos-Widget für Turbinen (mehrere ECU-Hersteller) |
-| [Segler](https://github.com/Raffi1202/segler-lua) | Ethos-Widget für Segler (Vario, Thermik) |
-| [Motoren ECU / Vergaser](https://github.com/Raffi1202/motoren-lua) | Ethos-Widgets für Verbrennungsmotoren |
+| [Glider](https://github.com/Raffi1202/glider-lua) | Ethos-Widget für Segler (Vario, Thermik) |
+| [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) | Ethos-Widgets für Verbrennungsmotoren |
 | [Telemetrie-Simulator](https://github.com/Raffi1202/telemetrie-simulator) | ESP32-S3 simuliert FrSky-Telemetriesensoren |
 | [Ethos-Modell-Konverter](https://github.com/Raffi1202/ethos-modell-konverter) | Modelle zwischen Ethos-Funken umziehen |
 | [Ethos-Sensor-IDs](https://github.com/Raffi1202/ethos-sensor-ids) | Welchen Sensor Ethos je AppID anlegt |

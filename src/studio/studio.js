@@ -80,6 +80,52 @@ class Ablage {
   }
 }
 
+// Umbenennung der Luas auf Englisch (21.11.2026): alter Schlüssel -> neuer. Gilt nur, wenn das Studio den neuen kennt
+// und den alten nicht mehr (Heli zieht später nach).
+const ALIAS = { elektro: 'electric', segler: 'glider', motoren_ecu: 'gas_ecu', motoren_vergaser: 'gas_carb', helirf: 'heli' }
+function aliasAktiv(bekannt) {
+  const b = new Set(bekannt || [])
+  return Object.fromEntries(Object.entries(ALIAS).filter(([alt, neu]) => b.has(neu) && !b.has(alt)))
+}
+
+// Projekte und Vorlagen am PC einmal auf die neuen Namen umziehen; die alte Datei kommt nach «vor-umbenennung»
+// (nichts wird gelöscht). Rückgabe: Liste der umgezogenen Dateien.
+function ablageUmziehen(wurzel, bekannt) {
+  const alias = aliasAktiv(bekannt)
+  const umgezogen = []
+  if (!Object.keys(alias).length) return umgezogen
+  const sicherung = path.join(wurzel, 'vor-umbenennung')
+  const weg = (q, rel) => { const z = path.join(sicherung, rel); fs.mkdirSync(path.dirname(z), { recursive: true }); fs.renameSync(q, z) }
+  const modelle = path.join(wurzel, 'modelle')
+  for (const funke of fs.existsSync(modelle) ? fs.readdirSync(modelle) : []) {
+    const o = path.join(modelle, funke)
+    if (!fs.statSync(o).isDirectory()) continue
+    for (const n of fs.readdirSync(o)) {
+      const m = /^(.+)\.([a-z0-9_]+)\.json$/.exec(n)
+      if (!m || !alias[m[2]]) continue
+      const ziel = path.join(o, `${m[1]}.${alias[m[2]]}.json`)
+      if (!fs.existsSync(ziel)) {
+        let d = null
+        try { d = JSON.parse(fs.readFileSync(path.join(o, n), 'utf8')) } catch { continue }
+        if (d && d.info && d.info.lua === m[2]) d.info.lua = alias[m[2]]
+        fs.writeFileSync(ziel, JSON.stringify(d, null, 2))
+        umgezogen.push(`${funke}/${n}`)
+      }
+      weg(path.join(o, n), path.join('modelle', funke, n))
+    }
+  }
+  const vorlagen = path.join(wurzel, 'vorlagen')
+  for (const [alt, neu] of Object.entries(alias)) {
+    const a = path.join(vorlagen, alt)
+    if (!fs.existsSync(a)) continue
+    const z = path.join(vorlagen, neu)
+    fs.mkdirSync(z, { recursive: true })
+    for (const n of fs.readdirSync(a)) if (!fs.existsSync(path.join(z, n))) { fs.copyFileSync(path.join(a, n), path.join(z, n)); umgezogen.push(`vorlagen/${alt}/${n}`) }
+    weg(a, path.join('vorlagen', alt))
+  }
+  return umgezogen
+}
+
 function sicher(t) { return String(t || 'unbekannt').replace(/[^A-Za-z0-9 _.-]/g, '_').slice(0, 60) }
 
 // ---------- Modelle auf dem Ziel (Info-Dateien, Abschnitt 14) ----------
@@ -95,6 +141,8 @@ async function modelleLesen(ziel) {
     modelle.push({
       kennung: m[1], lua: m[2], info,
       studioDatei: liste.some((x) => x.name === `${m[1]}.${m[2]}.lua`),
+      // Studio-Datei unter dem alten Namen (vor der Umbenennung); das neue Lua liest sie, bis eine neue geschrieben ist
+      alteStudioDatei: (Object.entries(ALIAS).find(([alt, neu]) => neu === m[2] && liste.some((x) => x.name === `${m[1]}.${alt}.lua`)) || [])[0] ? `${m[1]}.${Object.entries(ALIAS).find(([alt, neu]) => neu === m[2] && liste.some((x) => x.name === `${m[1]}.${alt}.lua`))[0]}.lua` : null,
       funkeDatei: liste.some((x) => x.name === `${m[1]}.${m[2]}.funke.lua`),
     })
   }
@@ -455,6 +503,9 @@ async function uebertragen({ ziel, ablage, funkeName, kennung, lua, projekt, met
     if (a.uebersprungen) melde('symboleNichtAufgeraeumt')
   } catch { melde('symboleNichtAufgeraeumt') }
 
+  // Studio-Datei mit altem Lua-Namen bleibt liegen (nichts löschen ohne Wissen des Users); die neue gilt vor ihr
+  for (const [alt, neu] of Object.entries(ALIAS)) if (neu === lua && vorhanden.some((e) => e.name.toLowerCase() === `${kennung}.${alt}.lua`.toLowerCase())) melde(`alteDateiBleibt|${kennung}.${alt}.lua`)
+
   // 6. Modell neu laden (nur bei verbundener Funke und bekanntem Pfad)
   if (ziel.art === 'funke' && meta.modellPfad) {
     const s = await ziel.modellLaden(meta.modellPfad)
@@ -510,5 +561,5 @@ async function schnelltest({ ziel, kennung, lua, format, vorher, logZeilen, groe
   return { ok: !punkte.some((x) => x.stufe === 'fehler'), unsicher: alt, punkte }
 }
 
-module.exports = { grenzenSchreiben, symboleUnbenutzt, beschreibungenLaden, Ablage, modelleLesen, neuesProjekt, dateiDaten, dateiDatenMitInfo, bauenMitWaechter, presets, presetAnwenden, leer,
+module.exports = { ALIAS, aliasAktiv, ablageUmziehen, grenzenSchreiben, symboleUnbenutzt, beschreibungenLaden, Ablage, modelleLesen, neuesProjekt, dateiDaten, dateiDatenMitInfo, bauenMitWaechter, presets, presetAnwenden, leer,
   GRUPPEN, VORBEREITET, gruppeVonFenster, vorbereitetInfo, symboleSchreiben, symboleAufraeumen, schnelltest, funkeAenderungenUebernehmen, uebertragen }

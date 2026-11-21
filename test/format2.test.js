@@ -280,7 +280,7 @@ test('Funken-Schnelltest: Info-Datei und Log auswerten', async () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'lua-studio-st-'))
   const ziel = ordnerZiel('ordner', tmp)
   const info = (x) => fs.writeFileSync(path.join(tmp, 'M.testlua.info.json'), JSON.stringify({ lua: 'testlua', luaVersion: '0.4.0', formate: [1, 2], studioDatei: 'geladen', sensoren: [{ appId: 528, sub: 0, phys: 3, name: 'VFAS' }], ...x }))
-  let r = await S.schnelltest({ ziel, kennung: 'M', lua: 'testlua', format: 2, vorher: null, logZeilen: ['Elektro bereit'] })
+  let r = await S.schnelltest({ ziel, kennung: 'M', lua: 'testlua', format: 2, vorher: null, logZeilen: ['Electric bereit'] })
   assert.deepStrictEqual(r.punkte.map((x) => x.k), ['infoFehlt', 'logSauber'])
   assert.strictEqual(r.ok, false)
   info({})

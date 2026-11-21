@@ -4,13 +4,16 @@
 
 > **Pre-release / public beta.** Tested on a real radio only on the X18RS. Use at your own risk.
 
-A program for Mac and Windows that belongs to our FrSky Ethos Lua widgets (Heli RF, Elektro, Jet, Segler, Motoren). Principle: **the PC thinks, the radio displays.**
+A program for Mac and Windows that belongs to our FrSky Ethos Lua widgets (Electric, Heli, Jet, Glider, Gas Engine). Principle: **the PC thinks, the radio displays.**
 
 **Radio live:** your FrSky radio's display appears on the computer and you operate the radio with mouse and keyboard, over USB in the radio's serial mode. **Models:** set up boxes, limits, symbols and settings of the Luas per model on the PC and transfer them to the radio – or prepare a model without the radio and export it to the SD card.
 
 ![Lua-Studio showing the radio display](docs/bilder/Funke%20live.png)
 
 *Picture from the Ethos simulator.*
+
+
+> **Renamed 21 Nov 2026:** Elektro → Electric, Segler → Glider, Motoren ECU/Vergaser → Gas Engine ECU/Carb, Heli RF → Heli. Lua-Studio 0.5.0 moves your projects on the PC to the new names and recognises old studio files on the radio.
 
 ## Radios
 
@@ -36,11 +39,11 @@ A program for Mac and Windows that belongs to our FrSky Ethos Lua widgets (Heli 
 
 | Lua | Studio support |
 |---|---|
-| [Elektro](https://github.com/Raffi1202/elektro-lua) 0.5.0 | format 2, «also when motor off» |
-| [Heli RF](https://github.com/Raffi1202/heli-lua) 1.12.0 | format 2, «also when motor off» |
+| [Electric](https://github.com/Raffi1202/electric-lua) 0.6.1 | format 2, «also when motor off» |
+| [Heli](https://github.com/Raffi1202/heli-lua) 1.12.0 | format 2, «also when motor off» |
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.4.0 | format 2, «also when motor off» |
-| [Segler](https://github.com/Raffi1202/segler-lua) 0.3.0 | format 1 |
-| [Motoren ECU / Vergaser](https://github.com/Raffi1202/motoren-lua) 1.8.0 / 0.8.0 | format 1 |
+| [Glider](https://github.com/Raffi1202/glider-lua) 0.5.0 | format 1, «also when motor off» |
+| [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.10.0 / 0.10.0 | format 1, «also when motor off» |
 
 Luas with format 2 also get symbols, bold units, decoration and templates; for format 1 the studio writes the file without them.
 
@@ -59,11 +62,11 @@ GPL-3.0-or-later, see [LICENSE](LICENSE). Some symbols are based on Tabler Icons
 
 | Project | What it does |
 |---|---|
-| [Elektro](https://github.com/Raffi1202/elektro-lua) | Ethos widget for electric models |
-| [Heli RF](https://github.com/Raffi1202/heli-lua) | Ethos widget for Rotorflight helicopters |
+| [Electric](https://github.com/Raffi1202/electric-lua) | Ethos widget for electric models |
+| [Heli](https://github.com/Raffi1202/heli-lua) | Ethos widget for helicopters (Rotorflight) |
 | [Jet](https://github.com/Raffi1202/jet-lua) | Ethos widget for turbines (several ECU brands) |
-| [Segler](https://github.com/Raffi1202/segler-lua) | Ethos widget for gliders (vario, thermals) |
-| [Motoren ECU / Vergaser](https://github.com/Raffi1202/motoren-lua) | Ethos widgets for gas engines |
+| [Glider](https://github.com/Raffi1202/glider-lua) | Ethos widget for gliders (vario, thermals) |
+| [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) | Ethos widgets for gas engines |
 | [Telemetry simulator](https://github.com/Raffi1202/telemetrie-simulator) | ESP32-S3 that simulates FrSky telemetry sensors |
 | [Ethos model converter](https://github.com/Raffi1202/ethos-modell-konverter) | Move models between Ethos radios |
 | [Ethos sensor IDs](https://github.com/Raffi1202/ethos-sensor-ids) | Which sensor Ethos creates for each AppID |

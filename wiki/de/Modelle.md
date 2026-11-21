@@ -2,7 +2,7 @@
 
 # Modelle einstellen
 
-Hier stellst du je Modell ein, was das Lua auf der Funke zeigt: Kästchen, Grenzwerte und Einstellungen. Das geht für die Luas mit Studio-Unterstützung (ab Elektro 0.3.0, Motoren ECU 1.8.0, Motoren Vergaser 0.8.0, Segler 0.3.0, Jet 0.1.1, Heli RF 1.10.1). Die Funke rechnet dabei nichts nach. Sie liest nur die fertige, geprüfte Datei.
+Hier stellst du je Modell ein, was das Lua auf der Funke zeigt: Kästchen, Grenzwerte und Einstellungen. Das geht für die Luas mit Studio-Unterstützung (Electric, Heli, Jet, Glider, Gas Engine ECU und Gas Engine Carb; bis 21.11.2026 hiessen sie Elektro, Heli RF, Segler, Motoren ECU und Motoren Vergaser). Die Funke rechnet dabei nichts nach. Sie liest nur die fertige, geprüfte Datei.
 
 Solange kein Modell offen ist, zeigt der Reiter zwei Einstiege (ab 0.4.0): **Mit Funke einstellen** (lädt die Modelle der verbundenen Funke bzw. führt zur Verbindung) und **Ohne Funke vorbereiten** mit der Liste der vorbereiteten Modelle (anklickbar). Der Knopf **+ Vorbereiten** oben neben den Reitern öffnet das Vorbereiten-Formular von überall.
 

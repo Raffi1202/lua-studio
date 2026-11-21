@@ -2,6 +2,14 @@
 
 New entries in English. Older entries in German.
 
+## 0.5.0 (21 Nov 2026)
+
+- **Luas renamed to English:** Elektro → **Electric** (`electric`), Segler → **Glider** (`glider`), Motoren ECU → **Gas Engine ECU** (`gas_ecu`), Motoren Vergaser → **Gas Engine Carb** (`gas_carb`). Heli RF → **Heli** (`heli`) follows as soon as Heli 1.13.0 is released; until then Lua-Studio keeps `helirf` and shows it as «Heli».
+- Descriptions of Electric 0.6.1, Glider 0.5.0, Gas Engine ECU 1.10.0 and Gas Engine Carb 0.10.0 included; all support «also when motor off».
+- **Old names are recognised:** projects and templates on the PC are moved to the new names once at start (the old files go to `Studio/vor-umbenennung`, nothing is deleted). A studio file with the old name on the radio (e.g. `<id>.elektro.lua`) counts as an existing studio file; transferring writes the new name and leaves the old file on the radio (step «old studio file … stays»).
+- Visible names Electric, Glider, Heli, Gas Engine ECU, Gas Engine Carb, Jet in the model list and the «prepare» form.
+- README, manual and wiki with the new names and repository links (electric-lua, glider-lua, gas-engine-lua, heli-lua).
+
 ## 0.4.2 – first public release (21 Nov 2026)
 
 - First public pre-release under GPL-3.0 (see `LICENSE`). README in English (`README.md`) and German (`README.de.md`), wiki in `wiki/`.

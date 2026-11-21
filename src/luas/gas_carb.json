@@ -1,0 +1,1654 @@
+{
+ "lua": "gas_carb",
+ "luaVersion": "0.10.0",
+ "formate": [
+  1
+ ],
+ "beiMotorAus": true,
+ "reserviert": [
+  {
+   "breite": 784,
+   "hoehe": 316,
+   "x": 0,
+   "y": 0,
+   "b": 784,
+   "h": 36,
+   "name": {
+    "de": "Statusleiste",
+    "en": "Status bar"
+   }
+  },
+  {
+   "breite": 630,
+   "hoehe": 258,
+   "x": 0,
+   "y": 0,
+   "b": 630,
+   "h": 29,
+   "name": {
+    "de": "Statusleiste",
+    "en": "Status bar"
+   }
+  },
+  {
+   "breite": 472,
+   "hoehe": 210,
+   "x": 0,
+   "y": 0,
+   "b": 472,
+   "h": 23,
+   "name": {
+    "de": "Statusleiste",
+    "en": "Status bar"
+   }
+  },
+  {
+   "breite": 800,
+   "hoehe": 480,
+   "x": 0,
+   "y": 0,
+   "b": 800,
+   "h": 80,
+   "name": {
+    "de": "Statusleiste und Meldezeile",
+    "en": "Status bar and message line"
+   }
+  },
+  {
+   "breite": 480,
+   "hoehe": 320,
+   "x": 0,
+   "y": 0,
+   "b": 480,
+   "h": 52,
+   "name": {
+    "de": "Statusleiste und Meldezeile",
+    "en": "Status bar and message line"
+   }
+  }
+ ],
+ "hinweis": {
+  "de": "Im Vollbild ersetzt eine Ansicht nur die Seite 1 (Motor). Die Seiten 2 (Elektrik) und 3 (Übersicht mit Flugliste) zeichnet das Lua weiter selbst. Die Grenze von «RX1 Empfang» gilt für beide Empfänger (RX1 und RX2).",
+  "en": "In full screen a view replaces page 1 (engine) only. Pages 2 (electrics) and 3 (summary with flight list) stay as drawn by the Lua. The limit of «RX1 signal» applies to both receivers (RX1 and RX2)."
+ },
+ "werte": [
+  {
+   "s": "rpm",
+   "name": {
+    "de": "Drehzahl",
+    "en": "RPM"
+   },
+   "einheit": "U/min",
+   "stellen": 0,
+   "min": 0,
+   "max": 10000,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "ueber",
+   "ansage": true
+  },
+  {
+   "s": "cht1",
+   "name": {
+    "de": "Zylinder 1",
+    "en": "Cylinder 1"
+   },
+   "einheit": "°C",
+   "stellen": 0,
+   "min": 0,
+   "max": 300,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "cht2",
+   "name": {
+    "de": "Zylinder 2",
+    "en": "Cylinder 2"
+   },
+   "einheit": "°C",
+   "stellen": 0,
+   "min": 0,
+   "max": 300,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "cht3",
+   "name": {
+    "de": "Zylinder 3",
+    "en": "Cylinder 3"
+   },
+   "einheit": "°C",
+   "stellen": 0,
+   "min": 0,
+   "max": 300,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "cht4",
+   "name": {
+    "de": "Zylinder 4",
+    "en": "Cylinder 4"
+   },
+   "einheit": "°C",
+   "stellen": 0,
+   "min": 0,
+   "max": 300,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "cht_max",
+   "name": {
+    "de": "Zylinder max",
+    "en": "Cylinder max"
+   },
+   "einheit": "°C",
+   "stellen": 0,
+   "min": 0,
+   "max": 300,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "ueber",
+   "ansage": true
+  },
+  {
+   "s": "cht_diff",
+   "name": {
+    "de": "Zylinderunterschied",
+    "en": "Cylinder difference"
+   },
+   "einheit": "°C",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "ueber",
+   "ansage": true
+  },
+  {
+   "s": "gas",
+   "name": {
+    "de": "Gas",
+    "en": "Throttle"
+   },
+   "einheit": "%",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "tank_proz",
+   "name": {
+    "de": "Tank",
+    "en": "Tank"
+   },
+   "einheit": "%",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "unter",
+   "ansage": true
+  },
+  {
+   "s": "tank_ml",
+   "name": {
+    "de": "Tank Rest",
+    "en": "Tank left"
+   },
+   "einheit": "ml",
+   "stellen": 0,
+   "min": 0,
+   "max": 5000,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "restzeit",
+   "name": {
+    "de": "Restzeit",
+    "en": "Time left"
+   },
+   "einheit": "min",
+   "stellen": 0,
+   "min": 0,
+   "max": 60,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "unter",
+   "ansage": true
+  },
+  {
+   "s": "fluss",
+   "name": {
+    "de": "Durchfluss",
+    "en": "Flow"
+   },
+   "einheit": "ml/min",
+   "stellen": 0,
+   "min": 0,
+   "max": 500,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "verbrauch",
+   "name": {
+    "de": "Verbrauch",
+    "en": "Fuel used"
+   },
+   "einheit": "ml",
+   "stellen": 0,
+   "min": 0,
+   "max": 5000,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "hoehe",
+   "name": {
+    "de": "Höhe",
+    "en": "Altitude"
+   },
+   "einheit": "m",
+   "stellen": 0,
+   "min": 0,
+   "max": 1000,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "vario",
+   "name": {
+    "de": "Steigen",
+    "en": "Climb"
+   },
+   "einheit": "m/s",
+   "stellen": 1,
+   "min": -10,
+   "max": 10,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "speed",
+   "name": {
+    "de": "Geschwindigkeit",
+    "en": "Speed"
+   },
+   "einheit": "km/h",
+   "stellen": 0,
+   "min": 0,
+   "max": 300,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "rssi",
+   "name": {
+    "de": "Empfang",
+    "en": "Reception"
+   },
+   "einheit": "%",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "rx1_rssi",
+   "name": {
+    "de": "RX1 Empfang",
+    "en": "RX1 signal"
+   },
+   "einheit": "%",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "unter",
+   "ansage": true
+  },
+  {
+   "s": "rx2_rssi",
+   "name": {
+    "de": "RX2 Empfang",
+    "en": "RX2 signal"
+   },
+   "einheit": "%",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "rx_batt",
+   "name": {
+    "de": "Empfängerspannung",
+    "en": "Receiver voltage"
+   },
+   "einheit": "V",
+   "stellen": 2,
+   "min": 0,
+   "max": 9,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "akku1_zelle",
+   "name": {
+    "de": "Akku 1 Zelle",
+    "en": "Battery 1 cell"
+   },
+   "einheit": "V",
+   "stellen": 2,
+   "min": 3,
+   "max": 4.2,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "unter",
+   "ansage": true
+  },
+  {
+   "s": "akku1_v",
+   "name": {
+    "de": "Akku 1 Spannung",
+    "en": "Battery 1 voltage"
+   },
+   "einheit": "V",
+   "stellen": 2,
+   "min": 0,
+   "max": 30,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "akku2_zelle",
+   "name": {
+    "de": "Akku 2 Zelle",
+    "en": "Battery 2 cell"
+   },
+   "einheit": "V",
+   "stellen": 2,
+   "min": 3,
+   "max": 4.2,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "unter",
+   "ansage": true
+  },
+  {
+   "s": "akku2_v",
+   "name": {
+    "de": "Akku 2 Spannung",
+    "en": "Battery 2 voltage"
+   },
+   "einheit": "V",
+   "stellen": 2,
+   "min": 0,
+   "max": 30,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "akku3_zelle",
+   "name": {
+    "de": "Akku 3 Zelle",
+    "en": "Battery 3 cell"
+   },
+   "einheit": "V",
+   "stellen": 2,
+   "min": 3,
+   "max": 4.2,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "unter",
+   "ansage": true
+  },
+  {
+   "s": "akku3_v",
+   "name": {
+    "de": "Akku 3 Spannung",
+    "en": "Battery 3 voltage"
+   },
+   "einheit": "V",
+   "stellen": 2,
+   "min": 0,
+   "max": 30,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "akku_diff",
+   "name": {
+    "de": "Zellenunterschied",
+    "en": "Cell difference"
+   },
+   "einheit": "V",
+   "stellen": 2,
+   "min": 0,
+   "max": 0.5,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "ueber",
+   "ansage": true
+  },
+  {
+   "s": "kanalstrom_max",
+   "name": {
+    "de": "Kanalstrom max",
+    "en": "Channel current max"
+   },
+   "einheit": "A",
+   "stellen": 1,
+   "min": 0,
+   "max": 20,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "ueber",
+   "ansage": true
+  },
+  {
+   "s": "laufzeit",
+   "name": {
+    "de": "Motorlaufzeit Flug",
+    "en": "Engine time flight"
+   },
+   "einheit": "s",
+   "stellen": 0,
+   "min": 0,
+   "max": 3600,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "zustand",
+   "name": {
+    "de": "Zustand",
+    "en": "State"
+   },
+   "darstellungen": [
+    "status"
+   ],
+   "zustaende": [
+    {
+     "wert": 0,
+     "de": "KEINE DATEN",
+     "en": "NO DATA",
+     "farbe": [
+      128,
+      128,
+      128
+     ]
+    },
+    {
+     "wert": 1,
+     "de": "WARMLAUF",
+     "en": "WARM-UP",
+     "farbe": [
+      59,
+      130,
+      246
+     ]
+    },
+    {
+     "wert": 2,
+     "de": "LÄUFT",
+     "en": "RUNNING",
+     "farbe": [
+      34,
+      197,
+      94
+     ]
+    },
+    {
+     "wert": 3,
+     "de": "WARNUNG",
+     "en": "WARNING",
+     "farbe": [
+      245,
+      158,
+      11
+     ]
+    },
+    {
+     "wert": 4,
+     "de": "ALARM",
+     "en": "ALARM",
+     "farbe": [
+      239,
+      68,
+      68
+     ]
+    }
+   ],
+   "immerAlarm": true
+  },
+  {
+   "s": "zuendung",
+   "name": {
+    "de": "Zündung",
+    "en": "Ignition"
+   },
+   "darstellungen": [
+    "status"
+   ],
+   "zustaende": [
+    {
+     "wert": 0,
+     "de": "AUS",
+     "en": "OFF",
+     "farbe": [
+      128,
+      128,
+      128
+     ]
+    },
+    {
+     "wert": 1,
+     "de": "EIN",
+     "en": "ON",
+     "farbe": [
+      239,
+      68,
+      68
+     ]
+    },
+    {
+     "wert": 2,
+     "de": "CHOKE",
+     "en": "CHOKE",
+     "farbe": [
+      59,
+      130,
+      246
+     ]
+    }
+   ]
+  }
+ ],
+ "einstellungen": [
+  {
+   "s": "zyl_anz",
+   "art": "w",
+   "name": {
+    "de": "Anzahl Zylinder",
+    "en": "Number of cylinders"
+   },
+   "werk": 2,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "1",
+      "en": "1"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "2",
+      "en": "2"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "3",
+      "en": "3"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "4",
+      "en": "4"
+     }
+    }
+   ]
+  },
+  {
+   "s": "sw_aus",
+   "art": "w",
+   "name": {
+    "de": "Stellung Aus (Kill)",
+    "en": "Position off (kill)"
+   },
+   "werk": 1,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "oben",
+      "en": "up"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Mitte",
+      "en": "middle"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "unten",
+      "en": "down"
+     }
+    }
+   ]
+  },
+  {
+   "s": "sw_choke",
+   "art": "w",
+   "name": {
+    "de": "Stellung Choke",
+    "en": "Position choke"
+   },
+   "werk": 0,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "keine",
+      "en": "none"
+     }
+    },
+    {
+     "wert": 1,
+     "name": {
+      "de": "oben",
+      "en": "up"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Mitte",
+      "en": "middle"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "unten",
+      "en": "down"
+     }
+    }
+   ]
+  },
+  {
+   "s": "laeuft_ab",
+   "art": "z",
+   "name": {
+    "de": "Motor läuft ab",
+    "en": "Engine running from"
+   },
+   "werk": 0,
+   "min": 0,
+   "max": 5000,
+   "einheit": "U/min"
+  },
+  {
+   "s": "cht_kalt",
+   "art": "z",
+   "name": {
+    "de": "Zylinder kalt unter",
+    "en": "Cylinder cold below"
+   },
+   "werk": 0,
+   "min": 0,
+   "max": 600,
+   "einheit": "°"
+  },
+  {
+   "s": "choke_temp",
+   "art": "z",
+   "name": {
+    "de": "Choke-Warnung ab Zyl.",
+    "en": "Choke warning from cyl."
+   },
+   "werk": 0,
+   "min": 0,
+   "max": 600,
+   "einheit": "°"
+  },
+  {
+   "s": "choke_gas",
+   "art": "z",
+   "name": {
+    "de": "Choke-Warnung ab Gas",
+    "en": "Choke warning from throttle"
+   },
+   "werk": 0,
+   "min": 0,
+   "max": 100,
+   "einheit": "%"
+  },
+  {
+   "s": "cht_von",
+   "art": "z",
+   "name": {
+    "de": "Zylinder von",
+    "en": "Cylinder from"
+   },
+   "werk": 0,
+   "min": 0,
+   "max": 600,
+   "einheit": "°"
+  },
+  {
+   "s": "cht_bis",
+   "art": "z",
+   "name": {
+    "de": "Zylinder bis",
+    "en": "Cylinder to"
+   },
+   "werk": 250,
+   "min": 10,
+   "max": 600,
+   "einheit": "°"
+  },
+  {
+   "s": "rpm_skala",
+   "art": "z",
+   "name": {
+    "de": "Drehzahl bis",
+    "en": "RPM to"
+   },
+   "werk": 9000,
+   "min": 1000,
+   "max": 30000,
+   "einheit": "U/min"
+  },
+  {
+   "s": "ml_imp",
+   "art": "z",
+   "name": {
+    "de": "ml pro Impuls",
+    "en": "ml per pulse"
+   },
+   "werk": 0.1,
+   "min": 0.001,
+   "max": 10.0,
+   "stellen": 3,
+   "einheit": "ml"
+  },
+  {
+   "s": "tank",
+   "art": "z",
+   "name": {
+    "de": "Tankinhalt",
+    "en": "Tank capacity"
+   },
+   "werk": 0,
+   "min": 0,
+   "max": 20000,
+   "einheit": "ml"
+  },
+  {
+   "s": "a1_rolle",
+   "art": "w",
+   "name": {
+    "de": "Akku 1 ist",
+    "en": "Battery 1 is"
+   },
+   "werk": 5,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "Empfänger",
+      "en": "Receiver"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Zündung",
+      "en": "Ignition"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Anlasser",
+      "en": "Starter"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Akku",
+      "en": "Battery"
+     }
+    }
+   ]
+  },
+  {
+   "s": "a1_s",
+   "art": "w",
+   "name": {
+    "de": "Akku 1 Zellen",
+    "en": "Battery 1 cells"
+   },
+   "werk": 0,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "automatisch",
+      "en": "automatic"
+     }
+    },
+    {
+     "wert": 1,
+     "name": {
+      "de": "1S",
+      "en": "1S"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "2S",
+      "en": "2S"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "3S",
+      "en": "3S"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "4S",
+      "en": "4S"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "5S",
+      "en": "5S"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "6S",
+      "en": "6S"
+     }
+    }
+   ]
+  },
+  {
+   "s": "a1_typ",
+   "art": "w",
+   "name": {
+    "de": "Akku 1 Art",
+    "en": "Battery 1 type"
+   },
+   "werk": 1,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "LiPo",
+      "en": "LiPo"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "LiFe",
+      "en": "LiFe"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "NiMH",
+      "en": "NiMH"
+     }
+    }
+   ]
+  },
+  {
+   "s": "a2_rolle",
+   "art": "w",
+   "name": {
+    "de": "Akku 2 ist",
+    "en": "Battery 2 is"
+   },
+   "werk": 5,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "Empfänger",
+      "en": "Receiver"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Zündung",
+      "en": "Ignition"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Anlasser",
+      "en": "Starter"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Akku",
+      "en": "Battery"
+     }
+    }
+   ]
+  },
+  {
+   "s": "a2_s",
+   "art": "w",
+   "name": {
+    "de": "Akku 2 Zellen",
+    "en": "Battery 2 cells"
+   },
+   "werk": 0,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "automatisch",
+      "en": "automatic"
+     }
+    },
+    {
+     "wert": 1,
+     "name": {
+      "de": "1S",
+      "en": "1S"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "2S",
+      "en": "2S"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "3S",
+      "en": "3S"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "4S",
+      "en": "4S"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "5S",
+      "en": "5S"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "6S",
+      "en": "6S"
+     }
+    }
+   ]
+  },
+  {
+   "s": "a2_typ",
+   "art": "w",
+   "name": {
+    "de": "Akku 2 Art",
+    "en": "Battery 2 type"
+   },
+   "werk": 1,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "LiPo",
+      "en": "LiPo"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "LiFe",
+      "en": "LiFe"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "NiMH",
+      "en": "NiMH"
+     }
+    }
+   ]
+  },
+  {
+   "s": "a3_rolle",
+   "art": "w",
+   "name": {
+    "de": "Akku 3 ist",
+    "en": "Battery 3 is"
+   },
+   "werk": 5,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "Empfänger",
+      "en": "Receiver"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Zündung",
+      "en": "Ignition"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Anlasser",
+      "en": "Starter"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Akku",
+      "en": "Battery"
+     }
+    }
+   ]
+  },
+  {
+   "s": "a3_s",
+   "art": "w",
+   "name": {
+    "de": "Akku 3 Zellen",
+    "en": "Battery 3 cells"
+   },
+   "werk": 0,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "automatisch",
+      "en": "automatic"
+     }
+    },
+    {
+     "wert": 1,
+     "name": {
+      "de": "1S",
+      "en": "1S"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "2S",
+      "en": "2S"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "3S",
+      "en": "3S"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "4S",
+      "en": "4S"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "5S",
+      "en": "5S"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "6S",
+      "en": "6S"
+     }
+    }
+   ]
+  },
+  {
+   "s": "a3_typ",
+   "art": "w",
+   "name": {
+    "de": "Akku 3 Art",
+    "en": "Battery 3 type"
+   },
+   "werk": 1,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "LiPo",
+      "en": "LiPo"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "LiFe",
+      "en": "LiFe"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "NiMH",
+      "en": "NiMH"
+     }
+    }
+   ]
+  },
+  {
+   "s": "z_leer",
+   "art": "z",
+   "name": {
+    "de": "Zellenbalken leer bei",
+    "en": "Cell bar empty at"
+   },
+   "werk": 3.0,
+   "min": 0.0,
+   "max": 5.0,
+   "stellen": 2,
+   "einheit": "V"
+  },
+  {
+   "s": "z_voll",
+   "art": "z",
+   "name": {
+    "de": "Zellenbalken voll bei",
+    "en": "Cell bar full at"
+   },
+   "werk": 4.2,
+   "min": 0.0,
+   "max": 5.0,
+   "stellen": 2,
+   "einheit": "V"
+  },
+  {
+   "s": "sw1_name",
+   "art": "t",
+   "name": {
+    "de": "Schalter 1 Name",
+    "en": "Switch 1 name"
+   },
+   "werk": "SCHALTER 1",
+   "max": 12
+  },
+  {
+   "s": "winde_inv",
+   "art": "b",
+   "name": {
+    "de": "Schalter 1 umkehren",
+    "en": "Switch 1 reverse"
+   },
+   "werk": false
+  },
+  {
+   "s": "sw2_name",
+   "art": "t",
+   "name": {
+    "de": "Schalter 2 Name",
+    "en": "Switch 2 name"
+   },
+   "werk": "SCHALTER 2",
+   "max": 12
+  },
+  {
+   "s": "bremse_inv",
+   "art": "b",
+   "name": {
+    "de": "Schalter 2 umkehren",
+    "en": "Switch 2 reverse"
+   },
+   "werk": false
+  },
+  {
+   "s": "sprache",
+   "art": "w",
+   "name": {
+    "de": "Sprache / Language",
+    "en": "Sprache / Language"
+   },
+   "werk": 0,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "wie Sender",
+      "en": "as radio"
+     }
+    },
+    {
+     "wert": 1,
+     "name": {
+      "de": "Deutsch",
+      "en": "Deutsch"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "English",
+      "en": "English"
+     }
+    }
+   ]
+  },
+  {
+   "s": "ansage",
+   "art": "b",
+   "name": {
+    "de": "Ansagen",
+    "en": "Announcements"
+   },
+   "werk": true
+  },
+  {
+   "s": "zahl",
+   "art": "b",
+   "name": {
+    "de": "Wert mit ansagen",
+    "en": "Announce value"
+   },
+   "werk": true
+  },
+  {
+   "s": "vibration",
+   "art": "b",
+   "name": {
+    "de": "Vibration bei Alarm",
+    "en": "Vibration on alarm"
+   },
+   "werk": true
+  },
+  {
+   "s": "pause",
+   "art": "z",
+   "name": {
+    "de": "Wiederholung alle",
+    "en": "Repeat every"
+   },
+   "werk": 30,
+   "min": 5,
+   "max": 600,
+   "einheit": "s"
+  },
+  {
+   "s": "sperre",
+   "art": "z",
+   "name": {
+    "de": "Startsperre",
+    "en": "Start delay"
+   },
+   "werk": 10,
+   "min": 0,
+   "max": 120,
+   "einheit": "s"
+  }
+ ],
+ "standard": {
+  "ansichten": [
+   {
+    "breite": 784,
+    "hoehe": 316,
+    "plaetze": [
+     {
+      "x": 5,
+      "y": 41,
+      "b": 189,
+      "h": 135,
+      "w": "lua:rpm",
+      "darstellung": "ring"
+     },
+     {
+      "x": 199,
+      "y": 41,
+      "b": 189,
+      "h": 135,
+      "w": "lua:cht_max",
+      "darstellung": "ring"
+     },
+     {
+      "x": 393,
+      "y": 41,
+      "b": 189,
+      "h": 135,
+      "w": "lua:tank_proz",
+      "darstellung": "ring"
+     },
+     {
+      "x": 587,
+      "y": 41,
+      "b": 189,
+      "h": 135,
+      "w": "lua:akku1_zelle",
+      "darstellung": "ring"
+     },
+     {
+      "x": 5,
+      "y": 181,
+      "b": 189,
+      "h": 62,
+      "w": "lua:cht_diff",
+      "darstellung": "zahl"
+     },
+     {
+      "x": 199,
+      "y": 181,
+      "b": 189,
+      "h": 62,
+      "w": "lua:fluss",
+      "darstellung": "zahl"
+     },
+     {
+      "x": 393,
+      "y": 181,
+      "b": 189,
+      "h": 62,
+      "w": "lua:verbrauch",
+      "darstellung": "zahl"
+     },
+     {
+      "x": 587,
+      "y": 181,
+      "b": 189,
+      "h": 62,
+      "w": "lua:gas",
+      "darstellung": "zahl"
+     },
+     {
+      "x": 5,
+      "y": 248,
+      "b": 189,
+      "h": 62,
+      "w": "lua:hoehe",
+      "darstellung": "zahl"
+     },
+     {
+      "x": 199,
+      "y": 248,
+      "b": 189,
+      "h": 62,
+      "w": "lua:vario",
+      "darstellung": "zahl"
+     },
+     {
+      "x": 393,
+      "y": 248,
+      "b": 189,
+      "h": 62,
+      "w": "lua:speed",
+      "darstellung": "zahl"
+     },
+     {
+      "x": 587,
+      "y": 248,
+      "b": 189,
+      "h": 62,
+      "w": "lua:rx_batt",
+      "darstellung": "zahl"
+     }
+    ]
+   }
+  ],
+  "grenzen": {
+   "lua:cht_max": {
+    "richtung": "ueber",
+    "ansage": true,
+    "vibration": true,
+    "warnung": 200,
+    "alarm": 230
+   },
+   "lua:cht_diff": {
+    "richtung": "ueber",
+    "ansage": true,
+    "vibration": true,
+    "warnung": 40
+   },
+   "lua:rpm": {
+    "richtung": "ueber",
+    "aus": true
+   },
+   "lua:tank_proz": {
+    "richtung": "unter",
+    "aus": true
+   },
+   "lua:restzeit": {
+    "richtung": "unter",
+    "aus": true
+   },
+   "lua:akku1_zelle": {
+    "richtung": "unter",
+    "ansage": true,
+    "vibration": true,
+    "warnung": 3.5,
+    "alarm": 3.3
+   },
+   "lua:akku2_zelle": {
+    "richtung": "unter",
+    "ansage": true,
+    "vibration": true,
+    "warnung": 3.5,
+    "alarm": 3.3
+   },
+   "lua:akku3_zelle": {
+    "richtung": "unter",
+    "ansage": true,
+    "vibration": true,
+    "warnung": 3.5,
+    "alarm": 3.3
+   },
+   "lua:akku_diff": {
+    "richtung": "ueber",
+    "ansage": true,
+    "vibration": true,
+    "warnung": 0.15
+   },
+   "lua:kanalstrom_max": {
+    "richtung": "ueber",
+    "aus": true
+   },
+   "lua:rx1_rssi": {
+    "richtung": "unter",
+    "aus": true
+   }
+  }
+ }
+}

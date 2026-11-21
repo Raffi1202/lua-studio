@@ -84,6 +84,9 @@ async function symbolGrau(n, k) {
   return b64
 }
 
+// Sichtbare Namen der Luas (Umbenennung 21.11.2026); unbekannte zeigen ihren Schlüssel
+const LUA_NAME = { electric: 'Electric', glider: 'Glider', heli: 'Heli', helirf: 'Heli', gas_ecu: 'Gas Engine ECU', gas_carb: 'Gas Engine Carb', jet: 'Jet' }
+function luaName(k) { return LUA_NAME[k] || k }
 function beschreibung() { return st.m ? st.luas[st.m.lua] : null }
 function ansichtAktuell() { return st.projekt ? st.projekt.ansichten[st.ansicht] : null }
 
@@ -196,7 +199,7 @@ function modellListeZeigen() {
     const li = el('li', { onclick: () => modellOeffnen(m) }, [
       m.vorbereitet ? el('span', { class: 'weg', text: '×', title: t('vorbereitetLoeschen'), onclick: (ev) => { ev.stopPropagation(); vorbereitetLoeschen(m) } }) : null,
       el('span', { text: titel }),
-      el('span', { class: 'marke-klein', text: ` · ${m.lua}${m.vorbereitet ? ' · ' + (st.gruppen[gruppeVon(m.info.fenster)] || {}).name : ''}${m.studioDatei ? ' · ' + t('mitStudio') : ''}${m.funkeDatei ? ' · ' + t('mitFunkeAenderung') : ''}${m.bekannt ? '' : ' · ' + t('luaUnbekannt')}${m.doppelt ? ' · ⚠ ' + t('doppelt') : ''}${vb ? ' · ' + t('vorbereitungDa') : ''}` }),
+      el('span', { class: 'marke-klein', text: ` · ${luaName(m.lua)}${m.vorbereitet ? ' · ' + (st.gruppen[gruppeVon(m.info.fenster)] || {}).name : ''}${m.studioDatei || m.alteStudioDatei ? ' · ' + t('mitStudio') : ''}${m.funkeDatei ? ' · ' + t('mitFunkeAenderung') : ''}${m.bekannt ? '' : ' · ' + t('luaUnbekannt')}${m.doppelt ? ' · ⚠ ' + t('doppelt') : ''}${vb ? ' · ' + t('vorbereitungDa') : ''}` }),
     ])
     if (st.m && st.m.kennung === m.kennung && st.m.lua === m.lua) li.classList.add('aktiv')
     ul.appendChild(li)
@@ -230,7 +233,7 @@ async function modellOeffnen(m) {
   st.presets = await api.studio('presets', m.lua)
   $('editor').hidden = false
   $('modellName').textContent = (m.info && m.info.modell) || m.kennung
-  $('modellUnter').textContent = `${m.lua} ${(m.info && m.info.luaVersion) || ''} · ${(m.info && m.info.funke) || ''}`
+  $('modellUnter').textContent = `${luaName(m.lua)} ${(m.info && m.info.luaVersion) || ''} · ${(m.info && m.info.funke) || ''}`
   const b = beschreibung()
   $('luaHinweis').textContent = b && b.hinweis ? name(b.hinweis) : ''
   modellListeZeigen()
@@ -1282,7 +1285,7 @@ function vorbereitenFormZeigen() {
   const g = $('vGruppe'); g.textContent = ''
   for (const [k, x] of Object.entries(st.gruppen)) g.appendChild(el('option', { value: k, text: x.name }))
   const l = $('vLua'); l.textContent = ''
-  for (const [k, b] of Object.entries(st.luas)) l.appendChild(el('option', { value: k, text: `${k} ${b.luaVersion || ''}` }))
+  for (const [k, b] of Object.entries(st.luas)) l.appendChild(el('option', { value: k, text: `${luaName(k)} ${b.luaVersion || ''}` }))
   $('vName').value = ''; $('vKennung').textContent = ''; $('vMeldung').textContent = ''
   $('vName').focus()
 }

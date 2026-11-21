@@ -232,7 +232,15 @@ ipcMain.handle('fotoSpeichern', async (_e, { pngBase64, vorschlag }) => {
 
 // ---------- Studio (Etappe B): Modelle, Einstellungen, Übertragen ----------
 let ablage = null
-function studioAblage() { if (!ablage) ablage = new S.Ablage(path.join(app.getPath('userData'), 'Studio')); return ablage }
+function studioAblage() {
+  if (!ablage) {
+    const wurzel = path.join(app.getPath('userData'), 'Studio')
+    // einmal: Projekte und Vorlagen mit alten Lua-Namen auf die neuen umziehen (Umbenennung 21.11.2026)
+    try { const u = S.ablageUmziehen(wurzel, Object.keys(beschreibungen())); if (u.length) P.info('ablage', `auf neue Lua-Namen umgezogen: ${u.join(', ')}`) } catch (e) { P.fehler('ablage', e) }
+    ablage = new S.Ablage(wurzel)
+  }
+  return ablage
+}
 
 // Beschreibungen der Luas: mitgeliefert in src/luas; beim Entwickeln zusätzlich die Test-Beschreibung
 function beschreibungen() {
