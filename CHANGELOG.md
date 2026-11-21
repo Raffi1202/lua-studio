@@ -2,6 +2,10 @@
 
 New entries in English. Older entries in German.
 
+## 0.7.1 (21 Nov 2026)
+
+- Description of Heli 1.13.1 included (help texts without naming a flight controller).
+
 ## 0.7.0 (21 Nov 2026)
 
 - **«Start empty» removed** (decision of the user): the templates are well prepared, you rather delete or move boxes. New models now start with the template «Original» where Lua-Studio has one. «Remove box» stays.
