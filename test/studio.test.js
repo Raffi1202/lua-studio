@@ -236,3 +236,13 @@ test('Funke (0.8.2): Studio-Ordner dort, wo das Lua seine Info-Datei geschrieben
   const wirft = { dateien: async (o) => { if (o.startsWith('RADIO:')) throw new Error('unbekannt'); return { status: -2, liste: [] } } }
   assert.strictEqual(await funkenZiel(wirft, 'gas_carb').basis(), '/scripts/studio')
 })
+
+test('Funke (0.8.3): Diagnose nennt durchsuchte Ordner, Status und Info-Dateien', async () => {
+  const { funkenZiel } = require('../src/studio/ziel')
+  const funke = { dateien: async (o) => (o === '/scripts/studio' ? { status: 0, liste: [{ name: 'A.gas_carb.info.json' }, { name: 'x.lua' }] } : { status: -2, liste: [] }) }
+  const z = funkenZiel(funke, 'gas_carb')
+  assert.strictEqual(await z.basis(), '/scripts/studio')
+  const d = z.diagnose().join('\n')
+  assert.match(d, /SD:\/scripts\/studio: Status -2/)
+  assert.match(d, /\/scripts\/studio: Status 0, 2 Einträge, Info: A\.gas_carb\.info\.json/)
+})

@@ -2,6 +2,10 @@
 
 New entries in English. Older entries in German.
 
+## 0.8.3 (21 Nov 2026)
+
+- More detail in the error log for support (#1): which studio folders on the radio were searched, what the radio returned for each (status, number of entries, info files), the chosen folder or cancel in «Choose folder», and the path of «Save as file». The user folder is replaced by `~` as before.
+
 ## 0.8.2 (21 Nov 2026)
 
 Fixes after the first user report (Windows, X20 Pro AW, COM3):

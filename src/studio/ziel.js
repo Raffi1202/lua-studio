@@ -11,6 +11,7 @@ const KANDIDATEN = ['SD:/scripts/studio', '/scripts/studio', 'RADIO:/scripts/stu
 
 function funkenZiel(funke, lua) {
   let basis = null
+  const diag = []   // für das Fehlerprotokoll: welche Ordner durchsucht wurden und was die Funke lieferte
   // Der Studio-Ordner liegt neben dem Ordner des Luas: SD:/scripts, wenn das Lua dort liegt, sonst /scripts
   async function ordner() {
     if (basis) return basis
@@ -18,11 +19,13 @@ function funkenZiel(funke, lua) {
     //    Skript-Speicherort der Funke: SD-Karte oder interner Speicher, z. B. X20 Pro AW). Fehlerhafte Pfade überspringen.
     for (const o of KANDIDATEN) {
       let r = null
-      try { r = await funke.dateien(o) } catch { r = null }
+      try { r = await funke.dateien(o) } catch (e) { r = null; diag.push(`${o}: Fehler ${e && e.message}`) }
+      if (r) diag.push(`${o}: Status ${r.status}, ${r.status === 0 ? r.liste.length : 0} Einträge${r.status === 0 ? ', Info: ' + (r.liste.filter((e) => !e.ordner && e.name.endsWith('.info.json')).map((e) => e.name).join(' ') || '-') : ''}`)
       if (r && r.status === 0 && r.liste.some((e) => !e.ordner && e.name.endsWith(`.${lua}.info.json`))) { basis = o; return basis }
     }
     // 2. sonst neben dem Ordner des Luas
     const sd = await funke.dateien('SD:/scripts')
+    diag.push(`SD:/scripts: Status ${sd.status}, Lua-Ordner ${lua} ${sd.status === 0 && sd.liste.some((e) => e.ordner && e.name === lua) ? 'da' : 'fehlt'}`)
     basis = sd.status === 0 && sd.liste.some((e) => e.ordner && e.name === lua) ? 'SD:/scripts/studio' : '/scripts/studio'
     return basis
   }
@@ -39,6 +42,7 @@ function funkenZiel(funke, lua) {
     art: 'funke',
     beschreibung: () => basis || 'Funke',
     basis: async () => ordner(),
+    diagnose: () => diag.slice(),
     async liste() {
       const o = await ordner()
       const r = await funke.dateien(o)

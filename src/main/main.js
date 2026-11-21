@@ -275,6 +275,7 @@ ipcMain.handle('studio:ziele', () => ({ funke: !!(funke && !funke.getrennt), fun
 ipcMain.handle('studio:ordnerWaehlen', async () => {
   P.info('ordner', 'Ordner wählen geöffnet')
   const r = await dialog.showOpenDialog(fenster && !fenster.isDestroyed() ? fenster : undefined, { properties: ['openDirectory', 'createDirectory'] })
+  P.info('ordner', r.canceled ? 'Ordner wählen abgebrochen' : `Ordner gewählt: ${r.filePaths[0]}`)
   if (r.canceled) return null
   erlaubteOrdner.add(r.filePaths[0])
   return r.filePaths[0]
@@ -287,9 +288,9 @@ ipcMain.handle('studio:exportDatei', async (_e, a) => {
     const gebaut = S.bauenMitWaechter(a.projekt, { ...(a.meta || {}), studioVersion: VERSION, immerAlarm: immerAlarm(a.lua), extra: S.extraDarstellungen(b, (a.meta || {}).luaVersion) })
     if (gebaut.fehler.length) return { ok: false, fehler: `pruefen|${gebaut.fehler.join('; ')}` }
     const r = await dialog.showSaveDialog(fenster && !fenster.isDestroyed() ? fenster : undefined, { defaultPath: `${a.kennung}.${a.lua}.lua`, filters: [{ name: 'Lua-Studio', extensions: ['lua'] }] })
-    if (r.canceled || !r.filePath) return { ok: false, abgebrochen: true }
+    if (r.canceled || !r.filePath) { P.info('export', 'Als Datei speichern abgebrochen'); return { ok: false, abgebrochen: true } }
     fs.writeFileSync(r.filePath, gebaut.text, 'utf8')
-    P.info('export', `Datei gespeichert: ${a.kennung}.${a.lua}.lua (${gebaut.zaehlung.byte} Byte, Format ${gebaut.daten.format}, ${(gebaut.daten.symbole || []).length} Symbole)`)
+    P.info('export', `Datei gespeichert: ${r.filePath} (${gebaut.zaehlung.byte} Byte, Format ${gebaut.daten.format}, ${(gebaut.daten.symbole || []).length} Symbole)`)
     return { ok: true, pfad: r.filePath, symbole: (gebaut.daten.symbole || []).length }
   } catch (e) { return fehlerAntwort(e) }
 })
@@ -303,7 +304,7 @@ ipcMain.handle('studio:modelle', async (_e, spec) => {
     for (const lua of Object.keys(luas).length ? Object.keys(luas) : ['studio']) {
       const ziel = zielAus(spec, lua)
       // Jeden Studio-Ordner nur einmal lesen (mehrere Luas teilen sich einen Ordner)
-      if (spec.art === 'funke') { const b = await ziel.basis(); if (gelesen.has(b)) continue; gelesen.add(b) }
+      if (spec.art === 'funke') { const b = await ziel.basis(); P.info('modelle', `${lua}: Studio-Ordner ${b} (${ziel.diagnose().join(' | ')})`); if (gelesen.has(b)) continue; gelesen.add(b) }
       for (const m of await S.modelleLesen(ziel)) {
         const k = `${m.kennung}.${m.lua}`
         if (gesehen.has(k)) continue
