@@ -2,6 +2,15 @@
 
 New entries in English. Older entries in German.
 
+## 0.9.0 (22 Nov 2026)
+
+- **Studio layout is always found** (with Electric 0.7.0, Heli 1.14.0, Jet 0.5.0, Glider 0.6.0, Gas Engine 1.12.0 / 0.12.0): the Luas look in all studio folders, offer «Studio layout» in the widget menu and scale a view that does not fit exactly. Descriptions of these versions included.
+- Radio quick test shows the new info fields: studio file used (and whether chosen in the menu), view used or scaled, note from the Lua. It warns if the Lua on the radio is older and does not know the menu choice yet.
+- After «Save as file», newer Luas get a short hint (copy to `scripts/studio`, otherwise choose it in the widget menu); older Luas keep the detailed hint.
+- Info files under an old Lua name (e.g. `motoren_vergaser`) are assigned to the renamed Lua and marked «old Lua on the radio – please update».
+- Studio folder on the radio: without an info file of this Lua and without a Lua folder, the first folder that already holds studio files is used (Windows test).
+- Cylinders/tank stay available for Gas Engine 1.11.0 / 0.11.0 and newer (fixed minimum version, not the version of the included description).
+
 ## 0.8.4 (21 Nov 2026)
 
 - Prepared models using cylinders/tank: a warning before saving or transferring that Gas Engine 1.11.0 / 0.11.0 or newer is needed on the radio (older versions show a number there).

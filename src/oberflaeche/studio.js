@@ -95,8 +95,9 @@ function extraErlaubt() {
   const v = st.m && st.m.info && !vorb ? st.m.info.luaVersion : null
   if (!b.darstellungenExtra) return []
   if (!vorb && !v) return []
-  if (v && b.luaVersion) {
-    const x = String(v).split('.').map(Number), y = String(b.luaVersion).split('.').map(Number)
+  const ab = ({ gas_ecu: '1.11.0', gas_carb: '0.11.0' })[b.lua] || b.luaVersion   // wie EXTRA_AB in src/studio/studio.js
+  if (v && ab) {
+    const x = String(v).split('.').map(Number), y = String(ab).split('.').map(Number)
     for (let i = 0; i < 3; i++) if ((x[i] || 0) !== (y[i] || 0)) { if ((x[i] || 0) < (y[i] || 0)) return []; break }
   }
   return Object.keys(b.darstellungenExtra).filter((d) => !d.startsWith('_'))
@@ -233,7 +234,7 @@ function modellListeZeigen() {
     const li = el('li', { onclick: () => modellOeffnen(m) }, [
       m.vorbereitet ? el('span', { class: 'weg', text: '×', title: t('vorbereitetLoeschen'), onclick: (ev) => { ev.stopPropagation(); vorbereitetLoeschen(m) } }) : null,
       el('span', { text: titel }),
-      el('span', { class: 'marke-klein', text: ` · ${luaName(m.lua)}${m.vorbereitet ? ' · ' + (st.gruppen[gruppeVon(m.info.fenster)] || {}).name : ''}${m.studioDatei || m.alteStudioDatei ? ' · ' + t('mitStudio') : ''}${m.funkeDatei ? ' · ' + t('mitFunkeAenderung') : ''}${m.bekannt ? '' : ' · ' + t('luaUnbekannt')}${m.doppelt ? ' · ⚠ ' + t('doppelt') : ''}${vb ? ' · ' + t('vorbereitungDa') : ''}` }),
+      el('span', { class: 'marke-klein', text: ` · ${luaName(m.lua)}${m.vorbereitet ? ' · ' + (st.gruppen[gruppeVon(m.info.fenster)] || {}).name : ''}${m.studioDatei || m.alteStudioDatei ? ' · ' + t('mitStudio') : ''}${m.funkeDatei ? ' · ' + t('mitFunkeAenderung') : ''}${m.bekannt ? '' : ' · ' + t('luaUnbekannt')}${m.altLua ? ' · ⚠ ' + t('altesLua').replace('{alt}', m.altLua) : ''}${m.doppelt ? ' · ⚠ ' + t('doppelt') : ''}${vb ? ' · ' + t('vorbereitungDa') : ''}` }),
     ])
     if (st.m && st.m.kennung === m.kennung && st.m.lua === m.lua) li.classList.add('aktiv')
     ul.appendChild(li)
@@ -1150,6 +1151,13 @@ $('exportZiel').addEventListener('change', async (e) => {
 })
 
 // Notlösung: Studio-Datei als Datei speichern (Speichern-Dialog), danach von Hand auf die SD-Karte kopieren
+// Wie NEUE_WAHL in src/studio/studio.js: ab diesen Versionen findet das Lua sein Studio-Layout überall (Menü «Studio layout»)
+const NEUE_WAHL = { electric: '0.7.0', heli: '1.14.0', jet: '0.5.0', glider: '0.6.0', gas_ecu: '1.12.0', gas_carb: '0.12.0' }
+function versionKleinerUI(a, b) {
+  const x = String(a).split('.').map(Number), y = String(b).split('.').map(Number)
+  for (let i = 0; i < 3; i++) if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) < (y[i] || 0)
+  return false
+}
 // Kennung aus dem Modellnamen wie im Lua (Format v1 §2.1): jedes Byte ausser A–Z, a–z, 0–9 wird «_», höchstens 32 Byte
 function kennungVon(name) {
   const k = Array.from(new TextEncoder().encode(String(name || '')), (b) => (/[A-Za-z0-9]/.test(String.fromCharCode(b)) && b < 128 ? String.fromCharCode(b) : '_')).join('').slice(0, 32)
@@ -1174,6 +1182,12 @@ async function exportDatei() {
   $('schritte').appendChild(el('li', { class: 'gut', text: t('exportDateiOk').replace('{pfad}', r.pfad).replace('{datei}', `${st.m.kennung}.${st.m.lua}.lua`) }))
   // Hinweise, damit die Datei auf der Funke wirkt (Issue #1): Name aus dem Modellnamen, Fenstergrössen, Modell wechseln
   const groessen = st.projekt.ansichten.filter((a) => a.plaetze.length).map((a) => `${a.breite} × ${a.hoehe}`).join(', ')
+  // Luas ab der Version mit «Studio-Layout sicher finden» (R1–R4): Ort und Name sind nicht mehr zwingend, kurzer Hinweis
+  const b = beschreibung() || {}
+  if (NEUE_WAHL[st.m.lua] && b.luaVersion && !versionKleinerUI(b.luaVersion, NEUE_WAHL[st.m.lua])) {
+    $('schritte').appendChild(el('li', { class: 'warn', text: t('exportDateiNeu') }))
+    return
+  }
   const modell = st.m.info && st.m.info.modell
   if (modell) $('schritte').appendChild(el('li', { class: 'warn', text: t('exportDateiName').replace('{modell}', modell).replace('{kennung}', kennungVon(modell)) }))
   if (groessen) $('schritte').appendChild(el('li', { class: 'warn', text: t('exportDateiGroessen').replace('{groessen}', groessen) }))

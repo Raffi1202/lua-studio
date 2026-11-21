@@ -17,16 +17,23 @@ function funkenZiel(funke, lua) {
     if (basis) return basis
     // 1. Der Ordner, in dem das Lua schon seine Info-Datei geschrieben hat (das Lua schreibt nach SCRIPTS:/studio, also an den
     //    Skript-Speicherort der Funke: SD-Karte oder interner Speicher, z. B. X20 Pro AW). Fehlerhafte Pfade überspringen.
+    const gefunden = {}   // Kandidat -> Anzahl Studio-/Info-Dateien (für Schritt 3)
     for (const o of KANDIDATEN) {
       let r = null
       try { r = await funke.dateien(o) } catch (e) { r = null; diag.push(`${o}: Fehler ${e && e.message}`) }
       if (r) diag.push(`${o}: Status ${r.status}, ${r.status === 0 ? r.liste.length : 0} Einträge${r.status === 0 ? ', Info: ' + (r.liste.filter((e) => !e.ordner && e.name.endsWith('.info.json')).map((e) => e.name).join(' ') || '-') : ''}`)
       if (r && r.status === 0 && r.liste.some((e) => !e.ordner && e.name.endsWith(`.${lua}.info.json`))) { basis = o; return basis }
+      if (r && r.status === 0) gefunden[o] = r.liste.filter((e) => !e.ordner && /\.(info\.json|lua)$/.test(e.name)).length
     }
     // 2. sonst neben dem Ordner des Luas
-    const sd = await funke.dateien('SD:/scripts')
-    diag.push(`SD:/scripts: Status ${sd.status}, Lua-Ordner ${lua} ${sd.status === 0 && sd.liste.some((e) => e.ordner && e.name === lua) ? 'da' : 'fehlt'}`)
-    basis = sd.status === 0 && sd.liste.some((e) => e.ordner && e.name === lua) ? 'SD:/scripts/studio' : '/scripts/studio'
+    const hatLua = async (o) => { try { const r = await funke.dateien(o); return r.status === 0 && r.liste.some((e) => e.ordner && e.name === lua) } catch { return false } }
+    const sdLua = await hatLua('SD:/scripts')
+    diag.push(`SD:/scripts: Lua-Ordner ${lua} ${sdLua ? 'da' : 'fehlt'}`)
+    if (sdLua) { basis = 'SD:/scripts/studio'; return basis }
+    if (await hatLua('/scripts')) { diag.push(`/scripts: Lua-Ordner ${lua} da`); basis = '/scripts/studio'; return basis }
+    // 3. kein Lua-Ordner gefunden: der erste Ordner, in dem schon Studio- oder Info-Dateien liegen (Befund Windows-Test 22.11.)
+    const voll = KANDIDATEN.find((o) => gefunden[o] > 0)
+    basis = voll || '/scripts/studio'
     return basis
   }
   // Ordner nur zum Schreiben anlegen, nie beim Lesen

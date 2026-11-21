@@ -254,6 +254,8 @@ function farbeGut(f) { return Array.isArray(f) && f.length === 3 && f.every((v) 
 const FARBFELDER = ['farbe', 'farbeWarn', 'farbeAlarm', 'hintergrund']
 const DARSTELLUNGEN = ['zahl', 'ring', 'balken_w', 'balken_s', 'kurve', 'status']
 // Felder eines Platzes, die das Studio sonst ungeprüft schriebe (aus Vorlagen): ungültige weg, Grund in «verworfen»
+// Ab diesen Versionen findet das Lua sein Studio-Layout an allen Orten und bietet «Studio layout» im Widget-Menü (R1–R4)
+const NEUE_WAHL = { electric: '0.7.0', heli: '1.14.0', jet: '0.5.0', glider: '0.6.0', gas_ecu: '1.12.0', gas_carb: '0.12.0' }
 // Darstellungen des Luas aus beschreibung.json «darstellungenExtra» (Schlüssel mit _ sind Hinweise, keine Darstellung)
 // luaVersion: Version des Luas auf der Funke (Info-Datei). Ist sie älter als die mitgelieferte Beschreibung, die die
 // Darstellungen einführt, gibt es sie nicht (ein älteres Lua kennt sie nicht).
@@ -262,10 +264,13 @@ function versionKleiner(a, b) {
   for (let i = 0; i < 3; i++) { if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) < (y[i] || 0) }
   return false
 }
+// Version, mit der ein Lua seine Darstellungen eingeführt hat (die Beschreibung nennt sie nicht)
+const EXTRA_AB = { gas_ecu: '1.11.0', gas_carb: '0.11.0' }
 function extraDarstellungen(b, luaVersion) {
   if (!b || !b.darstellungenExtra) return []
   // ohne Version der Funke (alte Info-Datei) keine Darstellungen des Luas; vorbereitete Modelle tragen die Version der Beschreibung
-  if (!luaVersion || (b.luaVersion && versionKleiner(luaVersion, b.luaVersion))) return []
+  const ab = EXTRA_AB[b.lua] || b.luaVersion
+  if (!luaVersion || (ab && versionKleiner(luaVersion, ab))) return []
   return Object.keys(b.darstellungenExtra).filter((d) => !d.startsWith('_'))
 }
 // extra: zusätzliche Darstellungen des Luas (beschreibung.json «darstellungenExtra», z. B. Gas Engine «zylinder», «tank»)
@@ -574,6 +579,11 @@ async function schnelltest({ ziel, kennung, lua, format, vorher, logZeilen, groe
       if (!Array.isArray(info.sensoren) || info.sensoren.length === 0) p('warn', 'keineSensoren')
       else p('gut', 'sensoren', String(info.sensoren.length))
       if (info.luaVersion) p('gut', 'luaVersion', String(info.luaVersion))
+      // Neue Felder ab den Luas mit «Studio-Layout sicher finden» (R4, 22.11.2026)
+      if (typeof info.studioQuelle === 'string' && info.studioQuelle) p('gut', 'studioQuelle', `${info.studioQuelle}${info.studioWahl === 'menue' ? ' (Menü)' : ''}`)
+      if (typeof info.ansichtGenutzt === 'string' && info.ansichtGenutzt) p(info.angepasst ? 'warn' : 'gut', info.angepasst ? 'ansichtAngepasst' : 'ansichtGenutzt', info.ansichtGenutzt)
+      if (typeof info.hinweis === 'string' && info.hinweis) p('warn', 'luaHinweis', info.hinweis)
+      if (info.luaVersion && NEUE_WAHL[lua] && versionKleiner(String(info.luaVersion), NEUE_WAHL[lua])) p('warn', 'keineMenueWahl', `${info.luaVersion} < ${NEUE_WAHL[lua]}`)
     }
   }
   // Log: Zeilen dieses Luas (Pfad /<lua>/… oder Name) bzw. zur Studio-Datei sind Fehler, auffällige Zeilen anderer Skripte nur Hinweise
@@ -587,5 +597,5 @@ async function schnelltest({ ziel, kennung, lua, format, vorher, logZeilen, groe
   return { ok: !punkte.some((x) => x.stufe === 'fehler'), unsicher: alt, punkte }
 }
 
-module.exports = { extraDarstellungen, versionKleiner, ALIAS, aliasAktiv, ablageUmziehen, grenzenSchreiben, symboleUnbenutzt, beschreibungenLaden, Ablage, modelleLesen, neuesProjekt, dateiDaten, dateiDatenMitInfo, bauenMitWaechter, presets, presetAnwenden,
+module.exports = { NEUE_WAHL, extraDarstellungen, versionKleiner, ALIAS, aliasAktiv, ablageUmziehen, grenzenSchreiben, symboleUnbenutzt, beschreibungenLaden, Ablage, modelleLesen, neuesProjekt, dateiDaten, dateiDatenMitInfo, bauenMitWaechter, presets, presetAnwenden,
   GRUPPEN, VORBEREITET, gruppeVonFenster, vorbereitetInfo, symboleSchreiben, symboleAufraeumen, schnelltest, funkeAenderungenUebernehmen, uebertragen }

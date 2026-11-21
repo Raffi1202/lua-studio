@@ -231,7 +231,8 @@ test('Funke (0.8.2): Studio-Ordner dort, wo das Lua seine Info-Datei geschrieben
   const funke = { dateien: async (o) => (baum[o] ? { status: 0, liste: baum[o] } : (o.startsWith('RADIO:') || o.startsWith('/') || o.startsWith('SD:') ? { status: -2, liste: [] } : (() => { throw new Error('x') })())) }
   assert.strictEqual(await funkenZiel(funke, 'gas_carb').basis(), 'RADIO:/scripts/studio')
   assert.strictEqual(await funkenZiel(funke, 'electric').basis(), 'SD:/scripts/studio')
-  assert.strictEqual(await funkenZiel(funke, 'jet').basis(), '/scripts/studio')
+  // ohne Info-Datei und ohne Lua-Ordner: erster Ordner mit Studio-Dateien (ab 0.9.0)
+  assert.strictEqual(await funkenZiel(funke, 'jet').basis(), 'RADIO:/scripts/studio')
   // Pfad, den die Funke nicht kennt (Fehler beim Lesen), wird übersprungen
   const wirft = { dateien: async (o) => { if (o.startsWith('RADIO:')) throw new Error('unbekannt'); return { status: -2, liste: [] } } }
   assert.strictEqual(await funkenZiel(wirft, 'gas_carb').basis(), '/scripts/studio')
@@ -245,4 +246,15 @@ test('Funke (0.8.3): Diagnose nennt durchsuchte Ordner, Status und Info-Dateien'
   const d = z.diagnose().join('\n')
   assert.match(d, /SD:\/scripts\/studio: Status -2/)
   assert.match(d, /\/scripts\/studio: Status 0, 2 Einträge, Info: A\.gas_carb\.info\.json/)
+})
+
+test('Funke (0.9.0): ohne Info-Datei und ohne Lua-Ordner auf SD gilt der erste Ordner mit Studio-Dateien (Windows-Test 22.11.)', async () => {
+  const { funkenZiel } = require('../src/studio/ziel')
+  const baum = { 'SD:/scripts/studio': [{ name: 'TEL.motoren_vergaser.info.json' }, { name: 'X.elektro.lua' }], '/scripts/studio': [], 'SD:/scripts': [{ name: 'motoren_vergaser', ordner: true }], '/scripts': [] }
+  const funke = { dateien: async (o) => (baum[o] ? { status: 0, liste: baum[o] } : { status: -4, liste: [] }) }
+  assert.strictEqual(await funkenZiel(funke, 'electric').basis(), 'SD:/scripts/studio')
+  // Lua-Ordner im internen Speicher: dort neben dem Lua
+  const baum2 = { '/scripts': [{ name: 'gas_carb', ordner: true }], 'SD:/scripts': [] }
+  const f2 = { dateien: async (o) => (baum2[o] ? { status: 0, liste: baum2[o] } : { status: -4, liste: [] }) }
+  assert.strictEqual(await funkenZiel(f2, 'gas_carb').basis(), '/scripts/studio')
 })

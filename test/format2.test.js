@@ -324,3 +324,13 @@ test('Neues Projekt: Fenstergrösse der Funke geht vor den Standardansichten (X1
   assert.strictEqual(p.ansichten[0].breite, 640)
   assert.strictEqual(p.ansichten.length, 2)
 })
+
+test('Schnelltest (0.9.0): neue Felder der Info-Datei und Warnung bei älterem Lua ohne Menü-Wahl', async () => {
+  const S2 = require('../src/studio/studio')
+  const info = { format: 1, lua: 'gas_carb', luaVersion: '0.11.0', fenster: [{ breite: 800, hoehe: 480 }], sensoren: [{ name: 'A' }], studioQuelle: 'RADIO:/scripts/studio/Bobber.gas_carb.lua', studioWahl: 'menue', ansichtGenutzt: '800x480', angepasst: true, hinweis: 'Studio: Ansicht 800×480 angepasst' }
+  const ziel = { lesen: async (n) => (n.endsWith('.info.json') ? Buffer.from(JSON.stringify(info)) : null), liste: async () => [] }
+  const r = await S2.schnelltest({ ziel, kennung: 'Bobber', lua: 'gas_carb', format: 1, vorher: null, logZeilen: [] })
+  const k = r.punkte.map((x) => x.k)
+  for (const x of ['studioQuelle', 'ansichtAngepasst', 'luaHinweis', 'keineMenueWahl']) assert.ok(k.includes(x), x)
+  assert.ok(r.punkte.find((x) => x.k === 'studioQuelle').wert.includes('(Menü)'))
+})

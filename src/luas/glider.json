@@ -1,6 +1,6 @@
 {
  "lua": "glider",
- "luaVersion": "0.5.0",
+ "luaVersion": "0.6.0",
  "beiMotorAus": true,
  "formate": [
   1

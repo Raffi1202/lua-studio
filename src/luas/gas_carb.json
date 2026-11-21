@@ -1,6 +1,6 @@
 {
  "lua": "gas_carb",
- "luaVersion": "0.11.0",
+ "luaVersion": "0.12.0",
  "formate": [
   1
  ],
