@@ -172,7 +172,7 @@ test('Vorlage «Original» (0.6.0): Electric mit Farben wie die eingebaute Anzei
   // Luas ohne Original-Vorlage: unverändert
   assert.ok(S.presets(b.jet)[0].s === 'original' && S.presets(b.jet)[0].ansichten.length === 6, 'Jet hat ab 0.7.0 eine Vorlage «Original»')
   assert.ok(S.presets(b.heli)[0].s === 'original' && S.presets(b.heli)[0].ansichten.length === 6, 'Heli hat ab 0.7.2 eine Vorlage «Original»')
-  assert.ok(!S.presets(b.gas_ecu).some((x) => x.s === 'original'))
+  assert.ok(S.presets(b.gas_ecu)[0].s === 'original' && S.presets(b.gas_carb)[0].s === 'original')
   // Neue Modelle beginnen mit der Vorlage «Original»
   const np = S.neuesProjekt(b.electric, S.vorbereitetInfo('M', b.electric, 'Neu'))
   assert.deepStrictEqual(np.ansichten.map((a) => a.plaetze.length > 0), [true, true])
@@ -181,7 +181,7 @@ test('Vorlage «Original» (0.6.0): Electric mit Farben wie die eingebaute Anzei
 test('Vorlagen «Original» von Electric, Jet und Heli: jede Grösse gültig (Rand, Überlappung, reservierte Flächen, Mindestgrössen, Funke)', () => {
   const b = S.beschreibungenLaden(path.join(__dirname, '..', 'src', 'luas'))
   const M = { zahl: [90, 50], ring: [110, 110], balken_w: [140, 40], balken_s: [50, 110], kurve: [180, 90], status: [120, 40] }
-  for (const lua of ['electric', 'jet', 'heli', 'glider']) {
+  for (const lua of ['electric', 'jet', 'heli', 'glider', 'gas_ecu', 'gas_carb']) {
     const o = S.presets(b[lua])[0]
     assert.strictEqual(o.s, 'original', lua)
     assert.deepStrictEqual(o.verworfen, [], lua)

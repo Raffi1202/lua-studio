@@ -22,7 +22,7 @@
 </head>
 <body>
 <h1>Lua-Studio – Anleitung</h1>
-<p class="unter">Version 0.7.3 · Stand 21.11.2026 · English manual: «Lua-Studio - Manual»</p>
+<p class="unter">Version 0.8.0 · Stand 21.11.2026 · English manual: «Lua-Studio - Manual»</p>
 
 <h2>1. Was ist Lua-Studio?</h2>
 <p>Lua-Studio ist ein Programm für Mac und Windows. Es gehört zu unseren Ethos-Luas (Electric, Heli, Jet, Glider, Gas Engine).
@@ -38,9 +38,9 @@ bedienst die Funke mit Maus und Tastatur. Das geht über ein USB-Kabel im <b>Ser
   <li>Mac (Apple-Chip oder Intel) oder Windows-PC (64 Bit), USB-Datenkabel.</li>
   <li>Die passende Datei aus dem GitHub-Release (Seite «Releases» rechts im Repo):
     <ul>
-      <li>Mac mit Apple-Chip: <code>Lua-Studio-0.7.3-mac-arm64.dmg</code></li>
-      <li>Mac mit Intel: <code>Lua-Studio-0.7.3-mac-x64.dmg</code></li>
-      <li>Windows: <code>Lua-Studio-0.7.3-win-x64.exe</code></li>
+      <li>Mac mit Apple-Chip: <code>Lua-Studio-0.8.0-mac-arm64.dmg</code></li>
+      <li>Mac mit Intel: <code>Lua-Studio-0.8.0-mac-x64.dmg</code></li>
+      <li>Windows: <code>Lua-Studio-0.8.0-win-x64.exe</code></li>
     </ul>
   </li>
 </ul>
@@ -118,7 +118,7 @@ Reitern öffnet das Vorbereiten-Formular von überall.</p>
   <li>Kästchen ziehen verschiebt, die Ecke unten rechts ändert die Grösse. <b>Kästchen hinzufügen</b> und <b>Kästchen entfernen</b> (oder Entf-Taste). Höchstens 16 Kästchen je Ansicht.</li>
   <li>Rechts für das gewählte Kästchen: Wert (Werte des Luas, eigene Sensoren, Kanäle), Darstellung (Zahl, Ring/Tacho, Balken waagrecht/senkrecht, Kurve, Status-Text), Beschriftung, Bereich, Farben für normal/Warnung/Alarm/Hintergrund, bis zu 3 Farbstufen (nur Farbe) und Zusatzzeile (Minimum, Maximum, Mittelwert).</li>
   <li><b>Rot</b> umrandet ist ein Kästchen, das über den Rand ragt, zu klein ist, ein anderes überlappt oder auf einer Fläche liegt, die das Lua selbst zeichnet (grau schraffiert, z. B. die Statusleiste). Zu kleine Kästchen und solche über dem Rand verwirft die Funke; überlappende liegen unter anderen.</li>
-  <li><b>Vorschau wie im Lua</b> (ab 0.6.0, zuerst Electric): Die Vorschau zeichnet Kästchen, Kopfzeile und das Feld «Flüge» so, wie Electric sie auf der Funke zeichnet (Farben, Masse, Zusatzzeile MAX/MIN). Angezeigt werden Beispielwerte; die Schrift ist an Ethos angenähert. Die Vorlage <b>Original (wie das Lua)</b> setzt die Anordnung und Farben der eingebauten Anzeige, für alle Displaygrössen. <b>Nicht einstellbar</b> über die Studio-Datei (Electric 0.6.1 zeichnet sie nur in der eingebauten Anzeige): Fusszeilen wie «6S 23,1V», «bei 46 A», «0,6 Wh», der Knopf «AUF 0», die Farbstreifen oben an den Kästchen und Titel, die mit der Sprache der Funke wechseln. Diese Liste steht auch im Hinweis der Vorlage. Ab 0.7.0 auch für <b>Jet</b> (Seite 1 wie im Lua; «Läufe» statt «Flüge»), ab 0.7.2 für <b>Heli</b> (eigene Kopfzeile mit Uhrzeit und Profil/Rate). Ab 0.7.3 auch für <b>Glider</b> (eigene Farben, eckige Kästchen; das Vollbild ist aus der Kompaktansicht unter der Kopfzeile umgerechnet). Gas Engine folgt; bis dahin beginnt Gas Engine im Vollbild noch leer.</li>
+  <li><b>Vorschau wie im Lua</b> (ab 0.6.0, zuerst Electric): Die Vorschau zeichnet Kästchen, Kopfzeile und das Feld «Flüge» so, wie Electric sie auf der Funke zeichnet (Farben, Masse, Zusatzzeile MAX/MIN). Angezeigt werden Beispielwerte; die Schrift ist an Ethos angenähert. Die Vorlage <b>Original (wie das Lua)</b> setzt die Anordnung und Farben der eingebauten Anzeige, für alle Displaygrössen. <b>Nicht einstellbar</b> über die Studio-Datei (Electric 0.6.1 zeichnet sie nur in der eingebauten Anzeige): Fusszeilen wie «6S 23,1V», «bei 46 A», «0,6 Wh», der Knopf «AUF 0», die Farbstreifen oben an den Kästchen und Titel, die mit der Sprache der Funke wechseln. Diese Liste steht auch im Hinweis der Vorlage. Ab 0.7.0 auch für <b>Jet</b> (Seite 1 wie im Lua; «Läufe» statt «Flüge»), ab 0.7.2 für <b>Heli</b> (eigene Kopfzeile mit Uhrzeit und Profil/Rate). Ab 0.7.3 auch für <b>Glider</b> (eigene Farben, eckige Kästchen; das Vollbild ist aus der Kompaktansicht unter der Kopfzeile umgerechnet). Ab 0.8.0 auch für <b>Gas Engine ECU und Carb</b> (Vollbild ebenso aus der Kompaktansicht). Zylinder, Tank, Drehzahl-Bogen mit Farbzonen und «VOLLGETANKT» zeichnet Gas Engine nur in der eingebauten Anzeige; sie sind über die Studio-Datei nicht einstellbar.</li>
   <li><b>Automatisch anordnen</b> (ab 0.4.0): Ein Klick setzt alle Abstände zwischen den Kästchen und zum Rand gleich und füllt die Fläche.
       Was neben und unter was liegt, bleibt. Daneben die Art:
       <b>Gleich breit je Zeile</b> (Standard: nebeneinander gleich breit, Zeilen im alten Höhenverhältnis),

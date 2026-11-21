@@ -2,6 +2,12 @@
 
 New entries in English. Older entries in German.
 
+## 0.8.0 (21 Nov 2026)
+
+- **Gas Engine ECU 1.10.0 / Carb 0.10.0:** preview like the Lua (`ansicht.lua`: palette like Glider, rounded boxes, fixed font steps; top bar with pills – example state) and template «Original (like the Lua)» for all six window sizes; the full screen is scaled from the compact layout, so **Gas Engine no longer starts empty**. Cylinders, tank, RPM arc with colour zones and the «VOLLGETANKT» button exist only in the built-in display of Gas Engine; a studio file cannot show them (listed in the template hint).
+- **Heli:** compact top bar (784 × 316) like `kompaktLeiste` (flight time, pill, profile/rate, signal).
+- **Now all Luas** (Electric, Heli, Jet, Glider, Gas Engine ECU/Carb) have the preview like the Lua and the template «Original».
+
 ## 0.7.3 (21 Nov 2026)
 
 - **Glider:** preview like the Lua (Glider 0.5.0 `platz.lua`: own dark palette, square boxes with 1 px frame, grey centred titles, thinner ring, small grey extra line; top bar with outlined pills for flight mode and motor, signal and flight on the right – example state) and template «Original (like the Lua)». Glider has only a compact layout in its description; the full-screen sizes are scaled from it below the top bar, so **Glider no longer starts empty in full screen**.

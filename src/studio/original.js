@@ -15,12 +15,17 @@ const FARBEN = {
   // Heli 1.13.1 (Simulatorbild «Normal»): Akku/Reglertemp grün, Drehzahl hellblau, Strom blau; Zelle grün, BEC/Verbraucht weiss
   // Glider 0.5.0: Farben wie im Lua ohne Studio-Datei (keine eigenen Farben je Wert)
   glider: {},
+  // Gas Engine ECU/Carb: Farben wie im Lua ohne Studio-Datei
+  gas_ecu: {},
+  gas_carb: {},
   heli: { 'lua:akku_proz': GRUEN, 'lua:drehzahl': HBLAU, 'lua:strom': BLAU, 'lua:reglertemp': GRUEN, 'lua:zelle': GRUEN, 'lua:bec': W,
     'lua:verbraucht': W, 'lua:spannung': W, 'lua:rssi': GRUEN, 'lua:leistung': W, 'lua:fluege': W },
 }
 
 // Was über die Studio-Datei nicht geht (das Lua zeichnet es nur in seiner eingebauten Anzeige)
 const HINWEIS = {
+  gas_ecu: { de: 'Wie die Kompaktansicht von Gas Engine; im Vollbild auf die Fläche unter der Kopfzeile umgerechnet. Nicht einstellbar über die Studio-Datei: Zylinder, Tank, Drehzahl-Bogen mit Farbzonen und der Knopf «VOLLGETANKT» (nur in der eingebauten Anzeige), die Kopfzeile mit den Pillen.', en: 'Like the compact view of Gas Engine; in full screen scaled to the area below the top bar. Not adjustable via the studio file: cylinders, tank, RPM arc with colour zones and the «VOLLGETANKT» (refuelled) button (built-in display only), the top bar with its pills.' },
+  gas_carb: { de: 'Wie die Kompaktansicht von Gas Engine; im Vollbild auf die Fläche unter der Kopfzeile umgerechnet. Nicht einstellbar über die Studio-Datei: Zylinder, Tank, Drehzahl-Bogen mit Farbzonen und der Knopf «VOLLGETANKT» (nur in der eingebauten Anzeige), die Kopfzeile mit den Pillen.', en: 'Like the compact view of Gas Engine; in full screen scaled to the area below the top bar. Not adjustable via the studio file: cylinders, tank, RPM arc with colour zones and the «VOLLGETANKT» (refuelled) button (built-in display only), the top bar with its pills.' },
   glider: {
     de: 'Wie die Kompaktansicht von Glider; im Vollbild auf die Fläche unter der Kopfzeile umgerechnet. Nicht einstellbar über die Studio-Datei: Kopfzeile mit Flugphase, Motor, Empfang und Flug, das Alarmband darunter.',
     en: 'Like the compact view of Glider; in full screen scaled to the area below the top bar. Not adjustable via the studio file: top bar with flight mode, motor, signal and flight, the alarm band below it.',

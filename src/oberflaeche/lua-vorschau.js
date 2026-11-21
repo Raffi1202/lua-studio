@@ -269,7 +269,22 @@
       x -= 8 * s
       t(x, hk / 2, k.T.profil, 3, C.weiss, 'end', true, 200 * s)
     }
-    Z.rechteck(0, kompakt ? Z.L.kh : floor(hk), W, max(1, floor(2 * s)), C.linie)
+    if (kompakt) {
+      // kompaktLeiste (kern.lua): Kachel über die Breite mit Flugzeit, Pille, Profil/Rate und Empfangsbalken
+      const kk = min(W / 784, Z.L.H / 316)
+      const rd = 6 * kk, hs = 30 * kk, y0 = 2 * kk, ym = y0 + hs / 2
+      Z.rund(rd, y0, W - 2 * rd, hs, 6 * kk, C.rand)
+      Z.rund(rd + 1, y0 + 1, W - 2 * rd - 2, hs - 2, 6 * kk - 1, C.kachel)
+      Z.text(rd + 12 * kk, ym, '4:26', 20 * kk * 0.9 / (1.25 * s), C.weiss, 'start', 90 * kk, true)
+      const pb = Z.breite(k.T.scharf, 13) + 22 * kk, ph = 24 * kk
+      Z.rund(rd + 220 * kk - pb, ym - ph / 2, pb, ph, ph / 2, C.gruen)
+      Z.text(rd + 220 * kk - pb / 2, ym, k.T.scharf, 13, C.bg, 'middle', pb, true)
+      Z.text(rd + 236 * kk, ym, k.T.profil, 14 * kk / (1.25 * s), C.weiss, 'start', 240 * kk, true)
+      let xb = W - rd - 14 * kk
+      for (let i = 4; i >= 1; i--) { const h = (4 + 4 * i) * kk; Z.rechteck(xb - 5 * kk, ym + 10 * kk - h, max(2, floor(5 * kk)), h, C.gruen); xb -= 8 * kk }
+      return
+    }
+    Z.rechteck(0, floor(hk), W, max(1, floor(2 * s)), C.linie)
   }
   STILE.heli = { ...STILE.electric, name: 'Heli 1.13.1', regeln: { thMin: 10, heli: true },
     flaeche(svg, a, k) {
@@ -373,6 +388,90 @@
   STILE.glider = { name: 'Glider 0.5.0', hintergrund: G.bg, flaeche: gliderFlaeche, platz: gliderPlatz, zahlKomma: true,
     texte: { de: { phase: 'STANDARD-FLUGPHASE', motorAus: 'MOTOR AUS', rechts: 'Empfang 92 %   Flug 1/3', zMin: 'Min', zMax: 'Max', zMittel: 'Ø' },
       en: { phase: 'STANDARD FLIGHT MODE', motorAus: 'MOTOR OFF', rechts: 'Signal 92 %   Flight 1/3', zMin: 'Min', zMax: 'Max', zMittel: 'Ø' } } }
+
+  // ---------- Gas Engine ECU 1.10.0 / Carb 0.10.0 (src/gas_ecu/ansicht.lua, gleich für Carb): Palette wie Glider, runde Kacheln ----------
+  function gasPlatz(svg, b, h, q, k) {
+    const L = layout(k.ansicht.breite, k.ansicht.hoehe)
+    const Z = zeichner(svg, L)
+    const s = L.s
+    Z.rund(0, 0, b, h, 6 * s, G.rand)
+    Z.rund(1, 1, b - 2, h - 2, 6 * s - 1, q.hintergrund || G.panel)
+    if (q.leer) return
+    const fb = q.farbeWert || G.hblau
+    const wf = G.text
+    const wert = q.zeit ? q.zeitText : (q.einheit ? `${q.zahlText} ${q.einheit}` : q.zahlText)
+    const zl = q.zusatz && q.zusatz !== 'keine' ? `${{ min: 'min', max: 'max', mittel: 'Ø' }[q.zusatz]} ${q.zahlText}` : null
+    k.symbol(svg, q, q.darstellung === 'status' ? (q.statusFarbe || wf) : fb)
+    const th = max(15, 16 * s)
+    const d = q.darstellung
+    if (d === 'zahl' || d === 'status') {
+      Z.text(b / 2, th * 0.6 + 2 * s, q.titel, 13, G.dim, 'middle', b - 8 * s)
+      const ym = (h + th) / 2 - (zl ? 6 * s : 0)
+      Z.text(b / 2, ym, d === 'status' ? q.statusText : wert, d === 'status' ? 20 : 24, d === 'status' ? (q.statusFarbe || wf) : wf, 'middle', b - 8 * s, true)
+      if (zl) Z.text(b / 2, h - 9 * s, zl, 12, G.dim, 'middle', b - 8 * s)
+    } else if (d === 'ring') {
+      Z.text(b / 2, 4 * s + th / 2, q.titel, 13, G.dim, 'middle', b - 10 * s)
+      const oben = 6 * s + th
+      const r2 = min(b * 0.36, (h - oben - 4 * s) * 0.56)
+      const r1 = r2 - max(5, floor(r2 * 0.16))
+      const cx = b / 2, cy = oben + r2 + 2 * s
+      Z.bogen(cx, cy, r1, r2, 225, 495, G.rand)
+      if (q.anteil > 0) Z.bogen(cx, cy, r1, r2, 225, 225 + 270 * q.anteil, fb)
+      Z.text(cx, cy - 2 * s, wert, 22, wf, 'middle', r1 * 1.8, true)
+      if (zl) Z.text(cx, cy + r1 * 0.55, zl, 12, G.dim, 'middle', r1 * 1.6)
+    } else if (d === 'balken_w' || d === 'kurve') {
+      Z.text(8 * s, th * 0.6 + 2 * s, q.titel, 13, G.dim, 'start', b * 0.5)
+      Z.text(b - 8 * s, th * 0.6 + 2 * s, wert, 16, wf, 'end', b * 0.5, true)
+      if (d === 'balken_w') {
+        const by = th + 6 * s, bh = max(6, h - th - 12 * s - (zl ? 12 * s : 0))
+        Z.rund(8 * s, by, b - 16 * s, bh, 3 * s, G.grau); Z.rund(8 * s + 1, by + 1, b - 16 * s - 2, bh - 2, 3 * s - 1, G.dunkel)
+        if (q.anteil > 0) Z.rechteck(8 * s + 2, by + 2, (b - 16 * s - 4) * q.anteil, bh - 4, fb)
+        if (zl) Z.text(b / 2, h - 8 * s, zl, 12, G.dim, 'middle', b - 8 * s)
+      } else {
+        const gx = 8 * s, gy = th + 6 * s, gb = b - 16 * s, gh = h - th - 12 * s
+        let vor = null
+        for (let j = 0; j <= 60; j++) {
+          const sx = gx + gb * j / 60, sy = gy + gh * (1 - (0.35 + 0.25 * Math.sin(j / 7) + 0.1 * Math.sin(j / 2.3)))
+          if (vor) Z.linie(vor[0], vor[1], sx, sy, fb)
+          vor = [sx, sy]
+        }
+      }
+    } else if (d === 'balken_s') {
+      Z.text(b / 2, th * 0.6 + 2 * s, q.titel, 13, G.dim, 'middle', b - 6 * s)
+      const unten = 18 * s + (zl ? 12 * s : 0)
+      const bw = min(b * 0.5, 40 * s), by = th + 6 * s, bh = max(6, h - th - 10 * s - unten)
+      Z.rund((b - bw) / 2, by, bw, bh, 3 * s, G.grau); Z.rund((b - bw) / 2 + 1, by + 1, bw - 2, bh - 2, 3 * s - 1, G.dunkel)
+      if (q.anteil > 0) Z.rechteck((b - bw) / 2 + 2, by + 2 + (bh - 4) * (1 - q.anteil), bw - 4, (bh - 4) * q.anteil, fb)
+      Z.text(b / 2, by + bh + 9 * s, wert, 15, wf, 'middle', b - 6 * s, true)
+      if (zl) Z.text(b / 2, h - 7 * s, zl, 12, G.dim, 'middle', b - 6 * s)
+    }
+  }
+  // Kopfzeile wie im Simulatorbild (Beispielzustand): Pillen links, Modell und Motor rechts
+  function gasFlaeche(svg, a, k) {
+    const L = layout(a.breite, a.hoehe)
+    const Z = zeichner(svg, L)
+    Z.rechteck(0, 0, a.breite, a.hoehe, G.bg)
+    const band = Math.max(0, ...((k.reserviert || []).filter((r) => r.y <= 0 && r.b >= a.breite).map((r) => r.h)))
+    if (!band) return
+    // Kopfband in panel (zeichnen.lua); Zustandspille gefüllt mit dunkler Schrift, weitere Pillen nur mit Rand (innen panel)
+    if (!L.kompakt) Z.rechteck(0, 0, a.breite, band, G.panel)
+    const ym = min(band, 44 * L.s) / 2, ph = max(22, floor(28 * L.s)), d = max(1, floor(2 * L.s))
+    let x = 6 * L.s
+    k.T.pillen.forEach(([t, f], i) => {
+      const fa = f === 'gruen' ? G.gruen : G.rot
+      const b = Z.breite(t, 15) + 22 * L.s
+      Z.rund(x, ym - ph / 2, b, ph, ph / 2, fa)
+      if (i > 0) Z.rund(x + d, ym - ph / 2 + d, b - 2 * d, ph - 2 * d, ph / 2 - d, G.panel)
+      Z.text(x + b / 2, ym, t, 15, i === 0 ? G.dunkel : fa, 'middle', b)
+      x += b + 6 * L.s
+    })
+    Z.text(a.breite - 8 * L.s, ym, k.T.rechts, 14, G.text, 'end', a.breite * 0.4)
+  }
+  const GAS = { hintergrund: G.bg, flaeche: gasFlaeche, platz: gasPlatz, zahlKomma: true }
+  STILE.gas_ecu = { ...GAS, name: 'Gas Engine ECU 1.10.0',
+    texte: { de: { pillen: [['LÄUFT', 'gruen'], ['ZÜNDUNG EIN', 'rot']], rechts: 'ECU 15,2 V   Motor 1/3' }, en: { pillen: [['RUNNING', 'gruen'], ['IGNITION ON', 'rot']], rechts: 'ECU 15.2 V   Motor 1/3' } } }
+  STILE.gas_carb = { ...GAS, name: 'Gas Engine Carb 0.10.0',
+    texte: { de: { pillen: [['LÄUFT', 'gruen'], ['ZÜNDUNG EIN', 'rot']], rechts: 'Motor 1/3' }, en: { pillen: [['RUNNING', 'gruen'], ['IGNITION ON', 'rot']], rechts: 'Motor 1/3' } } }
 
   window.LUA_VORSCHAU = { stil: (lua) => STILE[lua] || null, layout }
 })()

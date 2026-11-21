@@ -22,7 +22,7 @@
 </head>
 <body>
 <h1>Lua-Studio – Manual</h1>
-<p class="unter">Version 0.7.3 · 21 Nov 2026 · Deutsche Anleitung: «Lua-Studio - Anleitung»</p>
+<p class="unter">Version 0.8.0 · 21 Nov 2026 · Deutsche Anleitung: «Lua-Studio - Anleitung»</p>
 
 <h2>1. What is Lua-Studio?</h2>
 <p>Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Electric, Heli, Jet, Glider, Gas Engine).
@@ -38,9 +38,9 @@ operate the radio with mouse and keyboard, over a USB cable in the radio's <b>se
   <li>Mac (Apple silicon or Intel) or Windows PC (64-bit), USB data cable.</li>
   <li>The matching file from the GitHub release (“Releases” on the right of the repository page):
     <ul>
-      <li>Mac with Apple silicon: <code>Lua-Studio-0.7.3-mac-arm64.dmg</code></li>
-      <li>Mac with Intel: <code>Lua-Studio-0.7.3-mac-x64.dmg</code></li>
-      <li>Windows: <code>Lua-Studio-0.7.3-win-x64.exe</code></li>
+      <li>Mac with Apple silicon: <code>Lua-Studio-0.8.0-mac-arm64.dmg</code></li>
+      <li>Mac with Intel: <code>Lua-Studio-0.8.0-mac-x64.dmg</code></li>
+      <li>Windows: <code>Lua-Studio-0.8.0-win-x64.exe</code></li>
     </ul>
   </li>
 </ul>
@@ -118,7 +118,7 @@ tabs opens the prepare form from anywhere.</p>
   <li>A <b>red</b> frame marks a box that is outside the edge, too small, overlaps another or lies on an area the Lua draws itself (grey hatched, e.g. the status bar). The radio discards boxes that are too small or outside the edge; overlapping ones end up underneath.</li>
   <li>At the top right you see how much space the settings need (entries, at most 1100).</li>
   <li>The studio draws the preview itself. It shows position, size and type; fonts and details only show on the radio (check with «Radio live» afterwards).</li>
-  <li><b>Preview like the Lua</b> (from 0.6.0, Electric first): the preview draws boxes, top bar and the «Flights» field the way Electric draws them on the radio (colours, sizes, extra line MAX/MIN). It shows example values; the font is close to Ethos. The template <b>Original (like the Lua)</b> sets the layout and colours of the built-in display for all display sizes. <b>Not adjustable</b> via the studio file (Electric 0.6.1 draws them only in its built-in display): footers like «6S 23.1V», «at 46 A», «0.6 Wh», the «AUF 0» button (reset), the colour stripes on top of the boxes and titles that follow the language of the radio. The template hint lists the same. From 0.7.0 also for <b>Jet</b> (page 1 like the Lua; «runs» instead of «flights»), from 0.7.2 for <b>Heli</b> (own top bar with clock and profile/rate). From 0.7.3 also for <b>Glider</b> (own colours, square boxes; the full screen is scaled from the compact view below the top bar). Gas Engine follows; until then Gas Engine still starts with an empty full-screen view.</li>
+  <li><b>Preview like the Lua</b> (from 0.6.0, Electric first): the preview draws boxes, top bar and the «Flights» field the way Electric draws them on the radio (colours, sizes, extra line MAX/MIN). It shows example values; the font is close to Ethos. The template <b>Original (like the Lua)</b> sets the layout and colours of the built-in display for all display sizes. <b>Not adjustable</b> via the studio file (Electric 0.6.1 draws them only in its built-in display): footers like «6S 23.1V», «at 46 A», «0.6 Wh», the «AUF 0» button (reset), the colour stripes on top of the boxes and titles that follow the language of the radio. The template hint lists the same. From 0.7.0 also for <b>Jet</b> (page 1 like the Lua; «runs» instead of «flights»), from 0.7.2 for <b>Heli</b> (own top bar with clock and profile/rate). From 0.7.3 also for <b>Glider</b> (own colours, square boxes; the full screen is scaled from the compact view below the top bar). From 0.8.0 also for <b>Gas Engine ECU and Carb</b> (full screen also scaled from the compact view). Cylinders, tank, RPM arc with colour zones and «VOLLGETANKT» are drawn by Gas Engine only in its built-in display; they are not adjustable via the studio file.</li>
   <li><b>Arrange automatically</b> (from 0.4.0): one click makes all gaps between the boxes and to the edge equal and fills the area.
       What is beside and below what stays. Next to it the mode:
       <b>Equal width per row</b> (default: side by side equally wide, rows keep their height ratio),
