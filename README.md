@@ -56,7 +56,7 @@ Transfer or «Save as file» with «All models (default)»: the file `Standard.<
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.5.0 | format 2, «also when motor off» |
 | [Glider](https://github.com/Raffi1202/glider-lua) 0.6.0 | format 1, «also when motor off» |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.12.0 / 0.12.0 | format 1, «also when motor off» |
-| DLG 0.2.0 (discus launch glider, repository not public yet) | format 2, FLIGHT page only; no motor switch |
+| [DLG](https://github.com/Raffi1202/dlg-lua) 0.2.0 (discus launch glider) | format 2, FLIGHT page only; no motor switch |
 
 Luas with format 2 also get decoration and templates; for format 1 the studio writes the file without them. Symbols and bold units are **removed from 0.11.0**: old projects load without them (one-time note), old symbol images on the radio are offered for deletion.
 
@@ -79,6 +79,7 @@ GPL-3.0-or-later, see [LICENSE](LICENSE).
 | [Heli](https://github.com/Raffi1202/heli-lua) | Ethos widget for helicopters with telemetry (any flybarless system) |
 | [Jet](https://github.com/Raffi1202/jet-lua) | Ethos widget for turbines (several ECU brands) |
 | [Glider](https://github.com/Raffi1202/glider-lua) | Ethos widget for gliders (vario, thermals) |
+| [DLG](https://github.com/Raffi1202/dlg-lua) | Ethos widget for discus launch gliders (launch height, F3K) |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) | Ethos widgets for gas engines |
 
 ## Automation (for developers)

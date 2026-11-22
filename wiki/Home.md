@@ -44,6 +44,7 @@ Lua-Studio ist ein Programm für Mac und Windows. Es gehört zu unseren Ethos-Lu
 | [Heli](https://github.com/Raffi1202/heli-lua) | Ethos widget for helicopters with telemetry (any flybarless system) |
 | [Jet](https://github.com/Raffi1202/jet-lua) | Ethos widget for turbines (several ECU brands) |
 | [Glider](https://github.com/Raffi1202/glider-lua) | Ethos widget for gliders (vario, thermals) |
+| [DLG](https://github.com/Raffi1202/dlg-lua) | Ethos widget for discus launch gliders (launch height, F3K) |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) | Ethos widgets for gas engines |
 
 

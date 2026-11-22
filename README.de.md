@@ -94,7 +94,7 @@ Schmuck braucht ein Lua, das Format 2 kann. Für ältere Luas schreibt das Studi
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.5.0 | format 2, «auch bei Motor aus» |
 | [Glider](https://github.com/Raffi1202/glider-lua) 0.6.0 | format 1, «auch bei Motor aus» |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.12.0 / 0.12.0 | format 1, «auch bei Motor aus» |
-| DLG 0.2.0 (Wurfgleiter, Repository noch nicht öffentlich) | format 2, nur Seite FLUG; kein Motorschalter |
+| [DLG](https://github.com/Raffi1202/dlg-lua) 0.2.0 (Wurfgleiter) | format 2, nur Seite FLUG; kein Motorschalter |
 
 ## Lizenz
 
@@ -108,6 +108,7 @@ GPL-3.0-or-later, siehe [LICENSE](LICENSE).
 | [Heli](https://github.com/Raffi1202/heli-lua) | Ethos-Widget für Helis mit Telemetrie (jedes Flybarless-System) |
 | [Jet](https://github.com/Raffi1202/jet-lua) | Ethos-Widget für Turbinen (mehrere ECU-Hersteller) |
 | [Glider](https://github.com/Raffi1202/glider-lua) | Ethos-Widget für Segler (Vario, Thermik) |
+| [DLG](https://github.com/Raffi1202/dlg-lua) | Ethos-Widget für Wurfgleiter (Wurfhöhe, F3K) |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) | Ethos-Widgets für Verbrennungsmotoren |
 
 ## Automatisierung (für Entwickler)
