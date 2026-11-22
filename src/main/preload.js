@@ -6,6 +6,8 @@ const { contextBridge, ipcRenderer } = require('electron')
 contextBridge.exposeInMainWorld('studio', {
   texte: (sprache) => ipcRenderer.invoke('texte', sprache),
   entwickler: () => ipcRenderer.invoke('entwickler'),
+  startInfo: () => ipcRenderer.invoke('startInfo'),
+  update: () => ipcRenderer.invoke('update'),
   systemSprache: () => ipcRenderer.invoke('systemSprache'),
   anschluesse: () => ipcRenderer.invoke('anschluesse'),
   verbinden: (ziel) => ipcRenderer.invoke('verbinden', ziel),
@@ -21,5 +23,6 @@ contextBridge.exposeInMainWorld('studio', {
   // Fehlerprotokoll (Hilfe -> Fehlerprotokoll)
   protokoll: (kanal, daten) => ipcRenderer.invoke('protokoll:' + kanal, daten),
   beiProtokollZeigen: (fn) => ipcRenderer.on('protokoll:zeigen', () => fn()),
+  beiBearbeiten: (fn) => ipcRenderer.on('bearbeiten', (_e, art) => fn(art)),
 })
 

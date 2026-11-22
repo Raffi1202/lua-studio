@@ -145,7 +145,8 @@ function erlaubteDarstellungen(k) {
 }
 
 // ---------- Speichern und Prüfen ----------
-function geaendert() {
+function geaendert(ausVerlauf) {
+  if (!ausVerlauf && st.projekt) verlaufMerken()
   clearTimeout(speicherUhr)
   speicherUhr = setTimeout(() => api.studio('speichern', { funkeName: funkeName(), lua: st.m.lua, kennung: st.m.kennung, projekt: st.projekt }), 400)
   clearTimeout(pruefUhr)
@@ -273,8 +274,9 @@ async function modellOeffnen(m) {
   $('luaHinweis').textContent = b && b.hinweis ? name(b.hinweis) : ''
   modellListeZeigen()
   allesZeigen()
+  verlauf(); verlaufKnoepfe()
   pruefen()
-  if (r.neu) geaendert()
+  if (r.neu) geaendert(true)
   // Konzept Abschnitt 5: Modell der Funke ohne eigene Gestaltung, Vorbereitung mit derselben Kennung vorhanden -> gleich anbieten
   if (r.neu && !m.vorbereitet) {
     const v = passendeVorbereitete(m).find((x) => x.kennung.toLowerCase() === m.kennung.toLowerCase())
@@ -579,14 +581,95 @@ function hilfslinien(linien) {
 }
 
 // ---------- Ausrichten ----------
-let vorher = null
-function merken() { vorher = { m: st.m, ansicht: st.ansicht, plaetze: JSON.stringify(ansichtAktuell().plaetze) }; $('rueckgaengig').disabled = false }
-function vergessen() { vorher = null; const k = document.getElementById('rueckgaengig'); if (k) k.disabled = true }
-function rueckgaengig() {
-  if (!vorher || vorher.m !== st.m || vorher.ansicht !== st.ansicht) { vergessen(); return }
-  ansichtAktuell().plaetze = JSON.parse(vorher.plaetze); vergessen()
-  st.gewaehlt = -1; flaecheZeigen(); eigenschaftenZeigen(); geaendert()
+// Rückgängig / Wiederholen (0.13.0): Verlauf je Modell, mindestens 50 Schritte. Jeder Aufruf von geaendert() nach einer
+// Änderung am Projekt ist ein Schritt (Ziehen ruft es erst beim Loslassen auf); Tippen im selben Feld kurz hintereinander
+// zählt als ein Schritt. Der Verlauf bleibt beim Übertragen erhalten.
+const VERLAUF_MAX = 100
+const verlaeufe = new Map()
+const verlaufSchluessel = () => (st.m ? `${funkeName()}|${st.m.lua}|${st.m.kennung}` : '')
+const projektStand = () => JSON.stringify({ ansichten: st.projekt.ansichten, grenzen: st.projekt.grenzen, werte: st.projekt.werte, einstellungen: st.projekt.einstellungen })
+function verlauf() {
+  const k = verlaufSchluessel()
+  if (!k || !st.projekt) return null
+  if (!verlaeufe.has(k)) verlaeufe.set(k, { stand: projektStand(), ansicht: st.ansicht, zurueck: [], vor: [], zeit: 0, art: '' })
+  return verlaeufe.get(k)
 }
+// Art der Änderung für den Tooltip («Rückgängig: Platz verschoben»)
+function aenderungsArt(alt, neu) {
+  const a = JSON.parse(alt), b = JSON.parse(neu)
+  if (JSON.stringify(a.ansichten) === JSON.stringify(b.ansichten)) return JSON.stringify(a.grenzen) !== JSON.stringify(b.grenzen) ? 'v_grenzen' : 'v_einstellungen'
+  for (let i = 0; i < b.ansichten.length; i++) {
+    const pa = (a.ansichten[i] || {}).plaetze || [], pb = (b.ansichten[i] || {}).plaetze || []
+    if (pb.length > pa.length) return 'v_neu'
+    if (pb.length < pa.length) return 'v_weg'
+    const da = (a.ansichten[i] || {}).deko || [], db = (b.ansichten[i] || {}).deko || []
+    if (da.length !== db.length) return 'v_schmuck'
+    const anders = pb.map((p, j) => [pa[j], p]).filter(([x, y]) => JSON.stringify(x) !== JSON.stringify(y))
+    if (!anders.length) { if (JSON.stringify(da) !== JSON.stringify(db)) return 'v_schmuck'; continue }
+    if (anders.length > 1) return 'v_mehrere'
+    const [x, y] = anders[0], felder = Object.keys({ ...x, ...y }).filter((f) => JSON.stringify(x[f]) !== JSON.stringify(y[f]))
+    if (felder.every((f) => f === 'x' || f === 'y')) return 'v_verschoben'
+    if (felder.every((f) => ['x', 'y', 'b', 'h'].includes(f))) return 'v_groesse'
+    return 'v_platz'
+  }
+  return 'v_mehrere'
+}
+function verlaufMerken() {
+  const v = verlauf()
+  if (!v) return
+  const jetzt = projektStand()
+  if (jetzt === v.stand) return
+  const art = aenderungsArt(v.stand, jetzt)
+  const zusammen = (art === 'v_platz' || art === 'v_grenzen' || art === 'v_einstellungen') && art === v.art && Date.now() - v.zeit < 1500 && v.zurueck.length
+  if (!zusammen) { v.zurueck.push({ stand: v.stand, ansicht: v.ansicht, art }); if (v.zurueck.length > VERLAUF_MAX) v.zurueck.shift() }
+  v.vor = []; v.stand = jetzt; v.ansicht = st.ansicht; v.zeit = Date.now(); v.art = art
+  verlaufKnoepfe()
+}
+function verlaufSchritt(richtung) {
+  const v = verlauf()
+  if (!v) return
+  const von = richtung < 0 ? v.zurueck : v.vor, nach = richtung < 0 ? v.vor : v.zurueck
+  const e = von.pop()
+  if (!e) return
+  nach.push({ stand: v.stand, ansicht: v.ansicht, art: e.art })
+  const d = JSON.parse(e.stand)
+  Object.assign(st.projekt, d)
+  v.stand = e.stand; v.art = ''; v.zeit = 0
+  st.ansicht = Math.min(e.ansicht, st.projekt.ansichten.length - 1)
+  st.gewaehlt = -1; st.gewaehltDeko = -1
+  ansichtenZeigen(); $('ansicht').value = String(st.ansicht)
+  flaecheZeigen(); eigenschaftenZeigen(); grenzenZeigen(); uebertragenZeigen()
+  geaendert(true)
+  verlaufKnoepfe()
+}
+function verlaufKnoepfe() {
+  const v = verlauf()
+  const z = $('rueckgaengig'), w = $('wiederholen')
+  const a = v && v.zurueck[v.zurueck.length - 1], b = v && v.vor[v.vor.length - 1]
+  z.disabled = !a; w.disabled = !b
+  z.title = a ? `${t('rueckgaengig')}: ${t(a.art)}` : t('rueckgaengig')
+  w.title = b ? `${t('wiederholen')}: ${t(b.art)}` : t('wiederholen')
+}
+// Alte Aufrufe (Ausrichten/Anordnen merkten sich vorher den Stand): jetzt übernimmt der Verlauf das
+function merken() {}
+function vergessen() { if (document.getElementById('wiederholen')) verlaufKnoepfe() }
+const rueckgaengig = () => verlaufSchritt(-1)
+const wiederholen = () => verlaufSchritt(1)
+// Tasten: Cmd/Ctrl+Z, Shift+Cmd/Ctrl+Z, Ctrl+Y; in Textfeldern bleibt das normale Rückgängig des Felds
+function textFeldAktiv() { const a = document.activeElement; return a && (a.tagName === 'TEXTAREA' || (a.tagName === 'INPUT' && !['checkbox', 'radio', 'button', 'color', 'range'].includes(a.type))) }
+function bearbeiten(art) {
+  if (textFeldAktiv()) { document.execCommand(art === 'undo' ? 'undo' : 'redo'); return }
+  if ($('editor').hidden || $('bereichStudio').hidden) return
+  if (art === 'undo') rueckgaengig(); else wiederholen()
+}
+document.addEventListener('keydown', (e) => {
+  if (!(e.metaKey || e.ctrlKey) || e.altKey) return
+  const k = e.key.toLowerCase()
+  const art = k === 'z' ? (e.shiftKey ? 'redo' : 'undo') : (k === 'y' && !e.metaKey ? 'redo' : null)
+  if (!art || textFeldAktiv()) return
+  e.preventDefault(); bearbeiten(art)
+})
+if (api.beiBearbeiten) api.beiBearbeiten(bearbeiten)
 
 // Automatisch anordnen (0.4.0): Zerlegung in Zeilen und Spalten, gleiche Abstände G, Fläche füllen; Rechnung im Hauptprozess
 // (src/studio/anordnen.js). Standardabstand: 8 px im Vollbild, sonst 5 px. Schmuck bleibt, wo er ist.
@@ -1397,6 +1480,7 @@ $('platzWeg').addEventListener('click', platzWeg)
 $('anordnenKnopf').addEventListener('click', anordnenStart)
 $('zentrieren').addEventListener('click', zentrieren)
 $('rueckgaengig').addEventListener('click', rueckgaengig)
+$('wiederholen').addEventListener('click', wiederholen)
 $('vorlageLaden').addEventListener('click', vorlageLaden)
 $('vorlageSpeichern').addEventListener('click', vorlageSpeichern)
 $('vonModellKopieren').addEventListener('click', vonModellKopieren)

@@ -32,6 +32,7 @@ async function spracheSetzen(neu) {
   document.documentElement.lang = sprache
   document.querySelectorAll('[data-t]').forEach((el) => { el.textContent = T[el.dataset.t] || el.dataset.t })
   document.querySelectorAll('[data-tp]').forEach((el) => { el.placeholder = T[el.dataset.tp] || '' })
+  if (window.tourSprache) window.tourSprache()
   document.querySelectorAll('[data-sprache]').forEach((b) => b.classList.toggle('aktiv', b.dataset.sprache === sprache))
   const hilfe = $('hilfe'); hilfe.textContent = ''
   for (const z of T.hilfe || []) { const li = document.createElement('li'); li.textContent = z; hilfe.appendChild(li) }

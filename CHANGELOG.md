@@ -2,6 +2,14 @@
 
 New entries in English. Older entries in German.
 
+## 0.13.0 (22 Nov 2026)
+
+- **Tutorial:** guided tour with 8 steps (choose Lua → model and ID → template → click a field → limits and alarm → preview → transfer or «Save as file» → quick test), highlighted step by step, DE/EN, skippable (Esc), on the first start and via Help → «Tutorial …». Uses a practice model «Tutorial» and offers to delete it at the end. Wiki page «Tutorial» / «Erste Schritte» with pictures.
+- **Undo / redo** for every layout change (move, resize, add, delete, value/display/title/colour, limits, template, arrange/align): buttons ↶ ↷ with tooltip («Undo: field moved»), Cmd/Ctrl+Z, Shift+Cmd/Ctrl+Z, Ctrl+Y, Mac menu «Edit». One drag is one step; up to 100 steps per model; kept after a transfer. Replaces the one-step undo after arranging.
+- **New version notice:** on start at most once a day one request to the public GitHub API (releases incl. pre-releases); if newer, a bar «New version x.y.z available – Download / see changes» links to the release page. No download, no installation, no personal data. Switch «Check for updates» in the Help menu (default on). Silent without internet.
+- DLG: template «Current look» 784×316 with 39 px flight mode band (from DLG).
+- Control interface: commands `tour`, `rueckgaengig`, `wiederholen`; window pictures are redrawn before capture.
+
 ## 0.12.0 (22 Nov 2026)
 
 - **New Lua: DLG 0.2.0** (discus launch glider, Lua-Studio format 2, no symbols): description `src/luas/dlg.json`, studio files `.dlg.lua` in `scripts/studio`.

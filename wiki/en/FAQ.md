@@ -12,6 +12,8 @@ Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Elec
 
 Picture taken with the Ethos simulator.
 
+**From 0.13.0:** a guided tour with 8 steps starts on the first start (again via Help → «Tutorial …»). Every layout change can be taken back with **↶ Undo** / **↷ Redo** or Cmd/Ctrl+Z or Shift+Cmd/Ctrl+Z (one drag is one step, up to 100 steps per model). On start Lua-Studio asks GitHub at most once a day for a newer version and then shows a link to the release page at the top; no download, no personal data; switch off via Help → «Check for updates».
+
 ## Known limitations
 
 - **Picture rate:** about 25 frames per second, measured on a Mac with the X18RS. The connection on Windows has not been measured with a real radio yet.

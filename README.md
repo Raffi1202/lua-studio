@@ -37,6 +37,12 @@ A program for Mac and Windows that belongs to our FrSky Ethos Lua widgets (Elect
 **Manual:** [Wiki](wiki/Home.md#english) · [English (PDF)](docs/Lua-Studio%20-%20Manual.pdf) · [Deutsch (PDF)](docs/Lua-Studio%20-%20Anleitung.pdf) ·
 **Report a problem:** in the app Help › Error log › «Save for support (ZIP)», attach the ZIP to an issue.
 
+## Tutorial, undo, update notice (from 0.13.0)
+
+- **Tutorial:** a guided tour with 8 steps on the first start and via Help → Tutorial (see the [wiki](wiki/en/Tutorial.md)).
+- **Undo / redo:** every layout change, buttons ↶ ↷, Cmd/Ctrl+Z and Shift+Cmd/Ctrl+Z or Ctrl+Y.
+- **New version notice:** on start Lua-Studio asks the public GitHub API at most once a day for newer releases (pre-releases included) and shows a bar with a link to the release page. No download, no installation, no personal data sent (only the normal request to api.github.com). Off via Help → Check for updates.
+
 ## Supported Luas
 
 | Lua | Studio support |

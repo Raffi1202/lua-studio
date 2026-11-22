@@ -99,6 +99,12 @@
       const sel = document.getElementById('ansicht'); sel.value = String(i); sel.dispatchEvent(new Event('change'))   // wie die Auswahl
       return { ansicht: i }
     },
+    async tour({ schritt }) {   // Tutorial-Tour: Schritt 0–7 zeigen; ohne Schritt beenden (Übungsmodell löschen)
+      if (schritt === undefined) { await window.tourEnde(true); return { ende: true } }
+      await window.tourSchritt(Number(schritt)); await warte(300); return { schritt: Number(schritt) }
+    },
+    async rueckgaengig() { rueckgaengig(); await warte(100); return { plaetze: ansichtAktuell().plaetze.map(platzDaten), titel: $('rueckgaengig').title, wiederholen: $('wiederholen').title } },
+    async wiederholen() { wiederholen(); await warte(100); return { plaetze: ansichtAktuell().plaetze.map(platzDaten), titel: $('rueckgaengig').title } },
     async vorlage({ s }) { document.getElementById('presetWahl').value = 'p:' + s; await presetAnwenden(); await warte(300); return { plaetze: ansichtAktuell().plaetze.length } },
     async anordnen({ art = 'gleich', abstand }) {
       document.getElementById('anordnenArt').value = art

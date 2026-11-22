@@ -200,3 +200,26 @@ h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: v
 .flaeche .reserviert.lua:hover { border-color: rgba(255, 176, 32, 0.6); }
 .flaeche .kasten.lua { background: none; border-color: transparent; }
 .flaeche .kasten.lua > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* Hinweis auf neue Version (0.13.0) */
+.update-leiste { display: flex; gap: 8px; align-items: center; padding: 6px 14px; background: #1e3a5f; color: #dbeafe; font-size: 13px; }
+.update-leiste[hidden] { display: none; }
+.update-leiste a { color: #93c5fd; }
+.update-leiste button { margin-left: auto; background: none; border: none; color: inherit; font-size: 16px; cursor: pointer; }
+
+/* Tutorial-Tour (0.13.0) */
+.tour { position: fixed; inset: 0; z-index: 1000; }
+.tour.ohne-loch { background: rgba(0, 0, 0, 0.55); }
+.tour-loch { position: fixed; border-radius: 8px; outline: 3000px solid rgba(0, 0, 0, 0.55); box-shadow: inset 0 0 0 2px #60a5fa; pointer-events: none; }
+.tour-karte { position: fixed; width: min(380px, calc(100vw - 32px)); background: #1f2937; color: #f3f4f6; border: 1px solid #3b82f6; border-radius: 10px; padding: 14px 16px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); }
+.tour-zahl { font-size: 12px; color: #93c5fd; margin-bottom: 6px; }
+.tour-text { margin: 0 0 12px; line-height: 1.45; }
+.tour-knoepfe { display: flex; gap: 8px; align-items: center; }
+.tour-knoepfe span { flex: 1; }
+.tour-weiter { background: #3b82f6; color: #fff; border: none; border-radius: 6px; padding: 5px 14px; }
+
+/* Rückgängig / Wiederholen (0.13.0) */
+.verlauf-knoepfe { margin-left: auto; display: inline-flex; gap: 6px; }
+.verlauf-knoepfe button:before { margin-right: 4px; }
+#rueckgaengig:before { content: '↶'; }
+#wiederholen:before { content: '↷'; }

@@ -48,6 +48,7 @@ function starten(d) {
         const w = d.fenster().webContents
         let rect
         if (args.element) { const r = JSON.parse(await js(`JSON.stringify((document.getElementById(${JSON.stringify(String(args.element))}) || document.body).getBoundingClientRect())`)); rect = { x: Math.round(r.x), y: Math.round(r.y), width: Math.round(r.width), height: Math.round(r.height) } }
+        w.invalidate(); await new Promise((r) => setTimeout(r, 300))   // neu zeichnen lassen (sonst altes Bild bei verdecktem Fenster)
         const bild = await w.capturePage(rect)
         fs.writeFileSync(String(args.pfad), bild.toPNG()); return { ok: true, pfad: String(args.pfad) }
       }

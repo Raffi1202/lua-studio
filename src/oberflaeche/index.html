@@ -19,12 +19,13 @@
     </div>
     <div class="hilfe-menue">
       <button id="hilfeKnopf" class="neben" data-t="hilfeMenue" aria-haspopup="true"></button>
-      <div id="hilfeListe" class="hilfe-liste" hidden><button id="protokollAuf" data-t="protokollMenue"></button></div>
+      <div id="hilfeListe" class="hilfe-liste" hidden><button id="tutorialAuf" data-t="tutorialMenue"></button><button id="protokollAuf" data-t="protokollMenue"></button><button id="updateSchalter"></button></div>
     </div>
     <div class="sprache">
       <button data-sprache="de">DE</button><button data-sprache="en">EN</button>
     </div>
   </header>
+  <div id="updateLeiste" class="update-leiste" hidden><span class="u-text"></span> <a target="_blank" rel="noopener"></a> <button aria-label="×">×</button></div>
 
   <dialog id="protokollFenster" class="protokoll-fenster">
     <div class="protokoll-kopf">
@@ -144,6 +145,7 @@
           <button class="aktiv" data-unter="anordnung" data-t="anordnung"></button>
           <button data-unter="grenzen" data-t="grenzenEinstellungen"></button>
           <button data-unter="uebertragen" data-t="uebertragen"></button>
+          <span class="verlauf-knoepfe"><button id="rueckgaengig" data-t="rueckgaengig" disabled></button><button id="wiederholen" data-t="wiederholen" disabled></button></span>
         </nav>
         <span id="zaehlung" class="leise klein"></span>
       </div>
@@ -166,7 +168,6 @@
             <option value="4">4 px</option><option value="5">5 px</option><option value="6">6 px</option><option value="8">8 px</option><option value="10">10 px</option>
           </select></span>
           <button id="zentrieren" class="neben" data-t="zentrieren" disabled></button>
-          <button id="rueckgaengig" class="neben" data-t="rueckgaengig" disabled></button>
           <span id="anordnungMeldung" class="leise klein"></span>
         </div>
         <div class="werkzeuge">
@@ -241,6 +242,7 @@
   <script src="lua-vorschau.js"></script>
   <script src="studio.js"></script>
   <script src="protokoll.js"></script>
+  <script src="tour.js"></script>
   <script src="steuerung.js"></script>
 </body>
 </html>

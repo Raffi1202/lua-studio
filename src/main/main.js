@@ -198,6 +198,11 @@ async function verbinden(ziel) {
 }
 
 ipcMain.handle('texte', (_e, sprache) => SPRACHEN[sprache] || SPRACHEN.de)
+// Neue Version (0.13.0): nur auf Anfrage der Oberfläche (Schalter «Nach Updates suchen», höchstens 1× pro Tag);
+// nicht unter --steuerung (Tests, Bilder), dort auch keine automatische Tour
+const OHNE_EINBLENDUNGEN = process.argv.includes('--steuerung')
+ipcMain.handle('startInfo', () => ({ version: app.getVersion(), steuerung: OHNE_EINBLENDUNGEN }))
+ipcMain.handle('update', () => (OHNE_EINBLENDUNGEN ? { neu: false } : require('./update').pruefen(app.getVersion())))
 ipcMain.handle('entwickler', () => !app.isPackaged || process.env.LUA_STUDIO_ENTWICKLER === '1')
 ipcMain.handle('systemSprache', () => (app.getLocale() || 'de').slice(0, 2))
 ipcMain.handle('anschluesse', async () => {
@@ -555,7 +560,14 @@ function menueSetzen() {
   if (process.platform !== 'darwin') return
   const en = !/^de/i.test(app.getLocale() || '')
   Menu.setApplicationMenu(Menu.buildFromTemplate([
-    { role: 'appMenu' }, { role: 'editMenu' }, { role: 'windowMenu' },
+    { role: 'appMenu' },
+    // Bearbeiten (0.13.0): Rückgängig/Wiederholen gehen an die Oberfläche (Verlauf des Layouts bzw. Textfeld)
+    { label: en ? 'Edit' : 'Bearbeiten', submenu: [
+      { label: en ? 'Undo' : 'Rückgängig', accelerator: 'CmdOrCtrl+Z', click: () => melden('bearbeiten', 'undo') },
+      { label: en ? 'Redo' : 'Wiederholen', accelerator: 'Shift+CmdOrCtrl+Z', click: () => melden('bearbeiten', 'redo') },
+      { type: 'separator' }, { role: 'cut' }, { role: 'copy' }, { role: 'paste' }, { role: 'selectAll' },
+    ] },
+    { role: 'windowMenu' },
     { role: 'help', label: en ? 'Help' : 'Hilfe', submenu: [{ label: en ? 'Error log …' : 'Fehlerprotokoll …', click: () => melden('protokoll:zeigen', true) }] },
   ]))
 }

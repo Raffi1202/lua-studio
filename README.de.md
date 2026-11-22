@@ -53,6 +53,12 @@ einstellen und auf die Funke übertragen. Später: Flüge auswerten.
 
 Dazu: Knöpfe für alle Tasten, Textfeld für die Bildschirmtastatur, Bildschirmfoto als PNG, Lua-Log der Funke, Deutsch/Englisch.
 
+## Tutorial, Rückgängig, Update-Hinweis (ab 0.13.0)
+
+- **Tutorial:** geführte Tour mit 8 Schritten beim ersten Start und über Hilfe → Tutorial (siehe [Wiki](wiki/de/Erste-Schritte.md)).
+- **Rückgängig / Wiederholen:** jede Änderung am Layout, Knöpfe ↶ ↷, Cmd/Ctrl+Z und Shift+Cmd/Ctrl+Z bzw. Ctrl+Y.
+- **Hinweis auf neue Version:** Beim Start fragt Lua-Studio höchstens einmal am Tag die öffentliche GitHub-API nach neueren Releases (Pre-releases eingeschlossen) und zeigt eine Leiste mit Link auf die Release-Seite. Kein Download, keine Installation, keine persönlichen Daten (nur die normale Anfrage an api.github.com). Ausschalten über Hilfe → Nach Updates suchen.
+
 ## Modelle einstellen (ab 0.2.0)
 
 Im Reiter **Modelle** stellst du je Modell ein, was das Lua zeigt: Kästchen frei anordnen (Zahl, Ring, Balken, Kurve,
