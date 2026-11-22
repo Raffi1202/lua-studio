@@ -2001,31 +2001,31 @@
        "x": 3,
        "y": 51,
        "b": 778,
-       "h": 32,
+       "h": 39,
        "w": "lua:flight_phase",
        "darstellung": "status"
       },
       {
        "x": 3,
-       "y": 86,
+       "y": 93,
        "b": 257,
-       "h": 94,
+       "h": 87,
        "w": "lua:flight_time",
        "darstellung": "zahl"
       },
       {
        "x": 263,
-       "y": 86,
+       "y": 93,
        "b": 257,
-       "h": 94,
+       "h": 87,
        "w": "lua:launch_height",
        "darstellung": "zahl"
       },
       {
        "x": 523,
-       "y": 86,
+       "y": 93,
        "b": 258,
-       "h": 94,
+       "h": 87,
        "w": "lua:vario",
        "darstellung": "balken_w"
       },
