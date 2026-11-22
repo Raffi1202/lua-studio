@@ -2,6 +2,13 @@
 
 New entries in English. Older entries in German.
 
+## 0.10.6 (22 Nov 2026)
+
+User decision «symbols as large as the text» (like Electric 0.7.5; Heli and Jet follow):
+- **Box header:** the title keeps its normal size, with or without symbol. The symbol is the largest size not higher than the title (12 or 16 px, rarely 24), centred on the title line.
+- **Small masks 12 and 16 px:** for every box symbol Lua-Studio also creates and transfers `name_12.png` and `name_16.png` (drawMask does not scale). They are not listed in `symbole` (the Lua limit of 20 entries stays; older Luas read the file unchanged) and do not count towards the 20 symbols of the size guard; the image memory includes them.
+- **All symbols off** (per model, next to «Template»): no symbols in the studio file and no symbol images; the preview shows no symbols; the chosen symbols stay in the project. No new field in the format.
+
 ## 0.10.5 (22 Nov 2026)
 
 - **Unit in the title only as a word of its own** (same rule as Electric 0.7.4 and Heli 1.14.3): before it the start, a space or a bracket, after it the end, a space, a bracket or «%». «Akku %», «Strom (A)», «Speed km/h» hide the unit at the value; «Höhe max» (m), «Akku Strom» (A), «Akku%» do not.

@@ -178,6 +178,10 @@ function neuesProjekt(beschreibung, info) {
 // Rückgabe { daten, wegfall: [Gründe], verworfen: [Gründe] }
 function dateiDatenMitInfo(projekt, meta) {
   let ansichten = (projekt.ansichten || []).filter((a) => a.plaetze && a.plaetze.length > 0).slice(0, 2)
+  // Schalter «Alle Symbole aus» (ab 0.10.6, je Modell): keine Symbole schreiben und keine Bilder übertragen;
+  // im Projekt bleiben sie gespeichert. Kein Feld im Format: es fehlen einfach die Symbole.
+  if (projekt.symboleAus) ansichten = ansichten.map((a) => ({ ...a, deko: (a.deko || []).filter((d) => d.art !== 'symbol'),
+    plaetze: a.plaetze.map(({ symbol: _s, symbolPx: _p, ...p }) => p) }))
   const kann2 = Array.isArray(meta.formate) && meta.formate.includes(2)
   const braucht2 = Y.benutztFormat2(ansichten)
   const wegfall = []
@@ -230,7 +234,7 @@ function dateiDatenMitInfo(projekt, meta) {
   }
   if (format === 2) {
     const sy = Y.symbolListe(ansichten)
-    if (sy.length > Y.MAX_SYMBOLE) verworfen.push('symbole:anzahl')
+    if (Y.grosseSymbole(sy).length > Y.MAX_SYMBOLE) verworfen.push('symbole:anzahl')
     if (sy.length) daten.symbole = sy
   }
   // Ansichten ohne Kästchen nicht schreiben: Dann zeichnet das Lua für diese Grösse seine eingebaute Belegung
@@ -287,7 +291,7 @@ function platzSauber(p, verworfen, extra = []) {
   const q = { ...p }
   for (const k of FARBFELDER) if (q[k] !== undefined && !farbeGut(q[k])) { verworfen.push(`${k}`); delete q[k] }
   if (q.darstellung !== undefined && !DARSTELLUNGEN.includes(q.darstellung) && !(extra || []).includes(q.darstellung)) { verworfen.push('darstellung'); delete q.darstellung }
-  if (q.symbolPx !== undefined && !Y.PX.includes(q.symbolPx)) { verworfen.push('symbolPx'); delete q.symbolPx }
+  if (q.symbolPx !== undefined && !Y.PX_WAHL.includes(q.symbolPx)) { verworfen.push('symbolPx'); delete q.symbolPx }
   // 0.10.4: «fett» (grosse Einheit oben links) gibt es nicht mehr; die Luas (Electric 0.7.3 ff.) zeigen sie wie «am Wert»
   if (q.einheitZeigen === 'fett') delete q.einheitZeigen
   if (q.einheitZeigen !== undefined && ![true, false].includes(q.einheitZeigen)) { verworfen.push('einheitZeigen'); delete q.einheitZeigen }
@@ -413,7 +417,7 @@ function funkeAenderungenUebernehmen(projekt, funkeDaten, werkGrenzen = {}) {
 // ---------- Symbol-Dateien (Format 2 §4) ----------
 // symbolDateien: { 'akku_48.png': Buffer } von der Oberfläche. Schreibt nur, was die Datei nennt und anders ist als auf dem Ziel.
 async function symboleSchreiben(ziel, daten, symbolDateien, melde) {
-  const liste = daten.symbole || []
+  const liste = Y.dateiListe(daten)   // ab 0.10.6 mit den kleinen Masken 12/16 der Platzsymbole
   if (!liste.length) return 0
   if (typeof ziel.symbolSchreiben !== 'function') throw new Error('symboleZiel')
   const B = Y.displayBreite(daten.ansichten[0].breite)
@@ -446,14 +450,17 @@ async function symboleSchreiben(ziel, daten, symbolDateien, melde) {
 // gilt nichts als unbenutzt (uebersprungen).
 async function symboleUnbenutzt(ziel, ersetzt = null, neu = []) {
   if (typeof ziel.symbolListe !== 'function') return { namen: [], uebersprungen: false }
-  const benutzt = new Set((neu || []).map((x) => `${x.name}_${x.px}.png`))
+  // ab 0.10.6: zu jedem benutzten Symbol gehören auch seine kleinen Masken name_12/name_16
+  const benutzt = new Set()
+  const nutze = (x) => { benutzt.add(`${x.name}_${x.px}.png`); for (const k of Y.PX_KLEIN) benutzt.add(`${x.name}_${k}.png`) }
+  for (const x of neu || []) nutze(x)
   for (const e of await ziel.liste()) {
     if (!/^.+\.[a-z0-9_]+\.lua$/.test(e.name) || e.name.endsWith('.funke.lua')) continue
     if (ersetzt && e.name.toLowerCase() === ersetzt.toLowerCase()) continue
     let d
     try { d = F.lesen((await ziel.lesen(e.name)).toString('utf8')) } catch { return { namen: [], uebersprungen: true } }
     const sy = d && d.symbole
-    if (sy && typeof sy === 'object') for (const x of Object.values(sy)) if (x && typeof x === 'object') benutzt.add(`${x.name}_${x.px}.png`)
+    if (sy && typeof sy === 'object') for (const x of Object.values(sy)) if (x && typeof x === 'object') nutze(x)
   }
   const namen = (await ziel.symbolListe()).map((f) => f.name).filter((n) => Y.DATEI.test(n) && !benutzt.has(n))
   return { namen, uebersprungen: false }
@@ -516,7 +523,7 @@ async function uebertragen({ ziel, ablage, funkeName, kennung, lua, projekt, met
   // 3. Symbole zuerst (die Studio-Datei nennt sie), dann die Studio-Datei: schreiben, zurücklesen, vergleichen
   if (gebaut.daten.format === 2 && (gebaut.daten.symbole || []).length) {
     const n = await symboleSchreiben(ziel, gebaut.daten, symbolDateien, melde)
-    melde(`symbole|${n}/${gebaut.daten.symbole.length}`)
+    melde(`symbole|${n}/${Y.dateiListe(gebaut.daten).length}`)
   }
   const neu = Buffer.from(gebaut.text, 'utf8')
   try {

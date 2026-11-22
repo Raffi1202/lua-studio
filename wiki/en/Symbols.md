@@ -5,7 +5,8 @@
 Only with a Lua version that supports Lua-Studio format 2. Otherwise the studio shows a note and writes format 1.
 
 - **Symbol** per box: top left in front of the title, coloured like the value (normal, warning, alarm). Size 24, 32, 48 or 64 px (on the X18RS; scaled down on X14 and X18). Tow only from 48 px.
-- **Unit:** at the value (small) or none. If the unit is already a word of its own in the title (e.g. «Battery %», «Current (A)»), the Lua does not show it again. The title is as high as the symbol, at most a third of the box. The former choice «bold top left» is gone from 0.10.4; old settings count as «at the value».
+- **Unit:** at the value (small) or none. If the unit is already a word of its own in the title (e.g. «Battery %», «Current (A)»), the Lua does not show it again. The title keeps its normal size; the symbol is reduced to the title height (masks 12 and 16 px, from 0.10.6). The former choice «bold top left» is gone from 0.10.4; old settings count as «at the value».
+- **All symbols off** (from 0.10.6, per model, next to «Template»): no symbols in the studio file, no symbol images; the preview shows all boxes without symbols. The chosen symbols stay in the project.
 - **Unused symbols** (from 0.4.1): if no studio file on the radio names a symbol any more, the «Transfer» tab shows «Delete n unused symbols …» beforehand («Which files?» expands all names). They are deleted only if you tick the box, and only those files. Without the tick they stay on the SD card and do no harm.
 - **Decoration:** **+ Symbol**, **+ Text**, **+ Line**, **+ Frame** places free elements without a value, at most 24 per view, below the boxes. Drag to move; position, size and colour on the right; Delete removes.
 - **Preset** sets the layout to the Lua's look («Lua default» or the Lua's templates). New models start with the template «Original» where Lua-Studio has one; to change it, delete or move boxes. Limits and settings stay.

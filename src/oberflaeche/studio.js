@@ -37,6 +37,10 @@ let speicherUhr = null, pruefUhr = null
 // ---------- Format 2: Symbole (Lua-Studio-Format 2.md, Abschnitte 2–5) ----------
 function displayBreite(b) { return b >= 784 ? 800 : b >= 630 ? 640 : 480 }
 function kante(px, B) { return Math.round(px * B / 800) }
+// Stufe für den Platzkopf (wie symbole.js kopfPx): grösste Kante ≤ Titelhöhe, sonst die kleinste
+function kopfPx(th, B) { let px = 12; for (const s of [12, 16, 24, 32, 48, 64]) if (kante(s, B) <= th) px = s; return px }
+// Schalter «Alle Symbole aus» (ab 0.10.6, je Modell): projekt.symboleAus
+function symboleAn() { return !(st.projekt && st.projekt.symboleAus) }
 // Fenstergrössen, in denen das Lua auf der Funke zuletzt lief (Info-Datei «fenster»)
 // Info-Datei «fenster» nur mit gültigen Einträgen (eine kaputte Info darf das Öffnen nicht abbrechen)
 function fensterListe(info) { const f = info && info.fenster; return Array.isArray(f) ? f.filter((x) => x && Number.isInteger(x.breite) && Number.isInteger(x.hoehe)) : [] }
@@ -293,6 +297,7 @@ async function modellOeffnen(m) {
 }
 
 function allesZeigen() {
+  if ($('symboleAus')) $('symboleAus').checked = !!(st.projekt && st.projekt.symboleAus)
   vergessen()
   abstandAnzeigen()
   presetsZeigen()
@@ -398,7 +403,7 @@ function anordnungPruefen(a) {
 function luaKontext(stil, a) {
   const T = (stil.texte && (stil.texte[sprache] || stil.texte.en)) || {}
   return { ansicht: a, T, regeln: stil.regeln, reserviert: reserviert(a), modell: String((st.m && st.m.info && st.m.info.modell) || 'DEMO').toUpperCase(),
-    symbol: (svg, q, farbe) => symbolUndEinheit(svg, q.p, farbe, q.einheit, q.zeit || q.darstellung === 'status', q.titel) }
+    symbol: (svg, q, farbe, th, pad) => symbolUndEinheit(svg, q.p, farbe, q.einheit, q.zeit || q.darstellung === 'status', q.titel, th, pad) }
 }
 // Einheit doppelt? Steht sie schon als eigenes Wort im Titel (z. B. «Akku %», «Strom (A)»), dann nicht am Wert.
 // Gleiche Regel wie Electric 0.7.4 (imTitel) und Heli 1.14.3 (einheitImTitel): davor Anfang, Leerzeichen, «(» oder «[»,
@@ -413,15 +418,19 @@ function einheitImTitel(einheit, titel) {
 }
 // Symbol oben links (Format 2 §5, wie ansicht.lua ab Electric 0.7.3); Rückgabe Einzug des Titels und ob die Einheit am Wert steht.
 // «fett» (grosse Einheit im Kopf) gibt es ab 0.10.4 nicht mehr: gilt wie «am Wert».
-function symbolUndEinheit(svg, p, farbe, einheit, zeitOderStatus, titel) {
+// Ab 0.10.6 («Symbole gleich gross wie der Text»): mit th (Titelhöhe) und pad das Symbol in der grössten Stufe ≤ th
+// (sonst 12), auf der Titelzeile zentriert; der Titel behält seine normale Grösse.
+function symbolUndEinheit(svg, p, farbe, einheit, zeitOderStatus, titel, th, pad) {
   if (!kann2()) return { ein: 0, amWert: true }
   const B = displayBreite(ansichtAktuell().breite)
   const r = Math.round(4 * B / 800)
   let x = r, da = false
-  if (p.symbol && katalog(p.symbol)) {
-    const k = kante(p.symbolPx || 24, B)
-    const e = svgSymbol(p.symbol, r, r, k, farbe)
-    if (e) { svg.appendChild(e); x = r + k + r; da = true }
+  if (p.symbol && katalog(p.symbol) && symboleAn()) {
+    const kopf = th !== undefined
+    const k = kante(kopf ? kopfPx(th, B) : (p.symbolPx || 24), B)
+    const x0 = kopf ? pad : r, y0 = kopf ? Math.round(pad + th / 2 - k / 2) : r
+    const e = svgSymbol(p.symbol, x0, y0, k, farbe)
+    if (e) { svg.appendChild(e); x = x0 + k + r; da = true }
   }
   return { ein: da ? x : 0, amWert: !(p.einheitZeigen === false || zeitOderStatus || einheitImTitel(einheit, titel)) }
 }
@@ -488,9 +497,9 @@ function vorschau(p) {
     const B = displayBreite(ansichtAktuell().breite)
     const r = Math.round(4 * B / 800)
     let x = r
-    if (p.symbol && katalog(p.symbol)) {
-      const k = kante(p.symbolPx || 24, B)
-      const e = svgSymbol(p.symbol, r, r, k, farbe)
+    if (p.symbol && katalog(p.symbol) && symboleAn()) {
+      const k = kante(kopfPx(klein, B), B)   // 0.10.6: Symbol so hoch wie der Titeltext, auf der Titelzeile
+      const e = svgSymbol(p.symbol, r, Math.round(2 + klein / 2 - k / 2), k, farbe)
       if (e) { svg.appendChild(e); x = r + k + r }
     }
     if (x > r) einzug = x
@@ -994,7 +1003,7 @@ function dekoElement(d, i, a, s) {
   e.style.left = g.x * s + 'px'; e.style.top = g.y * s + 'px'; e.style.width = g.b * s + 'px'; e.style.height = g.h * s + 'px'; e.style.color = farbe
   if (d.art === 'symbol') {
     const q = document.createElementNS(SVG, 'svg'); q.setAttribute('viewBox', `0 0 ${g.b} ${g.h}`)
-    const sy = svgSymbol(d.name, 0, 0, g.b, farbe); if (sy) q.appendChild(sy)
+    const sy = symboleAn() ? svgSymbol(d.name, 0, 0, g.b, farbe) : null; if (sy) q.appendChild(sy)
     e.appendChild(q)
   } else if (d.art === 'text') {
     e.textContent = d.text || ''
@@ -1322,7 +1331,10 @@ async function uebertragenStart() {
   const symbole = {}
   try {
     const B = displayBreite(st.projekt.ansichten[0].breite)
-    for (const x of pr.symbole) symbole[`${x.name}_${x.px}.png`] = await symbolGrau(x.name, kante(x.px, B))
+    for (const x of pr.symbole) {
+      symbole[`${x.name}_${x.px}.png`] = await symbolGrau(x.name, kante(x.px, B))
+      for (const k of [12, 16]) symbole[`${x.name}_${k}.png`] = await symbolGrau(x.name, kante(k, B))   // kleine Masken (0.10.6)
+    }
   } catch (e) { $('uebertragenKnopf').disabled = false; $('schritte').appendChild(el('li', { class: 'fehler', text: `${t('fehler')}: ${t('symbolRechnen')}` })); return }
   // Symbole löschen nur mit Haken und nur die angekündigten
   const symboleLoeschen = !$('symboleLoeschenZeile').hidden && $('symboleLoeschen').checked ? st.symboleAngekuendigt || [] : []
@@ -1447,6 +1459,7 @@ $('vorlageSpeichern').addEventListener('click', vorlageSpeichern)
 $('vonModellKopieren').addEventListener('click', vonModellKopieren)
 $('vonVorbereitetKopieren').addEventListener('click', vonVorbereitetKopieren)
 $('presetAnwenden').addEventListener('click', presetAnwenden)
+$('symboleAus').addEventListener('change', (e) => { if (!st.projekt) return; if (e.target.checked) st.projekt.symboleAus = true; else delete st.projekt.symboleAus; allesZeigen(); geaendert() })
 $('presetWahl').addEventListener('change', presetHinweis)
 for (const art of ['symbol', 'text', 'linie', 'rahmen']) $('deko' + art[0].toUpperCase() + art.slice(1)).addEventListener('click', () => dekoNeu(art))
 

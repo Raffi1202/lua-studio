@@ -4,9 +4,13 @@
 
 const zlib = require('zlib')
 
-const PX = [24, 32, 48, 64]
+// Bezugsgrössen: 24–64 wählbar (Platz und Schmuck); ab 0.10.6 zusätzlich 12 und 16 als kleine Masken für den Platzkopf
+// (Symbol so hoch wie die Titelschrift; drawMask skaliert nicht, darum eigene Dateien, Entscheid Electric 0.7.5).
+const PX_WAHL = [24, 32, 48, 64]
+const PX_KLEIN = [12, 16]
+const PX = [...PX_KLEIN, ...PX_WAHL]
 const NAME = /^[a-z][a-z0-9_]{0,23}$/
-const DATEI = /^([a-z][a-z0-9_]{0,23})_(24|32|48|64)\.png$/
+const DATEI = /^([a-z][a-z0-9_]{0,23})_(12|16|24|32|48|64)\.png$/
 const MAX_SYMBOLE = 20
 const MAX_DEKO = 24
 const MAX_PNG = 4096
@@ -74,7 +78,9 @@ function pngPruefen(buf, k) {
 }
 
 // ---------- Studio-Datei ----------
-function symbolPx(p) { return PX.includes(p.symbolPx) ? p.symbolPx : 24 }
+function symbolPx(p) { return PX_WAHL.includes(p.symbolPx) ? p.symbolPx : 24 }
+// Stufe für den Platzkopf: die grösste Kante ≤ Titelhöhe th (Displaypixel), sonst die kleinste (12)
+function kopfPx(th, B) { let px = PX[0]; for (const s of PX) if (kante(s, B) <= th) px = s; return px }
 
 // Liste «symbole» (Name + Bezugsgrösse) aus Plätzen und Schmuck; nur Namen aus dem Katalog
 function symbolListe(ansichten) {
@@ -107,7 +113,7 @@ function dekoPruefen(d, a) {
   if (!ganz(d.x) || !ganz(d.y) || d.x < 0 || d.y < 0 || d.x >= a.breite || d.y >= a.hoehe) return 'lage'
   if (d.art === 'symbol') {
     if (!NAME.test(String(d.name)) || !imKatalog(d.name)) return 'name'
-    if (!PX.includes(d.px) || d.px < imKatalog(d.name).minPx) return 'px'
+    if (!PX_WAHL.includes(d.px) || d.px < imKatalog(d.name).minPx) return 'px'
     const k = kante(d.px, displayBreite(a.breite))
     if (d.x + k > a.breite || d.y + k > a.hoehe) return 'lage'
     return null
@@ -124,5 +130,18 @@ function dekoPruefen(d, a) {
   return null
 }
 
-module.exports = { PX, NAME, DATEI, MAX_SYMBOLE, MAX_DEKO, MAX_PNG, KATALOG, imKatalog, displayBreite, kante, rand, crc32, pngGrau, pngPruefen,
+// Dateien zum Übertragen (ab 0.10.6): die Liste «symbole» und zu jedem Platzsymbol die kleinen Masken name_12/name_16.
+// Die kleinen Masken stehen nicht in «symbole» (Lua-Grenze 20 Einträge bleibt, ältere Luas lesen die Datei unverändert);
+// das Lua findet sie über den Namen.
+function dateiListe(daten) {
+  const liste = [...(daten.symbole || [])]
+  for (const a of daten.ansichten || []) for (const p of a.plaetze || []) {
+    if (!p.symbol || !imKatalog(p.symbol)) continue
+    for (const px of PX_KLEIN) if (!liste.some((s) => s.name === p.symbol && s.px === px)) liste.push({ name: p.symbol, px })
+  }
+  return liste
+}
+// Grössenwächter: die Grenze MAX_SYMBOLE zählt die wählbaren Stufen; kleine Masken (12/16, je ≤ 256 Byte) zählen nicht dazu
+function grosseSymbole(liste) { return (liste || []).filter((s) => !PX_KLEIN.includes(s.px)) }
+module.exports = { PX, PX_WAHL, PX_KLEIN, kopfPx, grosseSymbole, dateiListe, NAME, DATEI, MAX_SYMBOLE, MAX_DEKO, MAX_PNG, KATALOG, imKatalog, displayBreite, kante, rand, crc32, pngGrau, pngPruefen,
   symbolPx, symbolListe, benutztFormat2, ohneFormat2, dekoPruefen }

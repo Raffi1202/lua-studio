@@ -394,11 +394,11 @@ ipcMain.handle('studio:symboleUnbenutzt', async (_e, a) => {
   } catch (e) { return fehlerAntwort(e) }
 })
 // Symbol-Masken aus der Oberfläche: { 'akku_48.png': base64 der Grauwerte (Kante × Kante) } -> Graustufen-PNG.
-// Nur gültige Dateinamen, höchstens 20 Dateien, Kante bis 64 px.
+// Nur gültige Dateinamen, höchstens 20 Symbole (je mit kleinen Masken 12/16: 60 Dateien), Kante bis 64 px.
 function symbolePuffer(roh) {
   const r = {}
   if (!roh || typeof roh !== 'object') return r
-  for (const [datei, b64] of Object.entries(roh).slice(0, Y.MAX_SYMBOLE)) {
+  for (const [datei, b64] of Object.entries(roh).slice(0, Y.MAX_SYMBOLE * (1 + Y.PX_KLEIN.length))) {
     if (!Y.DATEI.test(datei) || typeof b64 !== 'string' || b64.length > 8192) continue
     const grau = Buffer.from(b64, 'base64')
     const k = Math.round(Math.sqrt(grau.length))
