@@ -39,7 +39,7 @@ jobs:
         run: |
           # Text: Abschnitt der Version aus CHANGELOG.md und «Bekannte Grenzen» aus README.md
           { awk '/^## /{n++} n==1' CHANGELOG.md; echo; awk '/^## Bekannte Grenzen/{p=1} /^## /&&!/Bekannte Grenzen/{p=0} p' README.md; } > notizen.md
-          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "Lua-Studio ${TAG#v}" --notes-file notizen.md || true
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --prerelease --title "Lua-Studio ${TAG#v}" --notes-file notizen.md || true
       - name: Windows-EXE
         if: runner.os == 'Windows'
         shell: bash
