@@ -398,30 +398,23 @@ function anordnungPruefen(a) {
 function luaKontext(stil, a) {
   const T = (stil.texte && (stil.texte[sprache] || stil.texte.en)) || {}
   return { ansicht: a, T, regeln: stil.regeln, reserviert: reserviert(a), modell: String((st.m && st.m.info && st.m.info.modell) || 'DEMO').toUpperCase(),
-    symbol: (svg, q, farbe) => symbolUndEinheit(svg, q.p, farbe, q.einheit, q.zeit || q.darstellung === 'status') }
+    symbol: (svg, q, farbe) => symbolUndEinheit(svg, q.p, farbe, q.einheit, q.zeit || q.darstellung === 'status', q.titel) }
 }
-// Symbol und fette Einheit oben links (Format 2 §5, wie studio_symbole.lua); Rückgabe Einzug des Titels und ob die Einheit am Wert steht
-function symbolUndEinheit(svg, p, farbe, einheit, zeitOderStatus) {
+// Einheit doppelt? (steht schon im Titel, z. B. «Akku %»): dann nicht am Wert (Electric 0.7.3)
+function einheitImTitel(einheit, titel) { return !!einheit && typeof titel === 'string' && titel.includes(einheit) }
+// Symbol oben links (Format 2 §5, wie ansicht.lua ab Electric 0.7.3); Rückgabe Einzug des Titels und ob die Einheit am Wert steht.
+// «fett» (grosse Einheit im Kopf) gibt es ab 0.10.4 nicht mehr: gilt wie «am Wert».
+function symbolUndEinheit(svg, p, farbe, einheit, zeitOderStatus, titel) {
   if (!kann2()) return { ein: 0, amWert: true }
   const B = displayBreite(ansichtAktuell().breite)
   const r = Math.round(4 * B / 800)
-  const fett = p.einheitZeigen === 'fett' && einheit && !zeitOderStatus
-  let x = r, hoch = 0, da = false
+  let x = r, da = false
   if (p.symbol && katalog(p.symbol)) {
     const k = kante(p.symbolPx || 24, B)
     const e = svgSymbol(p.symbol, r, r, k, farbe)
-    if (e) { svg.appendChild(e); x = r + k + r; hoch = k; da = true }
+    if (e) { svg.appendChild(e); x = r + k + r; da = true }
   }
-  if (fett) {
-    const gr = hoch >= kante(32, B) ? 16 : 12
-    const e = document.createElementNS(SVG, 'text')
-    e.setAttribute('x', x); e.setAttribute('y', r + Math.max(hoch, gr) / 2 + gr * 0.35); e.setAttribute('font-size', gr); e.setAttribute('font-weight', 'bold')
-    e.setAttribute('fill', farbe); e.setAttribute('font-family', 'sans-serif'); e.textContent = einheit
-    svg.appendChild(e)
-    x += Math.round(einheit.length * gr * 0.62) + r
-    da = true
-  }
-  return { ein: da ? x : 0, amWert: !(p.einheitZeigen === false || fett) }
+  return { ein: da ? x : 0, amWert: !(p.einheitZeigen === false || zeitOderStatus || einheitImTitel(einheit, titel)) }
 }
 // Angaben eines Platzes für die Vorschau (Beispielwert 62 % des Bereichs)
 function platzInfo(p, stil) {
@@ -477,29 +470,19 @@ function vorschau(p) {
   const rect = (x, y, b, h, fill) => { const e = document.createElementNS(SVG, 'rect'); e.setAttribute('x', x); e.setAttribute('y', y); e.setAttribute('width', Math.max(0, b)); e.setAttribute('height', Math.max(0, h)); e.setAttribute('fill', fill); svg.appendChild(e) }
   const mmss = (s) => { s = Math.round(s); const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), x = String(s % 60).padStart(2, '0'); return h ? `${h}:${String(m).padStart(2, '0')}:${x}` : `${m}:${x}` }
   const d = p.darstellung || 'zahl'
-  const fett = kann2() && p.einheitZeigen === 'fett' && einheit && !def.zeit && d !== 'status'
-  const einheitNeben = kann2() && (p.einheitZeigen === false || fett) ? '' : einheit
+  const einheitNeben = kann2() && (p.einheitZeigen === false || einheitImTitel(einheit, titel)) ? '' : einheit
   const zahl = def.zeit ? mmss(wert) : `${wert.toFixed(stellen)}${einheitNeben ? ' ' + einheitNeben : ''}`
   const klein = Math.max(10, Math.min(16, p.h * 0.18))
-  // Format 2 §5: Symbol oben links, fette Einheit daneben, Titel rückt ein
+  // Format 2 §5: Symbol oben links, Titel rückt ein
   let einzug = 6
   if (kann2()) {
     const B = displayBreite(ansichtAktuell().breite)
     const r = Math.round(4 * B / 800)
     let x = r
-    let hoch = klein
     if (p.symbol && katalog(p.symbol)) {
       const k = kante(p.symbolPx || 24, B)
       const e = svgSymbol(p.symbol, r, r, k, farbe)
-      if (e) { svg.appendChild(e); x = r + k + r; hoch = k }
-    }
-    if (fett) {
-      const gr = hoch >= kante(32, B) ? 16 : 12
-      const e = document.createElementNS(SVG, 'text')
-      e.setAttribute('x', x); e.setAttribute('y', r + Math.max(hoch, gr) / 2 + gr * 0.35); e.setAttribute('font-size', gr); e.setAttribute('font-weight', 'bold')
-      e.setAttribute('fill', farbe); e.setAttribute('font-family', 'sans-serif'); e.textContent = einheit
-      svg.appendChild(e)
-      x += Math.round(einheit.length * gr * 0.62) + r
+      if (e) { svg.appendChild(e); x = r + k + r }
     }
     if (x > r) einzug = x
   }
@@ -731,9 +714,9 @@ function eigenschaftenZeigen() {
       for (const x of PX.filter((x) => x >= katalog(p.symbol).minPx)) pSel.appendChild(el('option', { value: x, text: `${x} px`, selected: x === (p.symbolPx || 24) }))
       feld(t('symbolGroesse'), pSel)
     }
-    const eSel = el('select', { onchange: (e) => { if (e.target.value === 'true') delete p.einheitZeigen; else p.einheitZeigen = e.target.value === 'fett' ? 'fett' : false; neu() } })
-    const jetzt = p.einheitZeigen === undefined ? 'true' : String(p.einheitZeigen)
-    for (const [v, k] of [['true', 'einheitNeben'], ['fett', 'einheitFett'], ['false', 'einheitKeine']]) eSel.appendChild(el('option', { value: v, text: t(k), selected: v === jetzt }))
+    const eSel = el('select', { onchange: (e) => { if (e.target.value === 'true') delete p.einheitZeigen; else p.einheitZeigen = false; neu() } })
+    const jetzt = p.einheitZeigen === false ? 'false' : 'true'   // altes «fett» gilt wie «am Wert»
+    for (const [v, k] of [['true', 'einheitNeben'], ['false', 'einheitKeine']]) eSel.appendChild(el('option', { value: v, text: t(k), selected: v === jetzt }))
     feld(t('einheit'), eSel)
   }
 

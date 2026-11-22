@@ -60,7 +60,7 @@ test('Graustufen-PNG: gültiger Kopf, Farbtyp 0, Inhalt stimmt; Kopfprüfung wei
 })
 
 test('Format-Wahl: Format 2 nur wenn das Lua es kann und die Gestaltung es braucht', () => {
-  const p = projekt([platz({ symbol: 'akku', symbolPx: 48, einheitZeigen: 'fett' })], [{ art: 'symbol', x: 600, y: 10, name: 'elektromotor', px: 64 }])
+  const p = projekt([platz({ symbol: 'akku', symbolPx: 48, einheitZeigen: false })], [{ art: 'symbol', x: 600, y: 10, name: 'elektromotor', px: 64 }])
   const r2 = S.dateiDatenMitInfo(p, meta2)
   assert.strictEqual(r2.daten.format, 2)
   assert.deepStrictEqual(r2.daten.symbole, [{ name: 'akku', px: 48 }, { name: 'elektromotor', px: 64 }])
@@ -70,7 +70,10 @@ test('Format-Wahl: Format 2 nur wenn das Lua es kann und die Gestaltung es brauc
   const zurueck = F.lesen(g.text)
   assert.strictEqual(zurueck.format, 2)
   assert.strictEqual(zurueck.ansichten[0].plaetze[0].symbol, 'akku')
-  assert.strictEqual(zurueck.ansichten[0].plaetze[0].einheitZeigen, 'fett')
+  assert.strictEqual(zurueck.ansichten[0].plaetze[0].einheitZeigen, false)
+  // 0.10.4: altes «fett» wird nicht mehr geschrieben (gilt wie «am Wert»)
+  const pf = projekt([platz({ symbol: 'akku', symbolPx: 48, einheitZeigen: 'fett' })])
+  assert.strictEqual(S.dateiDatenMitInfo(pf, meta2).daten.ansichten[0].plaetze[0].einheitZeigen, undefined)
   assert.strictEqual(zurueck.ansichten[0].deko[0].name, 'elektromotor')
 
   const r1 = S.dateiDatenMitInfo(p, { ...meta2, formate: [1] })

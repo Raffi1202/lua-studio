@@ -159,11 +159,13 @@
     kachel(Z, b, h, q.hintergrund)
     if (q.leer) return
     const P = k.regeln || {}
-    const th = min(18, max(P.thMin || 9, h * 0.2))
+    let th = min(18, max(P.thMin || 9, h * 0.2))
     const pad = max(4, floor(6 * s))
     // Symbolfarbe: bei Status die Farbe des Zustands (ansicht.lua: grün bzw. grau), sonst die Farbe des Werts
     const { ein, amWert } = k.symbol(svg, q, q.darstellung === 'status' ? (q.statusFarbe || C.gruen) : fg)
     const eh = amWert ? q.einheit : ''
+    // Electric 0.7.3: Symbol nie grösser als der Titeltext, Titel so hoch wie das Symbol (höchstens ein Drittel des Platzes)
+    if (ein > 8) th = min(ein - 8, max(th, h * 0.33))
     const tx = max(pad, ein)
     const tb = max(8, b - tx - pad)
     const tcx = (tx + b - pad) / 2

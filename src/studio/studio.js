@@ -288,7 +288,9 @@ function platzSauber(p, verworfen, extra = []) {
   for (const k of FARBFELDER) if (q[k] !== undefined && !farbeGut(q[k])) { verworfen.push(`${k}`); delete q[k] }
   if (q.darstellung !== undefined && !DARSTELLUNGEN.includes(q.darstellung) && !(extra || []).includes(q.darstellung)) { verworfen.push('darstellung'); delete q.darstellung }
   if (q.symbolPx !== undefined && !Y.PX.includes(q.symbolPx)) { verworfen.push('symbolPx'); delete q.symbolPx }
-  if (q.einheitZeigen !== undefined && ![true, false, 'fett'].includes(q.einheitZeigen)) { verworfen.push('einheitZeigen'); delete q.einheitZeigen }
+  // 0.10.4: «fett» (grosse Einheit oben links) gibt es nicht mehr; die Luas (Electric 0.7.3 ff.) zeigen sie wie «am Wert»
+  if (q.einheitZeigen === 'fett') delete q.einheitZeigen
+  if (q.einheitZeigen !== undefined && ![true, false].includes(q.einheitZeigen)) { verworfen.push('einheitZeigen'); delete q.einheitZeigen }
   return q
 }
 function dekoSauber(d) {

@@ -2,6 +2,13 @@
 
 New entries in English. Older entries in German.
 
+## 0.10.4 (22 Nov 2026)
+
+Like Electric 0.7.3 (Heli 1.14.2 and Jet 0.5.2 follow), from the transmitter test:
+- **No large bold unit any more:** the choice «bold top left» is removed from the box editor; old settings and the Heli/Jet templates count as «unit at the value» (small). Works the same with older Luas.
+- **No double unit:** if the unit is already in the title (e.g. «Battery %», «Current A»), the preview shows it no more at the value, like the Lua.
+- **Symbol not larger than the title:** in the preview the title is as high as the symbol, at most a third of the box, like the Lua.
+
 ## 0.10.3 (22 Nov 2026)
 
 - **Glider 0.6.2 description:** 45 settings (Glider 0.6.0 listed 51). Glider models now stay below the size guard even when every setting is changed.
