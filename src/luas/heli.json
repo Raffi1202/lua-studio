@@ -1,6 +1,6 @@
 {
  "lua": "heli",
- "luaVersion": "1.14.1",
+ "luaVersion": "1.16.0",
  "formate": [
   1,
   2
