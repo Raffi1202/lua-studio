@@ -59,7 +59,6 @@ function aufFunke(a) { if (!st.m || st.m.vorbereitet) return false; return fenst
 // Ansicht vorwählen, in der das Lua auf der Funke zuletzt lief, sonst die erste
 function ansichtVorwaehlen() { const i = st.projekt.ansichten.findIndex((a) => aufFunke(a)); st.ansicht = i >= 0 ? i : 0 }
 function kann2() { const f = st.m && st.m.info && st.m.info.formate; return Array.isArray(f) && f.includes(2) }
-function katalog(n) { return ((st.symbole && st.symbole.katalog) || []).find((k) => k.name === n) }
 // Kennung wie Format v1 §2.1 (byteweise)
 function kennungAus(n) {
   let k = ''
@@ -71,33 +70,8 @@ function gruppeVon(fenster) {
   return null
 }
 // Symbol als <svg> in der Vorschau (Farbe über currentColor)
-function svgSymbol(n, x, y, k, farbe) {
-  const q = st.symbole && st.symbole.svg[n]
-  if (!q) return null
-  const e = document.importNode(new DOMParser().parseFromString(q, 'image/svg+xml').documentElement, true)
-  e.setAttribute('x', x); e.setAttribute('y', y); e.setAttribute('width', k); e.setAttribute('height', k)
-  e.setAttribute('color', farbe); e.style.color = farbe
-  return e
-}
 // Maske für die Funke: SVG schwarz auf weiss in Kante × Kante rechnen, Grauwerte als base64 (schwarz = deckend)
 const maskenCache = new Map()
-async function symbolGrau(n, k) {
-  const schluessel = `${n}_${k}`
-  if (maskenCache.has(schluessel)) return maskenCache.get(schluessel)
-  const q = st.symbole.svg[n].replace(/currentColor/g, '#000').replace('<svg ', `<svg width="${k}" height="${k}" `)
-  const bild = new Image()
-  bild.src = 'data:image/svg+xml;base64,' + btoa(q)
-  await bild.decode()
-  const c = document.createElement('canvas'); c.width = k; c.height = k
-  const g = c.getContext('2d')
-  g.fillStyle = '#fff'; g.fillRect(0, 0, k, k); g.drawImage(bild, 0, 0, k, k)
-  const d = g.getImageData(0, 0, k, k).data
-  let roh = ''
-  for (let i = 0; i < k * k; i++) roh += String.fromCharCode(Math.round(0.299 * d[i * 4] + 0.587 * d[i * 4 + 1] + 0.114 * d[i * 4 + 2]))
-  const b64 = btoa(roh)
-  maskenCache.set(schluessel, b64)
-  return b64
-}
 
 // Sichtbare Namen der Luas (Umbenennung 21.11.2026); unbekannte zeigen ihren Schlüssel
 const LUA_NAME = { electric: 'Electric', glider: 'Glider', heli: 'Heli', helirf: 'Heli', gas_ecu: 'Gas Engine ECU', gas_carb: 'Gas Engine Carb', jet: 'Jet' }
@@ -372,7 +346,7 @@ function flaecheZeigen() {
   })
   $('platzWeg').disabled = st.gewaehlt < 0 && st.gewaehltDeko < 0
   $('dekoWerkzeuge').hidden = !kann2()
-  for (const id of ['dekoSymbol', 'dekoText', 'dekoLinie', 'dekoRahmen']) $(id).disabled = (a.deko || []).length >= MAX_DEKO
+  for (const id of ['dekoText', 'dekoLinie', 'dekoRahmen']) $(id).disabled = (a.deko || []).length >= MAX_DEKO
   $('format2Hinweis').textContent = kann2() ? `${(a.deko || []).length} / ${MAX_DEKO} ${t('schmuckElemente')}` : t('symboleNurFormat2')
   $('zentrieren').disabled = st.gewaehlt < 0
   $('platzNeu').disabled = a.plaetze.length >= MAX_PLAETZE
@@ -436,16 +410,6 @@ function symbolUndEinheit(svg, p, farbe, einheit, zeitOderStatus, titel, th, pad
   const B = displayBreite(ansichtAktuell().breite)
   const r = Math.round(4 * B / 800)
   let x = r, da = false
-  if (p.symbol && katalog(p.symbol) && symboleAn()) {
-    const kopf = th !== undefined
-    // wie studio_symbole.lua (Electric 0.7.5): hoch = floor(th), ty = pad; Symbol bei x + rand, mittig auf der Titelzeile
-    // (ty + (hoch − kante) // 2); ist die Kante grösser als hoch, oben links (y + rand)
-    const hoch = kopf ? Math.floor(th) : 0
-    const k = kante(kopf ? kopfPx(hoch, B) : (p.symbolPx || 24), B)
-    const x0 = r, y0 = kopf && k <= hoch ? pad + Math.floor((hoch - k) / 2) : r
-    const e = svgSymbol(p.symbol, x0, y0, k, farbe)
-    if (e) { svg.appendChild(e); x = x0 + k + r; da = true }
-  }
   return { ein: da ? x : 0, amWert: !(p.einheitZeigen === false || zeitOderStatus || einheitImTitel(einheit, titel)) }
 }
 // Angaben eines Platzes für die Vorschau (Beispielwert 62 % des Bereichs)
@@ -511,11 +475,6 @@ function vorschau(p) {
     const B = displayBreite(ansichtAktuell().breite)
     const r = Math.round(4 * B / 800)
     let x = r
-    if (p.symbol && katalog(p.symbol) && symboleAn()) {
-      const k = kante(kopfPx(klein, B), B)   // 0.10.6: Symbol so hoch wie der Titeltext, auf der Titelzeile
-      const e = svgSymbol(p.symbol, r, Math.round(2 + klein / 2 - k / 2), k, farbe)
-      if (e) { svg.appendChild(e); x = r + k + r }
-    }
     if (x > r) einzug = x
   }
   txt(einzug, klein + 2, klein, titel, 'start', '#9aa1ad')
@@ -994,7 +953,6 @@ function dekoFehler(d, a) {
   const g = dekoGrenzen(d, a)
   if (d.x < 0 || d.y < 0 || d.x >= a.breite || d.y >= a.hoehe || g.x < 0 || g.y < 0 || g.x + g.b > a.breite || g.y + g.h > a.hoehe) return t('pRand')
   if (d.art === 'linie' && d.b === 0 && d.h === 0) return t('dekoLinieLeer')
-  if (d.art === 'symbol' && (!katalog(d.name) || d.px < katalog(d.name).minPx)) return t('dekoSymbolFehlt')
   if (d.art === 'text' && !d.text) return t('dekoTextLeer')
   return ''
 }
@@ -1004,11 +962,7 @@ function dekoElement(d, i, a, s) {
   const fehler = dekoFehler(d, a)
   const e = el('div', { class: `deko ${d.art}${i === st.gewaehltDeko ? ' gewaehlt' : ''}${fehler ? ' fehler' : ''}`, title: fehler || t('deko_' + d.art) })
   e.style.left = g.x * s + 'px'; e.style.top = g.y * s + 'px'; e.style.width = g.b * s + 'px'; e.style.height = g.h * s + 'px'; e.style.color = farbe
-  if (d.art === 'symbol') {
-    const q = document.createElementNS(SVG, 'svg'); q.setAttribute('viewBox', `0 0 ${g.b} ${g.h}`)
-    const sy = symboleAn() ? svgSymbol(d.name, 0, 0, g.b, farbe) : null; if (sy) q.appendChild(sy)
-    e.appendChild(q)
-  } else if (d.art === 'text') {
+  if (d.art === 'text') {
     e.textContent = d.text || ''
     e.style.fontSize = Math.max(8, d.h * 0.75 * s) + 'px'
   } else if (d.art === 'linie') {
@@ -1048,8 +1002,7 @@ function dekoNeu(art) {
   if (a.deko.length >= MAX_DEKO) return
   const f = a.breite / 800
   const x = Math.round(10 * f), y = Math.round(10 * f)
-  const d = art === 'symbol' ? { art, x, y, name: 'stern', px: 32 }
-    : art === 'text' ? { art, x, y, b: Math.round(160 * f), h: Math.round(24 * f), text: 'Text' }
+  const d = art === 'text' ? { art, x, y, b: Math.round(160 * f), h: Math.round(24 * f), text: 'Text' }
       : art === 'linie' ? { art, x, y, b: Math.round(120 * f), h: 0 }
         : { art, x, y, b: Math.round(200 * f), h: Math.round(100 * f) }
   a.deko.push(d)
@@ -1065,14 +1018,6 @@ function dekoEigenschaften(box, a, d) {
     if (e.target.value === '' || !Number.isFinite(v) || (min !== undefined && v < min)) { e.target.style.color = 'var(--fehler)'; return }
     e.target.style.color = ''; d[k] = v; neu()
   } })
-  if (d.art === 'symbol') {
-    const sSel = el('select', { onchange: (e) => { d.name = e.target.value; const k = katalog(d.name); if (d.px < k.minPx) d.px = k.minPx; eigenschaftenZeigen(); neu() } })
-    for (const k of st.symbole.katalog) sSel.appendChild(el('option', { value: k.name, text: name({ de: k.de, en: k.en }), selected: k.name === d.name }))
-    feld(t('symbol'), sSel)
-    const pSel = el('select', { onchange: (e) => { d.px = Number(e.target.value); neu() } })
-    for (const x of PX.filter((x) => x >= ((katalog(d.name) || {}).minPx || 24))) pSel.appendChild(el('option', { value: x, text: `${x} px`, selected: x === d.px }))
-    feld(t('symbolGroesse'), pSel)
-  }
   if (d.art === 'text') {
     feld(t('text'), el('input', { type: 'text', value: d.text || '', oninput: (e) => {
       let v = e.target.value
@@ -1330,14 +1275,9 @@ async function uebertragenStart() {
   st.uebertragenSeit = Date.now()
   st.uebertragenFuer = st.m
   st.modellNeuGeladen = false
-  // Masken der benutzten Symbole in der Kantenlänge dieses Displays (Format 2 §2 und §4)
+  // ab 0.11.0 keine Symbolbilder mehr
   const symbole = {}
   try {
-    const B = displayBreite(st.projekt.ansichten[0].breite)
-    for (const x of pr.symbole) {
-      symbole[`${x.name}_${x.px}.png`] = await symbolGrau(x.name, kante(x.px, B))
-      for (const k of [12, 16]) symbole[`${x.name}_${k}.png`] = await symbolGrau(x.name, kante(k, B))   // kleine Masken (0.10.6)
-    }
   } catch (e) { $('uebertragenKnopf').disabled = false; $('schritte').appendChild(el('li', { class: 'fehler', text: `${t('fehler')}: ${t('symbolRechnen')}` })); return }
   // Symbole löschen nur mit Haken und nur die angekündigten
   const symboleLoeschen = !$('symboleLoeschenZeile').hidden && $('symboleLoeschen').checked ? st.symboleAngekuendigt || [] : []
@@ -1463,7 +1403,7 @@ $('vonModellKopieren').addEventListener('click', vonModellKopieren)
 $('vonVorbereitetKopieren').addEventListener('click', vonVorbereitetKopieren)
 $('presetAnwenden').addEventListener('click', presetAnwenden)
 $('presetWahl').addEventListener('change', presetHinweis)
-for (const art of ['symbol', 'text', 'linie', 'rahmen']) $('deko' + art[0].toUpperCase() + art.slice(1)).addEventListener('click', () => dekoNeu(art))
+for (const art of ['text', 'linie', 'rahmen']) $('deko' + art[0].toUpperCase() + art.slice(1)).addEventListener('click', () => dekoNeu(art))
 
 // Ohne Funke vorbereiten: Formular
 function vorbereitenFormZeigen() {
@@ -1495,5 +1435,4 @@ document.addEventListener('keydown', (ev) => {
 })
 window.addEventListener('spracheGewechselt', () => { abstandAnzeigen(); if (st.projekt) allesZeigen(); if (!$('bereichStudio').hidden) quellenSuchen(); modellListeZeigen() })
 api.studio('beschreibungen').then((b) => { st.luas = b })
-api.studio('symbole').then((s) => { st.symbole = s })
 api.studio('gruppen').then((g) => { st.gruppen = g })

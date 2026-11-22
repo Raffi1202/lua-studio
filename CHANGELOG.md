@@ -2,6 +2,14 @@
 
 New entries in English. Older entries in German.
 
+## 0.11.1 (22 Nov 2026)
+
+Clean-up after removing the symbols:
+- Templates «with symbols» of Heli and Jet removed (only «standard» is offered).
+- Dead code removed: symbol editor for decoration, symbol drawing in the preview, symbol images (`src/symbole/`, 36 SVG files and the Tabler Icons licence; no icons are shipped any more), unused texts.
+- README (EN/DE): symbols marked as removed from 0.11.0.
+- Reference `studio_symbole.lua` (format 2) as in Electric 0.8.1 (decoration only).
+
 ## 0.11.0 (22 Nov 2026)
 
 User decision: **symbols are removed completely.**

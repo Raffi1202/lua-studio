@@ -295,8 +295,8 @@ test('Einstellungen (0.10.2): nur Abweichungen vom Werkwert; frischer Glider nic
 test('«fett» gibt es nicht mehr (0.10.4): Vorlagen von Heli und Jet ohne grosse Einheit', () => {
   for (const lua of ['heli', 'jet']) {
     const b = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'src', 'luas', `${lua}.json`), 'utf8'))
-    const roh = JSON.stringify(b.vorlagen)
-    assert.ok(roh.includes('"fett"'), `${lua}: Beschreibung enthält noch «fett» (Testvoraussetzung)`)
+    // ab 0.11.1 ist die Vorlage «mit_symbolen» (mit «fett») entfernt
+    assert.ok(!b.vorlagen.some((v) => v.s === 'mit_symbolen'), `${lua}: keine Vorlage «mit_symbolen»`)
     const v = JSON.stringify(S.presets(b))
     assert.ok(!v.includes('"fett"'), `${lua}: Vorlage ohne «fett»`)
   }

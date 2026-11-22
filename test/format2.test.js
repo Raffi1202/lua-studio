@@ -24,11 +24,10 @@ function projekt(plaetze, deko) {
 const platz = (extra = {}) => ({ x: 4, y: 4, b: 200, h: 100, w: 'lua:akku_proz', darstellung: 'zahl', ...extra })
 const meta2 = { studioVersion: '0.3.0', funke: 'X18RS', modell: 'Test', luaVersion: '1.0.0', formate: [1, 2] }
 
-test('Symbolsatz: 34 Symbole mit SVG-Quelle, Schlepp erst ab 48 px, keine Einheit-Symbole', () => {
+test('Symbolsatz (nur noch zum Verwerfen alter Dateien, ab 0.11.0 ohne SVG): 34 Namen, Schlepp erst ab 48 px, keine Einheit-Symbole', () => {
   assert.strictEqual(Y.KATALOG.length, 34)
   for (const k of Y.KATALOG) {
     assert.match(k.name, Y.NAME)
-    assert.ok(fs.existsSync(path.join(__dirname, '..', 'src', 'symbole', 'svg', `${k.name}.svg`)), k.name)
   }
   assert.strictEqual(Y.imKatalog('schlepp').minPx, 48)
   for (const n of ['spannung', 'strom', 'verbrauch', 'energie', 'drehzahl', 'gas', 'regler', 'bec', 'pumpe', 'governor', 'rotor']) assert.strictEqual(Y.imKatalog(n), null, n)

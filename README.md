@@ -45,7 +45,7 @@ A program for Mac and Windows that belongs to our FrSky Ethos Lua widgets (Elect
 | [Glider](https://github.com/Raffi1202/glider-lua) 0.6.0 | format 1, «also when motor off» |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.12.0 / 0.12.0 | format 1, «also when motor off» |
 
-Luas with format 2 also get symbols, bold units, decoration and templates; for format 1 the studio writes the file without them.
+Luas with format 2 also get decoration and templates; for format 1 the studio writes the file without them. Symbols and bold units are **removed from 0.11.0**: old projects load without them (one-time note), old symbol images on the radio are offered for deletion.
 
 ## Known limitations
 
@@ -56,7 +56,7 @@ Luas with format 2 also get symbols, bold units, decoration and templates; for f
 
 ## License
 
-GPL-3.0-or-later, see [LICENSE](LICENSE). Some symbols are based on Tabler Icons (MIT, © Paweł Kuna), list in [src/symbole/HERKUNFT.md](src/symbole/HERKUNFT.md).
+GPL-3.0-or-later, see [LICENSE](LICENSE).
 
 ## Related projects
 

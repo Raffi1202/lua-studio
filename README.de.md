@@ -59,12 +59,12 @@ prüft die Datei, sichert die alte, schreibt, liest zurück und vergleicht. Das 
 (Lua-Studio-Format v1). Siehe Anleitung Kapitel 6.
 
 **Ab 0.3.0** (Lua-Studio-Format 2):
-- Symbole je Kästchen, fette Einheit, Schmuck (Symbole, Texte, Linien, Rahmen);
+- Schmuck (Texte, Linien, Rahmen), Einheit am Wert oder keine; Symbole und fette Einheit **ab 0.11.0 entfernt**;
 - Presets der Luas;
 - ein Grössenwächter mit Ampel;
 - **ohne Funke vorbereiten**: Modell anlegen, gestalten und als Datei auf SD-Karte oder in einen Ordner exportieren.
 
-Symbole und Schmuck braucht ein Lua, das Format 2 kann. Für ältere Luas schreibt das Studio Format 1 ohne sie.
+Schmuck braucht ein Lua, das Format 2 kann. Für ältere Luas schreibt das Studio Format 1 ohne ihn. Symbole sind ab 0.11.0 entfernt: alte Projekte werden ohne sie geladen (einmaliger Hinweis), alte Symbolbilder auf der Funke bietet Lua-Studio zum Löschen an.
 
 ## Bekannte Grenzen
 
@@ -85,7 +85,7 @@ Symbole und Schmuck braucht ein Lua, das Format 2 kann. Für ältere Luas schrei
 
 ## Lizenz
 
-GPL-3.0-or-later, siehe [LICENSE](LICENSE). Symbole teils nach Tabler Icons (MIT, © Paweł Kuna), Liste in [src/symbole/HERKUNFT.md](src/symbole/HERKUNFT.md).
+GPL-3.0-or-later, siehe [LICENSE](LICENSE).
 
 ## Weitere Projekte
 

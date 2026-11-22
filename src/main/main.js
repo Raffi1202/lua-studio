@@ -409,14 +409,6 @@ function symbolePuffer(roh) {
 }
 
 // Symbolsatz: Katalog und SVG-Quellen (die Oberfläche rechnet daraus die Masken)
-let symbolCache = null
-ipcMain.handle('studio:symbole', () => {
-  if (!symbolCache) {
-    const o = path.join(__dirname, '..', 'symbole', 'svg')
-    symbolCache = { katalog: Y.KATALOG, svg: Object.fromEntries(Y.KATALOG.map((k) => [k.name, fs.readFileSync(path.join(o, `${k.name}.svg`), 'utf8')])) }
-  }
-  return symbolCache
-})
 ipcMain.handle('studio:presets', (_e, lua) => S.presets(beschreibungen()[lua]))
 ipcMain.handle('studio:presetAnwenden', (_e, { lua, s, projekt, fenster }) => {
   const p = S.presets(beschreibungen()[lua]).find((x) => x.s === s)
