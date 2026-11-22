@@ -2,6 +2,14 @@
 
 New entries in English. Older entries in German.
 
+## 0.10.1 (22 Nov 2026)
+
+Findings from the transmitter test X18RS under Windows:
+- **Quick test right after transferring:** the Lua reads the studio file only when the widget page is visible and no checklist (failsafe) is open. Lua-Studio now repeats the quick test up to 4 times every 8 s and then says clearly «show the widget page, then repeat».
+- **«No sensors»:** the warning names the field (`sensoren` of the info file) and the likely cause on the Lua side (sensor list asked with a table instead of the number, format 2 §7.3).
+- **Error log:** studio folders are named with their location («intern /scripts/studio», «SD:/…», «RADIO:/…»); a folder that cannot be read shows «not readable (status …)», an empty folder is fine.
+- **Box editor:** fields have a fixed id/name (`eig-wert`, `eig-darstellung`, …) and an aria label, for accessibility and automation; new control command `waehle {index}`. Confirmations are answered automatically when a command runs over the control interface.
+
 ## 0.10.0 (22 Nov 2026)
 
 - **Control interface for tests and automation** (off by default; only with `--steuerung` or `LUA_STUDIO_STEUERUNG=1`): 127.0.0.1 only, random port, random key per start, `steuerung.json` readable only by the user and deleted on quit. State as JSON, commands through the same functions as the user interface (connect, models, prepare, templates, arrange, boxes, limits, transfer, «Save as file» and support ZIP with a path instead of a dialog, quick test, language, tabs), preview as data (PNG only on request), error log from a line number.

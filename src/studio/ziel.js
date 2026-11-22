@@ -8,6 +8,8 @@ const path = require('path')
 
 // Mögliche Studio-Ordner auf der Funke (SD-Karte, interner Speicher)
 const KANDIDATEN = ['SD:/scripts/studio', '/scripts/studio', 'RADIO:/scripts/studio']
+// Ort für Protokoll und Anzeige: /scripts/studio ohne Präfix ist der Skript-Speicherort der Funke (intern bzw. eingestellt)
+const ortName = (o) => (o.startsWith('/') ? `intern ${o}` : o)
 
 function funkenZiel(funke, lua) {
   let basis = null
@@ -21,7 +23,7 @@ function funkenZiel(funke, lua) {
     for (const o of KANDIDATEN) {
       let r = null
       try { r = await funke.dateien(o) } catch (e) { r = null; diag.push(`${o}: Fehler ${e && e.message}`) }
-      if (r) diag.push(`${o}: Status ${r.status}, ${r.status === 0 ? r.liste.length : 0} Einträge${r.status === 0 ? ', Info: ' + (r.liste.filter((e) => !e.ordner && e.name.endsWith('.info.json')).map((e) => e.name).join(' ') || '-') : ''}`)
+      if (r) diag.push(`${ortName(o)}: ${r.status === 0 ? 'ok' : `nicht lesbar (Status ${r.status})`}, ${r.status === 0 ? r.liste.length : 0} Einträge${r.status === 0 ? ', Info: ' + (r.liste.filter((e) => !e.ordner && e.name.endsWith('.info.json')).map((e) => e.name).join(' ') || '-') : ''}`)
       if (r && r.status === 0 && r.liste.some((e) => !e.ordner && e.name.endsWith(`.${lua}.info.json`))) { basis = o; return basis }
       if (r && r.status === 0) gefunden[o] = r.liste.filter((e) => !e.ordner && /\.(info\.json|lua)$/.test(e.name)).length
     }
@@ -136,4 +138,4 @@ function laufwerkeSuchen() {
   })
 }
 
-module.exports = { funkenZiel, ordnerZiel, laufwerkeSuchen }
+module.exports = { ortName, funkenZiel, ordnerZiel, laufwerkeSuchen }

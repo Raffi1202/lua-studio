@@ -87,6 +87,15 @@ async function symbolGrau(n, k) {
 // Sichtbare Namen der Luas (Umbenennung 21.11.2026); unbekannte zeigen ihren Schlüssel
 const LUA_NAME = { electric: 'Electric', glider: 'Glider', heli: 'Heli', helirf: 'Heli', gas_ecu: 'Gas Engine ECU', gas_carb: 'Gas Engine Carb', jet: 'Jet' }
 function luaName(k) { return LUA_NAME[k] || k }
+// Eigenschaften-Felder: feste Kennung aus dem Textschlüssel der Beschriftung (unabhängig von der Sprache), für Bedienhilfen
+// und Automatisierung: id «eig-<schlüssel>», name gleich, aria-label = Beschriftung
+function feldKennung(beschriftung, eingabe) {
+  if (!eingabe || !eingabe.setAttribute) return
+  const k = Object.keys(T).find((x) => T[x] === beschriftung) || String(beschriftung).toLowerCase().replace(/[^a-z0-9]+/g, '-')
+  if (!eingabe.id) eingabe.id = `eig-${k}`
+  if (!eingabe.getAttribute('name')) eingabe.setAttribute('name', `eig-${k}`)
+  eingabe.setAttribute('aria-label', beschriftung)
+}
 // Mindestgrösse einer Darstellung bei 800 px Breite, auch für Darstellungen des Luas («darstellungenExtra»)
 // Darstellungen des Luas, die das Lua auf der Funke kennt (Version aus der Info-Datei; vorbereitete Modelle: Version der Beschreibung)
 function extraErlaubt() {
@@ -688,7 +697,7 @@ function eigenschaftenZeigen() {
   const p = a && a.plaetze[st.gewaehlt]
   if (!p) { box.appendChild(el('p', { class: 'leise klein', text: t('platzWaehlen') })); return }
   const neu = () => { flaecheZeigen(); geaendert() }
-  const feld = (beschriftung, eingabe) => { box.appendChild(el('label', { text: beschriftung })); box.appendChild(eingabe) }
+  const feld = (beschriftung, eingabe) => { feldKennung(beschriftung, eingabe); box.appendChild(el('label', { text: beschriftung, for: eingabe.id || undefined })); box.appendChild(eingabe) }
 
   const wSel = el('select', { onchange: (e) => { p.w = e.target.value; if (!erlaubteDarstellungen(p.w).includes(p.darstellung || 'zahl')) p.darstellung = erlaubteDarstellungen(p.w)[0]; eigenschaftenZeigen(); neu() } })
   for (const w of werteListe()) wSel.appendChild(el('option', { value: w.k, text: w.text, selected: w.k === p.w }))
@@ -1044,7 +1053,7 @@ function dekoNeu(art) {
 }
 function dekoEigenschaften(box, a, d) {
   const neu = () => { flaecheZeigen(); geaendert() }
-  const feld = (beschriftung, eingabe) => { box.appendChild(el('label', { text: beschriftung })); box.appendChild(eingabe) }
+  const feld = (beschriftung, eingabe) => { feldKennung(beschriftung, eingabe); box.appendChild(el('label', { text: beschriftung, for: eingabe.id || undefined })); box.appendChild(eingabe) }
   box.appendChild(el('p', { class: 'klein', text: t('deko_' + d.art) }))
   const ganz = (k, min) => el('input', { type: 'number', step: 1, value: d[k], oninput: (e) => {
     const v = Math.round(Number(e.target.value))
@@ -1334,15 +1343,17 @@ async function uebertragenStart() {
     if (!st.m.vorbereitet) modelleLaden().then(() => uebertragenZeigen())
     // Bei verbundener Funke nach dem Neuladen des Modells automatisch prüfen (das Lua schreibt seine Info-Datei neu)
     // nur wenn die Funke das Modell neu geladen hat; sonst liest das Lua die neue Datei erst nach einem Modellwechsel
-    if (ziel.art === 'funke' && st.modellNeuGeladen) setTimeout(() => schnelltest(pr.format), 6000)
+    if (ziel.art === 'funke' && st.modellNeuGeladen) setTimeout(() => schnelltest(pr.format, 4), 6000)
     else if (ziel.art === 'funke') $('schnelltestListe').appendChild(el('li', { class: 'warn', text: t('schnelltestNachWechsel') }))
   }
 }
 
 // ---------- Funken-Schnelltest ----------
-async function schnelltest(format) {
+// wiederholen: so oft erneut lesen, solange das Lua die neue Datei noch nicht gelesen hat (Widget-Seite nicht sichtbar o. ä.)
+async function schnelltest(format, wiederholen = 0) {
   const ziel = zielSpec()
   if (!ziel || !st.m || st.m.vorbereitet) return
+  const m0 = st.m
   const ul = $('schnelltestListe')
   ul.textContent = ''
   ul.appendChild(el('li', { text: t('lade') }))
@@ -1356,6 +1367,12 @@ async function schnelltest(format) {
   ul.textContent = ''
   if (!r.ok && !r.punkte) { ul.appendChild(el('li', { class: 'fehler', text: fehlerText(r.fehler) })); return }
   for (const x of r.punkte) ul.appendChild(el('li', { class: x.stufe === 'gut' ? 'gut' : x.stufe === 'fehler' ? 'fehler' : 'warn', text: `${t('st_' + x.k)}${x.wert ? ': ' + x.wert : ''}` }))
+  if (r.punkte.some((x) => x.k === 'infoAlt')) {
+    if (wiederholen > 0) {
+      ul.appendChild(el('li', { class: 'warn', text: t('st_wartetWidget').replace('{n}', wiederholen) }))
+      setTimeout(() => { if (st.m === m0) schnelltest(format, wiederholen - 1) }, 8000)
+    } else ul.appendChild(el('li', { class: 'warn', text: t('st_widgetZeigen') }))
+  }
   ul.appendChild(el('li', { class: !r.ok ? 'fehler' : r.unsicher ? 'warn' : 'gut', text: t(!r.ok ? 'schnelltestFehler' : r.unsicher ? 'schnelltestUnsicher' : 'schnelltestOk') }))
 }
 

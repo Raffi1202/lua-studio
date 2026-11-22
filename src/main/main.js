@@ -305,7 +305,7 @@ ipcMain.handle('studio:modelle', async (_e, spec) => {
     for (const lua of Object.keys(luas).length ? Object.keys(luas) : ['studio']) {
       const ziel = zielAus(spec, lua)
       // Jeden Studio-Ordner nur einmal lesen (mehrere Luas teilen sich einen Ordner)
-      if (spec.art === 'funke') { const b = await ziel.basis(); P.info('modelle', `${lua}: Studio-Ordner ${b} (${ziel.diagnose().join(' | ')})`); if (gelesen.has(b)) continue; gelesen.add(b) }
+      if (spec.art === 'funke') { const b = await ziel.basis(); P.info('modelle', `${lua}: Studio-Ordner ${require('../studio/ziel').ortName(b)} (${ziel.diagnose().join(' | ')})`); if (gelesen.has(b)) continue; gelesen.add(b) }
       for (const m0 of await S.modelleLesen(ziel)) {
         // Info-Datei unter altem Lua-Namen (Lua auf der Funke noch nicht umbenannt): dem neuen Lua zuordnen, Hinweis «aktualisieren»
         const neu = !luas[m0.lua] && S.ALIAS[m0.lua] && luas[S.ALIAS[m0.lua]] ? S.ALIAS[m0.lua] : null

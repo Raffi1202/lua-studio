@@ -244,8 +244,12 @@ test('Funke (0.8.3): Diagnose nennt durchsuchte Ordner, Status und Info-Dateien'
   const z = funkenZiel(funke, 'gas_carb')
   assert.strictEqual(await z.basis(), '/scripts/studio')
   const d = z.diagnose().join('\n')
-  assert.match(d, /SD:\/scripts\/studio: Status -2/)
-  assert.match(d, /\/scripts\/studio: Status 0, 2 Einträge, Info: A\.gas_carb\.info\.json/)
+  assert.match(d, /SD:\/scripts\/studio: nicht lesbar \(Status -2\)/)
+  assert.match(d, /intern \/scripts\/studio: ok, 2 Einträge, Info: A\.gas_carb\.info\.json/)
+  // leerer Ordner ist kein Fehler
+  const leer = funkenZiel({ dateien: async () => ({ status: 0, liste: [] }) }, 'jet')
+  await leer.basis()
+  assert.ok(leer.diagnose().every((z) => !/nicht lesbar/.test(z) || /SD:\/scripts:/.test(z)))
 })
 
 test('Funke (0.9.0): ohne Info-Datei und ohne Lua-Ordner auf SD gilt der erste Ordner mit Studio-Dateien (Windows-Test 22.11.)', async () => {

@@ -105,6 +105,12 @@
       if (abstand !== undefined) document.getElementById('abstandG').value = String(abstand)
       await anordnenStart(); return { meldung: text('anordnungMeldung'), plaetze: ansichtAktuell().plaetze.map(platzDaten) }
     },
+    // Kästchen wählen wie ein Klick; gibt die Kennungen der Eigenschaften-Felder zurück
+    async waehle({ index }) {
+      if (!ansichtAktuell().plaetze[index]) throw new Error('platz')
+      st.gewaehlt = index; st.gewaehltDeko = -1; flaecheZeigen(); eigenschaftenZeigen()
+      return { felder: [...document.querySelectorAll('[id^="eig-"]')].map((e) => ({ id: e.id, name: e.getAttribute('name'), label: e.getAttribute('aria-label'), art: e.tagName.toLowerCase() })) }
+    },
     async platzNeu() { platzNeu(); return { anzahl: ansichtAktuell().plaetze.length } },
     async platzWeg({ index }) { st.gewaehlt = index; st.gewaehltDeko = -1; platzWeg(); return { anzahl: ansichtAktuell().plaetze.length } },
     async platz({ index, ...werte }) {
