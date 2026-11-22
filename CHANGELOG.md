@@ -2,6 +2,10 @@
 
 New entries in English. Older entries in German.
 
+## 0.10.3 (22 Nov 2026)
+
+- **Glider 0.6.2 description:** 45 settings (Glider 0.6.0 listed 51). Glider models now stay below the size guard even when every setting is changed.
+
 ## 0.10.2 (22 Nov 2026)
 
 - **Settings in the studio file:** only values that differ from the factory value of the Lua are written (the Lua uses its factory value for missing ones). A freshly prepared Glider model (Glider 0.6.0 lists 51 settings) is no longer blocked by the size guard («entries per list 51 / 48»); more than 48 changed settings are still blocked. Files for the other Luas only lose the unchanged settings.
