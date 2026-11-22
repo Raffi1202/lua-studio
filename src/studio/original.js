@@ -18,6 +18,8 @@ const FARBEN = {
   // Gas Engine ECU/Carb: Farben wie im Lua ohne Studio-Datei
   gas_ecu: {},
   gas_carb: {},
+  // DLG 0.2.0: Farben wie im Lua (Werte hellblau)
+  dlg: {},
   heli: { 'lua:akku_proz': GRUEN, 'lua:drehzahl': HBLAU, 'lua:strom': BLAU, 'lua:reglertemp': GRUEN, 'lua:zelle': GRUEN, 'lua:bec': W,
     'lua:verbraucht': W, 'lua:spannung': W, 'lua:rssi': GRUEN, 'lua:leistung': W, 'lua:fluege': W },
 }
@@ -38,6 +40,10 @@ const HINWEIS = {
     de: 'Wie die eingebaute Seite 1 von Jet. Nicht einstellbar über die Studio-Datei: Fusszeilen der eingebauten Anzeige, die Farbstreifen oben an den Kästchen und Titel, die mit der Sprache der Funke wechseln. Seite 2 (Turbinen) und 3 (Flugliste) bleiben wie im Lua.',
     en: 'Like the built-in page 1 of Jet. Not adjustable via the studio file: footers of the built-in display, the colour stripes on top of the boxes and titles that follow the language of the radio. Pages 2 (turbines) and 3 (flight list) stay as in the Lua.',
   },
+  dlg: {
+    de: 'Seite FLUG von DLG mit dem Phasenband oben, wie die Vorlage «Heutiges Aussehen» des Luas. Nicht einstellbar über die Studio-Datei: Statusleiste mit Meldezeile oben und die Seitentasten FLUG / F3K / STARTS unten. Die Seiten F3K und STARTS bleiben wie im Lua.',
+    en: 'FLIGHT page of DLG with the flight mode band on top, like the «Current look» template of the Lua. Not adjustable via the studio file: status bar with message line on top and the page buttons FLIGHT / F3K / LAUNCHES at the bottom. The F3K and LAUNCHES pages stay as in the Lua.',
+  },
   electric: {
     de: 'Wie die eingebaute Anzeige von Electric. Nicht einstellbar über die Studio-Datei: Fusszeilen wie «6S 23,1V», «bei 46 A», «0,6 Wh», der Knopf «AUF 0», die Farbstreifen oben an den Kästchen und Titel, die mit der Sprache der Funke wechseln.',
     en: 'Like the built-in display of Electric. Not adjustable via the studio file: footers like «6S 23.1V», «at 46 A», «0.6 Wh», the «AUF 0» button, the colour stripes on top of the boxes and titles that follow the language of the radio.',
@@ -54,6 +60,32 @@ const UMRECHNEN = [
 // Höhe des reservierten Bands oben (Kopfzeile des Luas) für eine Fenstergrösse
 function bandOben(beschreibung, b, h) {
   return Math.max(0, ...((beschreibung.reserviert || []).filter((r) => r.breite === b && r.hoehe === h && r.y <= 0 && r.x <= 0 && r.b >= b).map((r) => r.y + r.h)))
+}
+
+// DLG zeichnet Statusleiste/Meldezeile oben und Seitentasten unten in jeder Grösse selbst (zeichnen.lua: Z.layout, Z.tasten).
+// Für umgerechnete Grössen ohne «reserviert» in der Beschreibung: Plätze in den freien Bereich dazwischen schieben bzw. kürzen.
+function dlgRaender(a) {
+  const s = Math.min(a.breite / 800, a.hoehe / 480), gp = Math.floor(6 * s)
+  const oben = Math.floor(44 * s) + Math.floor(6 * s) + Math.floor(26 * s) + gp
+  const unten = a.hoehe - gp - Math.max(40 * s, 32) - gp
+  for (const p of a.plaetze) {
+    if (p.y < oben) { p.h -= oben - p.y; p.y = oben }
+    if (p.y + p.h > unten) p.h = Math.floor(unten) - p.y
+  }
+}
+// DLG: das Phasenband ganz oben hat nichts über sich; fehlende Mindesthöhe von den Plätzen direkt darunter nehmen
+function mindestHoeheUnten(a) {
+  const f = a.breite / 800
+  const minH = (p) => Math.round((MINDEST[p.darstellung || 'zahl'] || MINDEST.zahl)[1] * f)
+  for (const p of a.plaetze) {
+    const fehlt = minH(p) - p.h
+    if (fehlt <= 0) continue
+    const unter = a.plaetze.filter((q) => q !== p && q.x < p.x + p.b && p.x < q.x + q.b && q.y >= p.y + p.h && q.y - (p.y + p.h) <= 12)
+    if (!unter.length || unter.some((q) => q.h - fehlt < minH(q))) continue
+    for (const q of unter) { q.y += fehlt; q.h -= fehlt }
+    p.h += fehlt
+  }
+  return a
 }
 
 // Mindestgrössen bei 800 px Breite (wie die Prüfung der Oberfläche)
@@ -143,9 +175,11 @@ function original(beschreibung) {
       if (ansichten.some((a) => a.breite === b && a.hoehe === h)) continue
       const neu = u.band ? skaliert(q, b, h, bandOben(beschreibung, q.breite, q.hoehe), bandOben(beschreibung, b, h)) : skaliert(q, b, h)
       festesFeldAlsPlatz(beschreibung, q, neu)
+      if (beschreibung.lua === 'dlg') dlgRaender(neu)
       ansichten.push(mindestHoehe(neu))
     }
   }
+  if (beschreibung.lua === 'dlg') ansichten.forEach(mindestHoeheUnten)
   return { s: 'original', name: { de: 'Original (wie das Lua)', en: 'Original (like the Lua)' },
     hinweis: HINWEIS[beschreibung.lua] || { de: 'Wie die eingebaute Anzeige des Luas, soweit über die Studio-Datei einstellbar.', en: 'Like the built-in display of the Lua, as far as the studio file allows.' }, ansichten }
 }

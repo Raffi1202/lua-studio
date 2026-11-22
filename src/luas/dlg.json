@@ -1,0 +1,2191 @@
+{
+ "lua": "dlg",
+ "luaVersion": "0.2.0",
+ "formate": [
+  1,
+  2
+ ],
+ "hinweis": {
+  "de": "DLG zeichnet oben die Statusleiste mit der Meldezeile und unten die Seitentasten FLUG / F3K / STARTS selbst. Die Ansicht ersetzt nur die Seite FLUG; F3K und STARTS bleiben fest. Grenzwerte gelten je Wert, auch wenn er auf keinem Platz steht. Symbole gibt es nicht.",
+  "en": "DLG draws the status bar with the message line at the top and the page buttons FLIGHT / F3K / LAUNCHES at the bottom itself. The view replaces the FLIGHT page only; F3K and LAUNCHES stay fixed. Limits apply per value, even if it is on no field. There are no symbols."
+ },
+ "reserviert": [
+  {
+   "breite": 800,
+   "hoehe": 480,
+   "x": 0,
+   "y": 0,
+   "b": 800,
+   "h": 82,
+   "name": {
+    "de": "Statusleiste und Meldezeile",
+    "en": "Status bar and message line"
+   }
+  },
+  {
+   "breite": 800,
+   "hoehe": 480,
+   "x": 0,
+   "y": 428,
+   "b": 800,
+   "h": 52,
+   "name": {
+    "de": "Seitentasten",
+    "en": "Page buttons"
+   }
+  },
+  {
+   "breite": 784,
+   "hoehe": 316,
+   "x": 0,
+   "y": 0,
+   "b": 784,
+   "h": 51,
+   "name": {
+    "de": "Statusleiste und Meldezeile",
+    "en": "Status bar and message line"
+   }
+  },
+  {
+   "breite": 784,
+   "hoehe": 316,
+   "x": 0,
+   "y": 278,
+   "b": 784,
+   "h": 38,
+   "name": {
+    "de": "Seitentasten",
+    "en": "Page buttons"
+   }
+  }
+ ],
+ "werte": [
+  {
+   "s": "flight_time",
+   "name": {
+    "de": "Flugzeit",
+    "en": "Flight time"
+   },
+   "einheit": "s",
+   "stellen": 0,
+   "min": 0,
+   "max": 3600,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "zeit": true
+  },
+  {
+   "s": "launch_height",
+   "name": {
+    "de": "Wurfhöhe",
+    "en": "Launch height"
+   },
+   "einheit": "m",
+   "stellen": 0,
+   "min": 0,
+   "max": 300,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "hinweis": {
+    "de": "Während des Wurfs live, danach die Wurfhöhe des Flugs bzw. des letzten Starts.",
+    "en": "Live during the launch, then the launch height of the flight or the last launch."
+   }
+  },
+  {
+   "s": "best",
+   "name": {
+    "de": "Bestwert",
+    "en": "Best launch"
+   },
+   "einheit": "m",
+   "stellen": 0,
+   "min": 0,
+   "max": 300,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "hinweis": {
+    "de": "Höchste Wurfhöhe der Startliste.",
+    "en": "Highest launch height in the launch list."
+   }
+  },
+  {
+   "s": "altitude",
+   "name": {
+    "de": "Höhe",
+    "en": "Altitude"
+   },
+   "einheit": "m",
+   "stellen": 0,
+   "min": 0,
+   "max": 500,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "ueber",
+   "ansage": true
+  },
+  {
+   "s": "vario",
+   "name": {
+    "de": "Vario",
+    "en": "Vario"
+   },
+   "einheit": "m/s",
+   "stellen": 1,
+   "min": -10,
+   "max": 10,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "rx_battery",
+   "name": {
+    "de": "Empfänger-Akku",
+    "en": "Receiver battery"
+   },
+   "einheit": "V",
+   "stellen": 1,
+   "min": 0,
+   "max": 10,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "unter",
+   "ansage": true
+  },
+  {
+   "s": "signal",
+   "name": {
+    "de": "Empfang",
+    "en": "Signal"
+   },
+   "einheit": "%",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "grenzeRichtung": "unter",
+   "ansage": true
+  },
+  {
+   "s": "flight_phase",
+   "name": {
+    "de": "Flugphase",
+    "en": "Flight mode"
+   },
+   "darstellungen": [
+    "status"
+   ],
+   "hinweis": {
+    "de": "Name der Ethos-Flugphase in ihrer Farbe aus dem Menü.",
+    "en": "Name of the Ethos flight mode in its colour from the menu."
+   }
+  },
+  {
+   "s": "f3k_working_time",
+   "name": {
+    "de": "F3K-Arbeitszeit",
+    "en": "F3K working time"
+   },
+   "einheit": "s",
+   "stellen": 0,
+   "min": 0,
+   "max": 900,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "zeit": true,
+   "hinweis": {
+    "de": "Restliche Arbeitszeit der F3K-Runde. Antippen öffnet die Seite F3K.",
+    "en": "Remaining working time of the F3K round. Tap to open the F3K page."
+   }
+  },
+  {
+   "s": "launches",
+   "name": {
+    "de": "Starts",
+    "en": "Launches"
+   },
+   "einheit": "",
+   "stellen": 0,
+   "min": 0,
+   "max": 50,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ],
+   "hinweis": {
+    "de": "Anzahl Starts in der Liste. Antippen öffnet die Seite STARTS.",
+    "en": "Number of launches in the list. Tap to open the LAUNCHES page."
+   }
+  }
+ ],
+ "einstellungen": [
+  {
+   "s": "start_art",
+   "art": "w",
+   "name": {
+    "de": "Start erkennen",
+    "en": "Detect launch"
+   },
+   "werk": 1,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "automatisch",
+      "en": "automatic"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Schalter",
+      "en": "switch"
+     }
+    }
+   ]
+  },
+  {
+   "s": "wurf_v",
+   "art": "z",
+   "name": {
+    "de": "Wurf ab Steigen",
+    "en": "Launch from climb"
+   },
+   "werk": 4.0,
+   "min": 1.0,
+   "max": 20.0,
+   "stellen": 1,
+   "einheit": "m/s"
+  },
+  {
+   "s": "land_art",
+   "art": "w",
+   "name": {
+    "de": "Landung erkennen",
+    "en": "Detect landing"
+   },
+   "werk": 1,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "automatisch",
+      "en": "automatic"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Schalter",
+      "en": "switch"
+     }
+    }
+   ]
+  },
+  {
+   "s": "end_h",
+   "art": "z",
+   "name": {
+    "de": "Landung unter Höhe",
+    "en": "Landing below alt."
+   },
+   "werk": 2,
+   "min": 1,
+   "max": 20,
+   "stellen": 0,
+   "einheit": "m"
+  },
+  {
+   "s": "wurf_ende",
+   "art": "w",
+   "name": {
+    "de": "Wurf endet bei",
+    "en": "Launch ends at"
+   },
+   "werk": 1,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "automatisch",
+      "en": "automatic"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Schalter aus",
+      "en": "switch off"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Flugphase verlassen",
+      "en": "leaving flight mode"
+     }
+    }
+   ]
+  },
+  {
+   "s": "wurf_phase",
+   "art": "z",
+   "name": {
+    "de": "Flugphase Nr.",
+    "en": "Flight mode no."
+   },
+   "werk": 2,
+   "min": 1,
+   "max": 8,
+   "stellen": 0,
+   "einheit": ""
+  },
+  {
+   "s": "aufgabe",
+   "art": "w",
+   "name": {
+    "de": "Aufgabe",
+    "en": "Task"
+   },
+   "werk": 1,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "A 7 min",
+      "en": "A 7 min"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "A 10 min",
+      "en": "A 10 min"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "B 10 min",
+      "en": "B 10 min"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "B 7 min",
+      "en": "B 7 min"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "C",
+      "en": "C"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "D",
+      "en": "D"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "E 10 min",
+      "en": "E 10 min"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "E 15 min",
+      "en": "E 15 min"
+     }
+    },
+    {
+     "wert": 9,
+     "name": {
+      "de": "F",
+      "en": "F"
+     }
+    },
+    {
+     "wert": 10,
+     "name": {
+      "de": "G",
+      "en": "G"
+     }
+    },
+    {
+     "wert": 11,
+     "name": {
+      "de": "H",
+      "en": "H"
+     }
+    },
+    {
+     "wert": 12,
+     "name": {
+      "de": "I",
+      "en": "I"
+     }
+    },
+    {
+     "wert": 13,
+     "name": {
+      "de": "J",
+      "en": "J"
+     }
+    },
+    {
+     "wert": 14,
+     "name": {
+      "de": "K",
+      "en": "K"
+     }
+    },
+    {
+     "wert": 15,
+     "name": {
+      "de": "L",
+      "en": "L"
+     }
+    },
+    {
+     "wert": 16,
+     "name": {
+      "de": "M",
+      "en": "M"
+     }
+    },
+    {
+     "wert": 17,
+     "name": {
+      "de": "N",
+      "en": "N"
+     }
+    }
+   ]
+  },
+  {
+   "s": "poker_ziel",
+   "art": "z",
+   "name": {
+    "de": "Poker Zielzeit",
+    "en": "Poker target time"
+   },
+   "werk": 60,
+   "min": 5,
+   "max": 900,
+   "stellen": 0,
+   "einheit": "s"
+  },
+  {
+   "s": "ans_az",
+   "art": "b",
+   "name": {
+    "de": "Arbeitszeit ansagen",
+    "en": "Announce working time"
+   },
+   "werk": true
+  },
+  {
+   "s": "ans_wurf",
+   "art": "b",
+   "name": {
+    "de": "Wurfhöhe ansagen",
+    "en": "Announce launch height"
+   },
+   "werk": true
+  },
+  {
+   "s": "ans_phase",
+   "art": "b",
+   "name": {
+    "de": "Phasenwechsel ansagen",
+    "en": "Announce flight mode"
+   },
+   "werk": true
+  },
+  {
+   "s": "ans_flug",
+   "art": "b",
+   "name": {
+    "de": "Flugzeit nach Landung",
+    "en": "Flight time on landing"
+   },
+   "werk": true
+  },
+  {
+   "s": "ansage",
+   "art": "b",
+   "name": {
+    "de": "Ton und Ansage bei Alarm",
+    "en": "Sound and voice on alarm"
+   },
+   "werk": true
+  },
+  {
+   "s": "warn_ansage",
+   "art": "b",
+   "name": {
+    "de": "Warnung auch ansagen",
+    "en": "Announce warnings too"
+   },
+   "werk": false
+  },
+  {
+   "s": "zahl",
+   "art": "b",
+   "name": {
+    "de": "Wert mit ansagen",
+    "en": "Announce value"
+   },
+   "werk": true
+  },
+  {
+   "s": "vibration",
+   "art": "b",
+   "name": {
+    "de": "Vibration bei Alarm",
+    "en": "Vibration on alarm"
+   },
+   "werk": true
+  },
+  {
+   "s": "pause",
+   "art": "z",
+   "name": {
+    "de": "Wiederholung alle",
+    "en": "Repeat every"
+   },
+   "werk": 30,
+   "min": 5,
+   "max": 600,
+   "stellen": 0,
+   "einheit": "s"
+  },
+  {
+   "s": "fp1",
+   "art": "w",
+   "name": {
+    "de": "Phase 1",
+    "en": "Mode 1"
+   },
+   "werk": 2,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "Grau",
+      "en": "Grey"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Grün",
+      "en": "Green"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Blau",
+      "en": "Blue"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Gelb",
+      "en": "Yellow"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Lila",
+      "en": "Purple"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Türkis",
+      "en": "Teal"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Rosa",
+      "en": "Pink"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "Weiss",
+      "en": "White"
+     }
+    }
+   ]
+  },
+  {
+   "s": "fp2",
+   "art": "w",
+   "name": {
+    "de": "Phase 2",
+    "en": "Mode 2"
+   },
+   "werk": 4,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "Grau",
+      "en": "Grey"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Grün",
+      "en": "Green"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Blau",
+      "en": "Blue"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Gelb",
+      "en": "Yellow"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Lila",
+      "en": "Purple"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Türkis",
+      "en": "Teal"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Rosa",
+      "en": "Pink"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "Weiss",
+      "en": "White"
+     }
+    }
+   ]
+  },
+  {
+   "s": "fp3",
+   "art": "w",
+   "name": {
+    "de": "Phase 3",
+    "en": "Mode 3"
+   },
+   "werk": 3,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "Grau",
+      "en": "Grey"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Grün",
+      "en": "Green"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Blau",
+      "en": "Blue"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Gelb",
+      "en": "Yellow"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Lila",
+      "en": "Purple"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Türkis",
+      "en": "Teal"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Rosa",
+      "en": "Pink"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "Weiss",
+      "en": "White"
+     }
+    }
+   ]
+  },
+  {
+   "s": "fp4",
+   "art": "w",
+   "name": {
+    "de": "Phase 4",
+    "en": "Mode 4"
+   },
+   "werk": 5,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "Grau",
+      "en": "Grey"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Grün",
+      "en": "Green"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Blau",
+      "en": "Blue"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Gelb",
+      "en": "Yellow"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Lila",
+      "en": "Purple"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Türkis",
+      "en": "Teal"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Rosa",
+      "en": "Pink"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "Weiss",
+      "en": "White"
+     }
+    }
+   ]
+  },
+  {
+   "s": "fp5",
+   "art": "w",
+   "name": {
+    "de": "Phase 5",
+    "en": "Mode 5"
+   },
+   "werk": 6,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "Grau",
+      "en": "Grey"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Grün",
+      "en": "Green"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Blau",
+      "en": "Blue"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Gelb",
+      "en": "Yellow"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Lila",
+      "en": "Purple"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Türkis",
+      "en": "Teal"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Rosa",
+      "en": "Pink"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "Weiss",
+      "en": "White"
+     }
+    }
+   ]
+  },
+  {
+   "s": "fp6",
+   "art": "w",
+   "name": {
+    "de": "Phase 6",
+    "en": "Mode 6"
+   },
+   "werk": 7,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "Grau",
+      "en": "Grey"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Grün",
+      "en": "Green"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Blau",
+      "en": "Blue"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Gelb",
+      "en": "Yellow"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Lila",
+      "en": "Purple"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Türkis",
+      "en": "Teal"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Rosa",
+      "en": "Pink"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "Weiss",
+      "en": "White"
+     }
+    }
+   ]
+  },
+  {
+   "s": "fp7",
+   "art": "w",
+   "name": {
+    "de": "Phase 7",
+    "en": "Mode 7"
+   },
+   "werk": 8,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "Grau",
+      "en": "Grey"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Grün",
+      "en": "Green"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Blau",
+      "en": "Blue"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Gelb",
+      "en": "Yellow"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Lila",
+      "en": "Purple"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Türkis",
+      "en": "Teal"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Rosa",
+      "en": "Pink"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "Weiss",
+      "en": "White"
+     }
+    }
+   ]
+  },
+  {
+   "s": "fp8",
+   "art": "w",
+   "name": {
+    "de": "Phase 8",
+    "en": "Mode 8"
+   },
+   "werk": 1,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "Grau",
+      "en": "Grey"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Grün",
+      "en": "Green"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Blau",
+      "en": "Blue"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Gelb",
+      "en": "Yellow"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Lila",
+      "en": "Purple"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Türkis",
+      "en": "Teal"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Rosa",
+      "en": "Pink"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "Weiss",
+      "en": "White"
+     }
+    }
+   ]
+  },
+  {
+   "s": "pa1",
+   "art": "w",
+   "name": {
+    "de": "Ansage Phase 1",
+    "en": "Voice mode 1"
+   },
+   "werk": 0,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "automatisch",
+      "en": "automatic"
+     }
+    },
+    {
+     "wert": 1,
+     "name": {
+      "de": "Start",
+      "en": "Launch"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Zoom",
+      "en": "Zoom"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Speed",
+      "en": "Speed"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Thermik",
+      "en": "Thermal"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Strecke",
+      "en": "Cruise"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Landung",
+      "en": "Landing"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Normal",
+      "en": "Normal"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "aus",
+      "en": "off"
+     }
+    }
+   ]
+  },
+  {
+   "s": "pa2",
+   "art": "w",
+   "name": {
+    "de": "Ansage Phase 2",
+    "en": "Voice mode 2"
+   },
+   "werk": 0,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "automatisch",
+      "en": "automatic"
+     }
+    },
+    {
+     "wert": 1,
+     "name": {
+      "de": "Start",
+      "en": "Launch"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Zoom",
+      "en": "Zoom"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Speed",
+      "en": "Speed"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Thermik",
+      "en": "Thermal"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Strecke",
+      "en": "Cruise"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Landung",
+      "en": "Landing"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Normal",
+      "en": "Normal"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "aus",
+      "en": "off"
+     }
+    }
+   ]
+  },
+  {
+   "s": "pa3",
+   "art": "w",
+   "name": {
+    "de": "Ansage Phase 3",
+    "en": "Voice mode 3"
+   },
+   "werk": 0,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "automatisch",
+      "en": "automatic"
+     }
+    },
+    {
+     "wert": 1,
+     "name": {
+      "de": "Start",
+      "en": "Launch"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Zoom",
+      "en": "Zoom"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Speed",
+      "en": "Speed"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Thermik",
+      "en": "Thermal"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Strecke",
+      "en": "Cruise"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Landung",
+      "en": "Landing"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Normal",
+      "en": "Normal"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "aus",
+      "en": "off"
+     }
+    }
+   ]
+  },
+  {
+   "s": "pa4",
+   "art": "w",
+   "name": {
+    "de": "Ansage Phase 4",
+    "en": "Voice mode 4"
+   },
+   "werk": 0,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "automatisch",
+      "en": "automatic"
+     }
+    },
+    {
+     "wert": 1,
+     "name": {
+      "de": "Start",
+      "en": "Launch"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Zoom",
+      "en": "Zoom"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Speed",
+      "en": "Speed"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Thermik",
+      "en": "Thermal"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Strecke",
+      "en": "Cruise"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Landung",
+      "en": "Landing"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Normal",
+      "en": "Normal"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "aus",
+      "en": "off"
+     }
+    }
+   ]
+  },
+  {
+   "s": "pa5",
+   "art": "w",
+   "name": {
+    "de": "Ansage Phase 5",
+    "en": "Voice mode 5"
+   },
+   "werk": 0,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "automatisch",
+      "en": "automatic"
+     }
+    },
+    {
+     "wert": 1,
+     "name": {
+      "de": "Start",
+      "en": "Launch"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Zoom",
+      "en": "Zoom"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Speed",
+      "en": "Speed"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Thermik",
+      "en": "Thermal"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Strecke",
+      "en": "Cruise"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Landung",
+      "en": "Landing"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Normal",
+      "en": "Normal"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "aus",
+      "en": "off"
+     }
+    }
+   ]
+  },
+  {
+   "s": "pa6",
+   "art": "w",
+   "name": {
+    "de": "Ansage Phase 6",
+    "en": "Voice mode 6"
+   },
+   "werk": 0,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "automatisch",
+      "en": "automatic"
+     }
+    },
+    {
+     "wert": 1,
+     "name": {
+      "de": "Start",
+      "en": "Launch"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Zoom",
+      "en": "Zoom"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Speed",
+      "en": "Speed"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Thermik",
+      "en": "Thermal"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Strecke",
+      "en": "Cruise"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Landung",
+      "en": "Landing"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Normal",
+      "en": "Normal"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "aus",
+      "en": "off"
+     }
+    }
+   ]
+  },
+  {
+   "s": "pa7",
+   "art": "w",
+   "name": {
+    "de": "Ansage Phase 7",
+    "en": "Voice mode 7"
+   },
+   "werk": 0,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "automatisch",
+      "en": "automatic"
+     }
+    },
+    {
+     "wert": 1,
+     "name": {
+      "de": "Start",
+      "en": "Launch"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Zoom",
+      "en": "Zoom"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Speed",
+      "en": "Speed"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Thermik",
+      "en": "Thermal"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Strecke",
+      "en": "Cruise"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Landung",
+      "en": "Landing"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Normal",
+      "en": "Normal"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "aus",
+      "en": "off"
+     }
+    }
+   ]
+  },
+  {
+   "s": "pa8",
+   "art": "w",
+   "name": {
+    "de": "Ansage Phase 8",
+    "en": "Voice mode 8"
+   },
+   "werk": 0,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "automatisch",
+      "en": "automatic"
+     }
+    },
+    {
+     "wert": 1,
+     "name": {
+      "de": "Start",
+      "en": "Launch"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "Zoom",
+      "en": "Zoom"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "Speed",
+      "en": "Speed"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Thermik",
+      "en": "Thermal"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "Strecke",
+      "en": "Cruise"
+     }
+    },
+    {
+     "wert": 6,
+     "name": {
+      "de": "Landung",
+      "en": "Landing"
+     }
+    },
+    {
+     "wert": 7,
+     "name": {
+      "de": "Normal",
+      "en": "Normal"
+     }
+    },
+    {
+     "wert": 8,
+     "name": {
+      "de": "aus",
+      "en": "off"
+     }
+    }
+   ]
+  },
+  {
+   "s": "sprache",
+   "art": "w",
+   "name": {
+    "de": "Sprache / Language",
+    "en": "Sprache / Language"
+   },
+   "werk": 0,
+   "auswahl": [
+    {
+     "wert": 0,
+     "name": {
+      "de": "wie der Sender",
+      "en": "as the radio"
+     }
+    },
+    {
+     "wert": 1,
+     "name": {
+      "de": "Deutsch",
+      "en": "Deutsch"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "English",
+      "en": "English"
+     }
+    }
+   ]
+  }
+ ],
+ "standard": {
+  "ansichten": [
+   {
+    "breite": 800,
+    "hoehe": 480,
+    "plaetze": [
+     {
+      "x": 6,
+      "y": 82,
+      "b": 788,
+      "h": 48,
+      "w": "lua:flight_phase",
+      "darstellung": "status"
+     },
+     {
+      "x": 6,
+      "y": 136,
+      "b": 258,
+      "h": 143,
+      "w": "lua:flight_time",
+      "darstellung": "zahl"
+     },
+     {
+      "x": 270,
+      "y": 136,
+      "b": 258,
+      "h": 143,
+      "w": "lua:launch_height",
+      "darstellung": "zahl"
+     },
+     {
+      "x": 534,
+      "y": 136,
+      "b": 258,
+      "h": 143,
+      "w": "lua:vario",
+      "darstellung": "balken_w"
+     },
+     {
+      "x": 6,
+      "y": 285,
+      "b": 258,
+      "h": 143,
+      "w": "lua:altitude",
+      "darstellung": "zahl",
+      "zusatz": "max"
+     },
+     {
+      "x": 270,
+      "y": 285,
+      "b": 258,
+      "h": 143,
+      "w": "lua:rx_battery",
+      "darstellung": "zahl",
+      "zusatz": "min"
+     },
+     {
+      "x": 534,
+      "y": 285,
+      "b": 258,
+      "h": 143,
+      "w": "lua:signal",
+      "darstellung": "zahl",
+      "zusatz": "min"
+     }
+    ]
+   },
+   {
+    "breite": 784,
+    "hoehe": 316,
+    "plaetze": [
+     {
+      "x": 3,
+      "y": 51,
+      "b": 778,
+      "h": 32,
+      "w": "lua:flight_phase",
+      "darstellung": "status"
+     },
+     {
+      "x": 3,
+      "y": 86,
+      "b": 257,
+      "h": 94,
+      "w": "lua:flight_time",
+      "darstellung": "zahl"
+     },
+     {
+      "x": 263,
+      "y": 86,
+      "b": 257,
+      "h": 94,
+      "w": "lua:launch_height",
+      "darstellung": "zahl"
+     },
+     {
+      "x": 523,
+      "y": 86,
+      "b": 258,
+      "h": 94,
+      "w": "lua:vario",
+      "darstellung": "balken_w"
+     },
+     {
+      "x": 3,
+      "y": 183,
+      "b": 257,
+      "h": 94,
+      "w": "lua:altitude",
+      "darstellung": "zahl",
+      "zusatz": "max"
+     },
+     {
+      "x": 263,
+      "y": 183,
+      "b": 257,
+      "h": 94,
+      "w": "lua:rx_battery",
+      "darstellung": "zahl",
+      "zusatz": "min"
+     },
+     {
+      "x": 523,
+      "y": 183,
+      "b": 258,
+      "h": 94,
+      "w": "lua:signal",
+      "darstellung": "zahl",
+      "zusatz": "min"
+     }
+    ]
+   }
+  ],
+  "grenzen": {
+   "lua:altitude": {
+    "richtung": "ueber",
+    "aus": true
+   },
+   "lua:rx_battery": {
+    "richtung": "unter",
+    "aus": true
+   },
+   "lua:signal": {
+    "richtung": "unter",
+    "aus": true
+   }
+  }
+ },
+ "vorlagen": [
+  {
+   "s": "standard",
+   "name": {
+    "de": "Heutiges Aussehen",
+    "en": "Current look"
+   },
+   "ansichten": [
+    {
+     "breite": 800,
+     "hoehe": 480,
+     "plaetze": [
+      {
+       "x": 6,
+       "y": 82,
+       "b": 788,
+       "h": 48,
+       "w": "lua:flight_phase",
+       "darstellung": "status"
+      },
+      {
+       "x": 6,
+       "y": 136,
+       "b": 258,
+       "h": 143,
+       "w": "lua:flight_time",
+       "darstellung": "zahl"
+      },
+      {
+       "x": 270,
+       "y": 136,
+       "b": 258,
+       "h": 143,
+       "w": "lua:launch_height",
+       "darstellung": "zahl"
+      },
+      {
+       "x": 534,
+       "y": 136,
+       "b": 258,
+       "h": 143,
+       "w": "lua:vario",
+       "darstellung": "balken_w"
+      },
+      {
+       "x": 6,
+       "y": 285,
+       "b": 258,
+       "h": 143,
+       "w": "lua:altitude",
+       "darstellung": "zahl",
+       "zusatz": "max"
+      },
+      {
+       "x": 270,
+       "y": 285,
+       "b": 258,
+       "h": 143,
+       "w": "lua:rx_battery",
+       "darstellung": "zahl",
+       "zusatz": "min"
+      },
+      {
+       "x": 534,
+       "y": 285,
+       "b": 258,
+       "h": 143,
+       "w": "lua:signal",
+       "darstellung": "zahl",
+       "zusatz": "min"
+      }
+     ]
+    },
+    {
+     "breite": 784,
+     "hoehe": 316,
+     "plaetze": [
+      {
+       "x": 3,
+       "y": 51,
+       "b": 778,
+       "h": 32,
+       "w": "lua:flight_phase",
+       "darstellung": "status"
+      },
+      {
+       "x": 3,
+       "y": 86,
+       "b": 257,
+       "h": 94,
+       "w": "lua:flight_time",
+       "darstellung": "zahl"
+      },
+      {
+       "x": 263,
+       "y": 86,
+       "b": 257,
+       "h": 94,
+       "w": "lua:launch_height",
+       "darstellung": "zahl"
+      },
+      {
+       "x": 523,
+       "y": 86,
+       "b": 258,
+       "h": 94,
+       "w": "lua:vario",
+       "darstellung": "balken_w"
+      },
+      {
+       "x": 3,
+       "y": 183,
+       "b": 257,
+       "h": 94,
+       "w": "lua:altitude",
+       "darstellung": "zahl",
+       "zusatz": "max"
+      },
+      {
+       "x": 263,
+       "y": 183,
+       "b": 257,
+       "h": 94,
+       "w": "lua:rx_battery",
+       "darstellung": "zahl",
+       "zusatz": "min"
+      },
+      {
+       "x": 523,
+       "y": 183,
+       "b": 258,
+       "h": 94,
+       "w": "lua:signal",
+       "darstellung": "zahl",
+       "zusatz": "min"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "s": "f3k",
+   "name": {
+    "de": "F3K-Wettbewerb",
+    "en": "F3K contest"
+   },
+   "ansichten": [
+    {
+     "breite": 800,
+     "hoehe": 480,
+     "plaetze": [
+      {
+       "x": 6,
+       "y": 82,
+       "b": 258,
+       "h": 346,
+       "w": "lua:f3k_working_time",
+       "darstellung": "ring",
+       "min": 0,
+       "max": 600
+      },
+      {
+       "x": 270,
+       "y": 82,
+       "b": 258,
+       "h": 110,
+       "w": "lua:flight_time",
+       "darstellung": "zahl"
+      },
+      {
+       "x": 534,
+       "y": 82,
+       "b": 258,
+       "h": 110,
+       "w": "lua:launch_height",
+       "darstellung": "zahl"
+      },
+      {
+       "x": 270,
+       "y": 198,
+       "b": 522,
+       "h": 140,
+       "w": "lua:altitude",
+       "darstellung": "kurve",
+       "kurveS": 300
+      },
+      {
+       "x": 270,
+       "y": 344,
+       "b": 258,
+       "h": 84,
+       "w": "lua:launches",
+       "darstellung": "zahl"
+      },
+      {
+       "x": 534,
+       "y": 344,
+       "b": 258,
+       "h": 84,
+       "w": "lua:flight_phase",
+       "darstellung": "status"
+      }
+     ]
+    },
+    {
+     "breite": 784,
+     "hoehe": 316,
+     "plaetze": [
+      {
+       "x": 3,
+       "y": 51,
+       "b": 257,
+       "h": 227,
+       "w": "lua:f3k_working_time",
+       "darstellung": "ring",
+       "min": 0,
+       "max": 600
+      },
+      {
+       "x": 263,
+       "y": 51,
+       "b": 257,
+       "h": 70,
+       "w": "lua:flight_time",
+       "darstellung": "zahl"
+      },
+      {
+       "x": 523,
+       "y": 51,
+       "b": 258,
+       "h": 70,
+       "w": "lua:launch_height",
+       "darstellung": "zahl"
+      },
+      {
+       "x": 263,
+       "y": 124,
+       "b": 518,
+       "h": 90,
+       "w": "lua:altitude",
+       "darstellung": "kurve",
+       "kurveS": 300
+      },
+      {
+       "x": 263,
+       "y": 217,
+       "b": 257,
+       "h": 61,
+       "w": "lua:launches",
+       "darstellung": "zahl"
+      },
+      {
+       "x": 523,
+       "y": 217,
+       "b": 258,
+       "h": 61,
+       "w": "lua:flight_phase",
+       "darstellung": "status"
+      }
+     ]
+    }
+   ],
+   "hinweis": {
+    "de": "Grosse Arbeitszeit, Höhenkurve, Flugzeit und Wurfhöhe.",
+    "en": "Large working time, altitude curve, flight time and launch height."
+   }
+  }
+ ]
+}

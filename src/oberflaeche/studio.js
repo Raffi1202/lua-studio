@@ -74,7 +74,7 @@ function gruppeVon(fenster) {
 const maskenCache = new Map()
 
 // Sichtbare Namen der Luas (Umbenennung 21.11.2026); unbekannte zeigen ihren Schlüssel
-const LUA_NAME = { electric: 'Electric', glider: 'Glider', heli: 'Heli', helirf: 'Heli', gas_ecu: 'Gas Engine ECU', gas_carb: 'Gas Engine Carb', jet: 'Jet' }
+const LUA_NAME = { electric: 'Electric', glider: 'Glider', heli: 'Heli', helirf: 'Heli', gas_ecu: 'Gas Engine ECU', gas_carb: 'Gas Engine Carb', jet: 'Jet', dlg: 'DLG' }
 function luaName(k) { return LUA_NAME[k] || k }
 // Eigenschaften-Felder: feste Kennung aus dem Textschlüssel der Beschriftung (unabhängig von der Sprache), für Bedienhilfen
 // und Automatisierung: id «eig-<schlüssel>», name gleich, aria-label = Beschriftung
@@ -1111,7 +1111,7 @@ $('exportZiel').addEventListener('change', async (e) => {
 
 // Notlösung: Studio-Datei als Datei speichern (Speichern-Dialog), danach von Hand auf die SD-Karte kopieren
 // Wie NEUE_WAHL in src/studio/studio.js: ab diesen Versionen findet das Lua sein Studio-Layout überall (Menü «Studio layout»)
-const NEUE_WAHL = { electric: '0.7.0', heli: '1.14.0', jet: '0.5.0', glider: '0.6.0', gas_ecu: '1.12.0', gas_carb: '0.12.0' }
+const NEUE_WAHL = { electric: '0.7.0', heli: '1.14.0', jet: '0.5.0', glider: '0.6.0', gas_ecu: '1.12.0', gas_carb: '0.12.0', dlg: '0.2.0' }
 function versionKleinerUI(a, b) {
   const x = String(a).split('.').map(Number), y = String(b).split('.').map(Number)
   for (let i = 0; i < 3; i++) if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) < (y[i] || 0)

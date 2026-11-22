@@ -4,7 +4,7 @@
 
 ## What is Lua-Studio?
 
-Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Electric, Heli, Jet, Glider, Gas Engine). **Radio live**: your FrSky radio's display appears on the computer and you operate the radio with mouse and keyboard, over a USB cable in the radio's **serial mode**.
+Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Electric, Heli, Jet, Glider, Gas Engine, DLG). **Radio live**: your FrSky radio's display appears on the computer and you operate the radio with mouse and keyboard, over a USB cable in the radio's **serial mode**.
 
 **Models** (from 0.2.0, chapter 6): set up boxes, limits and settings per model on the computer and transfer them to the radio. Later: analyse flights.
 

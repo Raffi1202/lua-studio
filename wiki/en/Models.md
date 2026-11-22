@@ -2,7 +2,7 @@
 
 # Setting up models
 
-Here you set up per model what the Lua shows on the radio: boxes, limits and settings. This works for the Luas with studio support (Electric, Heli, Jet, Glider, Gas Engine ECU and Gas Engine Carb; until 21 Nov 2026 called Elektro, Heli RF, Segler, Motoren ECU and Motoren Vergaser). The radio does not recalculate anything; it only reads the finished, checked file.
+Here you set up per model what the Lua shows on the radio: boxes, limits and settings. This works for the Luas with studio support (Electric, Heli, Jet, Glider, Gas Engine ECU, Gas Engine Carb and DLG; until 21 Nov 2026 called Elektro, Heli RF, Segler, Motoren ECU and Motoren Vergaser). With DLG (discus launch glider, from 0.12.0) the studio view applies to the FLIGHT page only; DLG draws the status bar with the message line on top and the page buttons FLIGHT / F3K / LAUNCHES at the bottom itself, the F3K and LAUNCHES pages stay fixed. DLG has no motor switch, «also when motor off» has no effect there. Templates: «Original (like the Lua)», «Current look» and «F3K contest». The radio does not recalculate anything; it only reads the finished, checked file.
 
 While no model is open, the tab shows two entry points (from 0.4.0): **Set up with the radio** (loads the connected radio's models or leads to the connection) and **Prepare without a radio** with the list of prepared models (clickable). The **+ Prepare** button at the top next to the tabs opens the prepare form from anywhere.
 

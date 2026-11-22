@@ -300,7 +300,7 @@
   // ---------- Glider 0.5.0 (src/glider/platz.lua, zeichnen.lua): eigene Palette, eckige Kacheln, Titel grau und mittig ----------
   const G = Object.fromEntries(Object.entries({
     bg: [14, 17, 22], panel: [22, 27, 34], rand: [48, 54, 61], text: [230, 237, 243], dim: [139, 148, 158], grau: [75, 85, 99],
-    blau: [59, 130, 246], gruen: [34, 197, 94], orange: [245, 158, 11], rot: [239, 68, 68], dunkel: [11, 13, 16], hblau: [96, 165, 250],
+    blau: [59, 130, 246], gruen: [34, 197, 94], orange: [245, 158, 11], rot: [239, 68, 68], dunkel: [11, 13, 16], hblau: [96, 165, 250], weiss: [255, 255, 255],
   }).map(([k, v]) => [k, hex(v)]))
 
   function gliderFlaeche(svg, a, k) {
@@ -389,6 +389,109 @@
   STILE.glider = { name: 'Glider 0.5.0', hintergrund: G.bg, flaeche: gliderFlaeche, platz: gliderPlatz, zahlKomma: true,
     texte: { de: { phase: 'STANDARD-FLUGPHASE', motorAus: 'MOTOR AUS', rechts: 'Empfang 92 %   Flug 1/3', zMin: 'Min', zMax: 'Max', zMittel: 'Ø' },
       en: { phase: 'STANDARD FLIGHT MODE', motorAus: 'MOTOR OFF', rechts: 'Signal 92 %   Flight 1/3', zMin: 'Min', zMax: 'Max', zMittel: 'Ø' } } }
+
+  // ---------- DLG 0.2.0 (src/dlg/ansicht.lua, zeichnen.lua): Palette wie Glider, Kacheln ohne Rand, Werte hellblau ----------
+  // Statusleiste und Meldezeile oben (Z.kopf) und Seitentasten FLUG / F3K / STARTS unten (Z.tasten) zeichnet DLG selbst.
+  const DLG_PHASE = hex([196, 181, 253])   // Z.PHASE[5], Beispielphase «Thermik» wie im Simulatorbild
+  const dlgL = (W, H) => ({ W, H, s: min(W / 800, H / 480), kompakt: false })
+  function dlgFeld(Z, x, y, b, h, r, f, dicke) {   // Z.feld: Rand in Farbe f, innen panel
+    Z.rund(x, y, b, h, r, f)
+    Z.rund(x + dicke, y + dicke, b - 2 * dicke, h - 2 * dicke, max(0, r - dicke), G.panel)
+  }
+  function dlgFlaeche(svg, a, k) {
+    const L = dlgL(a.breite, a.hoehe), s = L.s
+    const Z = zeichner(svg, L)
+    const W = a.breite, H = a.hoehe
+    Z.rechteck(0, 0, W, H, G.bg)
+    // Statusleiste: Pille «OK» links, Modellname und Seite rechts
+    const sb = floor(44 * s), ph = max(22, floor(28 * s)), py = floor((sb - ph) / 2), gp = floor(6 * s)
+    Z.rechteck(0, 0, W, sb, G.panel)
+    const gr = ph * 0.92 / (1.25 * s)
+    const zb = max(112 * s, Z.breite(k.T.ok, gr) + 24 * s)
+    Z.rund(8 * s, py, zb, ph, ph / 2, G.gruen)
+    Z.text(8 * s + zb / 2, py + ph / 2, k.T.ok, gr, G.dunkel, 'middle', zb - ph * 0.3)
+    Z.text(W - 10 * s, sb / 2, k.T.rechts, 16, G.text, 'end', W - 10 * s - zb - 30 * s)
+    // Seitentasten unten, FLUG ist die aktive Seite
+    const kh = max(40 * s, 32), kb = (W - 4 * gp) / 3, d = max(1, floor(2 * s))
+    k.T.tasten.forEach((t, i) => {
+      const x = gp + i * (kb + gp), y = H - gp - kh, f = i === 0 ? G.hblau : G.text
+      dlgFeld(Z, x, y, kb, kh, 8 * s, f, d)
+      Z.text(x + kb / 2, y + kh / 2, t, 14, f, 'middle', kb - 12 * s)
+    })
+  }
+
+  function dlgPlatz(svg, b, h, q, k) {
+    const L = dlgL(k.ansicht.breite, k.ansicht.hoehe), s = L.s
+    const Z = zeichner(svg, L)
+    const gr = (px) => max(6, px / (1.25 * s))
+    Z.rechteck(0, 0, b, h, q.hintergrund || G.panel)
+    if (q.leer) return
+    const fg = q.farbeWert || G.hblau
+    const th = min(18, max(9, h * 0.2)), pad = max(4, floor(8 * s)), tb = max(8, b - 2 * pad)
+    const vz = q.w === 'lua:vario' && !q.zeit && parseFloat(String(q.zahlText).replace(',', '.')) > 0.05 ? '+' : ''
+    const zahl = q.zeit ? q.zeitText : vz + q.zahlText
+    const wert = q.einheit && !q.zeit ? `${zahl} ${q.einheit}` : zahl
+    const zt = q.zusatz && q.zusatz !== 'keine' ? `${{ min: 'MIN ', max: 'MAX ', mittel: 'Ø ' }[q.zusatz]}${wert}` : null
+    const d = q.darstellung
+    if (d === 'status') {
+      Z.text(pad, pad + th / 2, q.titel, gr(th), G.dim, 'start', tb)
+      const phase = q.w === 'lua:flight_phase'
+      Z.text(b / 2, (h + th) / 2 + pad / 2, phase ? k.T.phase : q.statusText, gr(min(h * 0.4, 34)), phase ? DLG_PHASE : (q.statusFarbe || G.grau), 'middle', b - 2 * pad)
+    } else if (d === 'ring') {
+      Z.text(b / 2, pad + th / 2, q.titel, gr(th), G.dim, 'middle', tb)
+      const zh = zt ? th : 0
+      const r = min(b * 0.42, (h - th - zh - 3 * pad) * 0.5)
+      const cx = b / 2, cy = pad + th + pad + r
+      const ri = max(2, r - max(4, r * 0.22))
+      Z.bogen(cx, cy, ri, r, 225, 495, G.dunkel)
+      if (q.anteil > 0) Z.bogen(cx, cy, ri, r, 225, 225 + q.anteil * 270, fg)
+      Z.text(cx, cy - r * 0.08, zahl, gr(r * 0.62), G.weiss, 'middle', 2 * ri - 4)
+      if (q.einheit && !q.zeit) Z.text(cx, cy + r * 0.38, q.einheit, gr(max(8, r * 0.2)), G.dim, 'middle', 2 * ri - 4)
+      if (zt) Z.text(cx, h - pad - th / 2, zt, gr(th), G.hblau, 'middle', b - 2 * pad)
+    } else if (d === 'balken_w') {
+      Z.text(pad, pad + th / 2, q.titel, gr(th), G.dim, 'start', max(8, b * 0.5))
+      const bh = max(6, floor(h * 0.22))
+      const by = h - pad - bh - (zt ? th : 0)
+      const vh = by - (pad + th) - pad
+      Z.text(b - pad, pad + th / 2 + max(0, vh - th) / 2, wert, gr(max(th, min(vh + th, 44))), fg, 'end', b * 0.55)
+      Z.rechteck(pad, by, b - 2 * pad, bh, G.dunkel)
+      if (q.anteil > 0) Z.rechteck(pad, by, max(2, (b - 2 * pad) * q.anteil), bh, fg)
+      if (zt) Z.text(b - pad, h - pad - th / 2, zt, gr(th), G.hblau, 'end', b - 2 * pad)
+    } else if (d === 'balken_s') {
+      Z.text(b / 2, pad + th / 2, q.titel, gr(th), G.dim, 'middle', tb)
+      const vh = min(30, max(12, h * 0.16)), zh = zt ? th : 0
+      const bt = 2 * pad + th, bhoch = h - pad - vh - zh - pad - bt
+      const bb = min(b * 0.4, 40), bx = (b - bb) / 2
+      if (bhoch > 4) {
+        Z.rechteck(bx, bt, bb, bhoch, G.dunkel)
+        if (q.anteil > 0) { const f = max(2, bhoch * q.anteil); Z.rechteck(bx, bt + bhoch - f, bb, f, fg) }
+      }
+      Z.text(b / 2, h - pad - zh - vh / 2, wert, gr(vh), fg, 'middle', b - 2 * pad)
+      if (zt) Z.text(b / 2, h - pad - th / 2, zt, gr(th), G.hblau, 'middle', b - 2 * pad)
+    } else if (d === 'kurve') {
+      Z.text(pad, pad + th / 2, q.titel, gr(th), G.dim, 'start', max(8, b * 0.5))
+      Z.text(b - pad, pad + th / 2, wert, gr(th * 1.3), fg, 'end', b * 0.48)
+      const px = pad, py = 2 * pad + th, pb = b - 2 * pad, ph = h - 3 * pad - th - (zt ? th : 0)
+      if (ph > 4) {
+        Z.rechteck(px, py + ph, pb, 1, G.rand)
+        let vor = null
+        for (let j = 0; j <= 60; j++) {
+          const sx = px + pb * j / 60, sy = py + ph - ph * (0.35 + 0.25 * Math.sin(j / 7) + 0.1 * Math.sin(j / 2.3))
+          if (vor) Z.linie(vor[0], vor[1], sx, sy, fg)
+          vor = [sx, sy]
+        }
+      }
+      if (zt) Z.text(b - pad, h - pad - th / 2, zt, gr(th), G.hblau, 'end', b - 2 * pad)
+    } else {
+      Z.text(pad, pad + th / 2, q.titel, gr(th), G.dim, 'start', tb)
+      const vy = pad + th + (h - 2 * pad - th - (zt ? th : 0)) / 2
+      Z.text(b - pad, vy, wert, gr(min(h * 0.42, 52)), fg, 'end', b - 2 * pad)
+      if (zt) Z.text(b - pad, h - pad - th / 2, zt, gr(th), G.hblau, 'end', b - 2 * pad)
+    }
+  }
+  STILE.dlg = { name: 'DLG 0.2.0', hintergrund: G.bg, flaeche: dlgFlaeche, platz: dlgPlatz, zahlKomma: true,
+    texte: { de: { ok: 'OK', rechts: 'Testmodell  1/3', phase: 'Thermik', tasten: ['FLUG', 'F3K', 'STARTS'] },
+      en: { ok: 'OK', rechts: 'Test model  1/3', phase: 'Thermal', tasten: ['FLIGHT', 'F3K', 'LAUNCHES'] } } }
 
   // ---------- Gas Engine ECU 1.10.0 / Carb 0.10.0 (src/gas_ecu/ansicht.lua, gleich für Carb): Palette wie Glider, runde Kacheln ----------
   function gasPlatz(svg, b, h, q, k) {

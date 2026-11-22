@@ -2,6 +2,13 @@
 
 New entries in English. Older entries in German.
 
+## 0.12.0 (22 Nov 2026)
+
+- **New Lua: DLG 0.2.0** (discus launch glider, Lua-Studio format 2, no symbols): description `src/luas/dlg.json`, studio files `.dlg.lua` in `scripts/studio`.
+- **Preview like the Lua** for DLG (`src/dlg/ansicht.lua`): tiles without border, values light blue, flight mode band in the mode colour; status bar with «OK» pill and the page buttons FLIGHT / F3K / LAUNCHES drawn as reserved areas.
+- **Template «Original (like the Lua)»** for DLG: FLIGHT page with the flight mode band on top, for all window sizes (converted sizes keep clear of the status bar and page buttons; the band gets its minimum height from the row below). DLG's own templates «Current look» and «F3K contest» are offered too.
+- DLG has no motor switch: «also when motor off» is read but has no effect.
+
 ## 0.11.2 (22 Nov 2026)
 
 - **Own logo** (user's choice: a stylised radio screen with header bar and coloured layout tiles): app icon for Mac (`.icns`), Windows (`.ico`) and Linux (`.png`), window and taskbar icon, logo in README and wiki. Own design, no third-party marks or icons. Source: `bau/logo/lua-studio-logo.svg`.

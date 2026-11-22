@@ -4,7 +4,7 @@
 
 ## Was ist Lua-Studio?
 
-Lua-Studio ist ein Programm für Mac und Windows. Es gehört zu unseren Ethos-Luas (Electric, Heli, Jet, Glider, Gas Engine). **Funke live**: Das Display deiner FrSky-Funke erscheint am Computer, und du bedienst die Funke mit Maus und Tastatur. Das geht über ein USB-Kabel im **Serialmodus** der Funke.
+Lua-Studio ist ein Programm für Mac und Windows. Es gehört zu unseren Ethos-Luas (Electric, Heli, Jet, Glider, Gas Engine, DLG). **Funke live**: Das Display deiner FrSky-Funke erscheint am Computer, und du bedienst die Funke mit Maus und Tastatur. Das geht über ein USB-Kabel im **Serialmodus** der Funke.
 
 **Modelle** (ab 0.2.0, Kapitel 6): je Modell Kästchen, Grenzwerte und Einstellungen am Computer einstellen und auf die Funke übertragen. Später: Flüge auswerten.
 

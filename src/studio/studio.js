@@ -266,7 +266,7 @@ const FARBFELDER = ['farbe', 'farbeWarn', 'farbeAlarm', 'hintergrund']
 const DARSTELLUNGEN = ['zahl', 'ring', 'balken_w', 'balken_s', 'kurve', 'status']
 // Felder eines Platzes, die das Studio sonst ungeprüft schriebe (aus Vorlagen): ungültige weg, Grund in «verworfen»
 // Ab diesen Versionen findet das Lua sein Studio-Layout an allen Orten und bietet «Studio layout» im Widget-Menü (R1–R4)
-const NEUE_WAHL = { electric: '0.7.0', heli: '1.14.0', jet: '0.5.0', glider: '0.6.0', gas_ecu: '1.12.0', gas_carb: '0.12.0' }
+const NEUE_WAHL = { electric: '0.7.0', heli: '1.14.0', jet: '0.5.0', glider: '0.6.0', gas_ecu: '1.12.0', gas_carb: '0.12.0', dlg: '0.2.0' }
 // Darstellungen des Luas aus beschreibung.json «darstellungenExtra» (Schlüssel mit _ sind Hinweise, keine Darstellung)
 // luaVersion: Version des Luas auf der Funke (Info-Datei). Ist sie älter als die mitgelieferte Beschreibung, die die
 // Darstellungen einführt, gibt es sie nicht (ein älteres Lua kennt sie nicht).

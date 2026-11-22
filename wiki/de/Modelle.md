@@ -2,7 +2,7 @@
 
 # Modelle einstellen
 
-Hier stellst du je Modell ein, was das Lua auf der Funke zeigt: Kästchen, Grenzwerte und Einstellungen. Das geht für die Luas mit Studio-Unterstützung (Electric, Heli, Jet, Glider, Gas Engine ECU und Gas Engine Carb; bis 21.11.2026 hiessen sie Elektro, Heli RF, Segler, Motoren ECU und Motoren Vergaser). Die Funke rechnet dabei nichts nach. Sie liest nur die fertige, geprüfte Datei.
+Hier stellst du je Modell ein, was das Lua auf der Funke zeigt: Kästchen, Grenzwerte und Einstellungen. Das geht für die Luas mit Studio-Unterstützung (Electric, Heli, Jet, Glider, Gas Engine ECU, Gas Engine Carb und DLG; bis 21.11.2026 hiessen sie Elektro, Heli RF, Segler, Motoren ECU und Motoren Vergaser). Bei DLG (Wurfgleiter, ab 0.12.0) gilt die Studio-Ansicht nur für die Seite FLUG; die Statusleiste mit Meldezeile oben und die Seitentasten FLUG / F3K / STARTS unten zeichnet DLG selbst, die Seiten F3K und STARTS bleiben fest. DLG hat keinen Motorschalter, «auch bei Motor aus» wirkt dort nicht. Vorlagen: «Original (wie das Lua)», «Heutiges Aussehen» und «F3K-Wettbewerb». Die Funke rechnet dabei nichts nach. Sie liest nur die fertige, geprüfte Datei.
 
 Solange kein Modell offen ist, zeigt der Reiter zwei Einstiege (ab 0.4.0): **Mit Funke einstellen** (lädt die Modelle der verbundenen Funke bzw. führt zur Verbindung) und **Ohne Funke vorbereiten** mit der Liste der vorbereiteten Modelle (anklickbar). Der Knopf **+ Vorbereiten** oben neben den Reitern öffnet das Vorbereiten-Formular von überall.
 

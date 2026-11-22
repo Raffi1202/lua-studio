@@ -181,7 +181,7 @@ test('Vorlage «Original» (0.6.0): Electric mit Farben wie die eingebaute Anzei
 test('Vorlagen «Original» von Electric, Jet und Heli: jede Grösse gültig (Rand, Überlappung, reservierte Flächen, Mindestgrössen, Funke)', () => {
   const b = S.beschreibungenLaden(path.join(__dirname, '..', 'src', 'luas'))
   const M = { zahl: [90, 50], ring: [110, 110], balken_w: [140, 40], balken_s: [50, 110], kurve: [180, 90], status: [120, 40], zylinder: [160, 220], tank: [160, 220] }
-  for (const lua of ['electric', 'jet', 'heli', 'glider', 'gas_ecu', 'gas_carb']) {
+  for (const lua of ['electric', 'jet', 'heli', 'glider', 'gas_ecu', 'gas_carb', 'dlg']) {
     const o = S.presets(b[lua])[0]
     assert.strictEqual(o.s, 'original', lua)
     assert.deepStrictEqual(o.verworfen, [], lua)
@@ -283,7 +283,7 @@ test('Einstellungen (0.10.2): nur Abweichungen vom Werkwert; frischer Glider nic
   const r2 = S.bauenMitWaechter(g2, meta)
   assert.ok(r2.fehler.some((f) => /listen/.test(f)), 'mehr als 48 Änderungen gesperrt: ' + JSON.stringify(r2.fehler))
   // 3. andere Luas: Datei gleich wie bisher bis auf die weggelassenen Werkeinstellungen
-  for (const lua of ['electric', 'heli', 'jet', 'gas_ecu', 'gas_carb']) {
+  for (const lua of ['electric', 'heli', 'jet', 'gas_ecu', 'gas_carb', 'dlg']) {
     const i = S.vorbereitetInfo('L', b[lua], 'X'); const p = S.neuesProjekt(b[lua], i)
     p.einstellungen[Object.keys(p.einstellungen)[0]] = 'geändert'
     const alt = S.dateiDaten(p, { formate: i.formate }), neu = S.dateiDaten(p, { formate: i.formate, werk: werkVon(lua) })

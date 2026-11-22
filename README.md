@@ -6,7 +6,7 @@
 
 > **Pre-release / public beta.** Tested on a real radio only on the X18RS. Use at your own risk.
 
-A program for Mac and Windows that belongs to our FrSky Ethos Lua widgets (Electric, Heli, Jet, Glider, Gas Engine). Principle: **the PC thinks, the radio displays.**
+A program for Mac and Windows that belongs to our FrSky Ethos Lua widgets (Electric, Heli, Jet, Glider, Gas Engine, DLG). Principle: **the PC thinks, the radio displays.**
 
 **Radio live:** your FrSky radio's display appears on the computer and you operate the radio with mouse and keyboard, over USB in the radio's serial mode. **Models:** set up boxes, limits, symbols and settings of the Luas per model on the PC and transfer them to the radio – or prepare a model without the radio and export it to the SD card.
 
@@ -46,6 +46,7 @@ A program for Mac and Windows that belongs to our FrSky Ethos Lua widgets (Elect
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.5.0 | format 2, «also when motor off» |
 | [Glider](https://github.com/Raffi1202/glider-lua) 0.6.0 | format 1, «also when motor off» |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.12.0 / 0.12.0 | format 1, «also when motor off» |
+| DLG 0.2.0 (discus launch glider, repository not public yet) | format 2, FLIGHT page only; no motor switch |
 
 Luas with format 2 also get decoration and templates; for format 1 the studio writes the file without them. Symbols and bold units are **removed from 0.11.0**: old projects load without them (one-time note), old symbol images on the radio are offered for deletion.
 

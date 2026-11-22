@@ -3,7 +3,7 @@
 🇬🇧 English · 🇩🇪 Deutsch
 
 ## English
-Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Electric, Heli, Jet, Glider, Gas Engine). **Radio live**: your FrSky radio's display appears on the computer and you operate the radio with mouse and keyboard, over a USB cable in the radio's **serial mode**.
+Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Electric, Heli, Jet, Glider, Gas Engine, DLG). **Radio live**: your FrSky radio's display appears on the computer and you operate the radio with mouse and keyboard, over a USB cable in the radio's **serial mode**.
 
 **Tested on a real radio only on the X18RS** (Ethos 26.2.0, Mac). Other radios and Windows only partly or in the simulator.
 
@@ -20,7 +20,7 @@ Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Elec
 - [Changelog](en/Changelog.md)
 
 ## Deutsch
-Lua-Studio ist ein Programm für Mac und Windows. Es gehört zu unseren Ethos-Luas (Electric, Heli, Jet, Glider, Gas Engine). **Funke live**: Das Display deiner FrSky-Funke erscheint am Computer, und du bedienst die Funke mit Maus und Tastatur. Das geht über ein USB-Kabel im **Serialmodus** der Funke.
+Lua-Studio ist ein Programm für Mac und Windows. Es gehört zu unseren Ethos-Luas (Electric, Heli, Jet, Glider, Gas Engine, DLG). **Funke live**: Das Display deiner FrSky-Funke erscheint am Computer, und du bedienst die Funke mit Maus und Tastatur. Das geht über ein USB-Kabel im **Serialmodus** der Funke.
 
 **Echt getestet nur an der X18RS** (Ethos 26.2.0, Mac). Andere Funken und Windows nur teilweise oder im Simulator.
 

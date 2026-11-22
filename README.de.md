@@ -6,7 +6,7 @@
 
 > **Vorabversion / öffentliche Beta.** Am echten Sender nur an der X18RS getestet. Nutzung auf eigene Verantwortung.
 
-Programm für Mac und Windows zu unseren Ethos-Luas (Electric, Heli, Jet, Glider, Gas Engine). Grundsatz: **Der PC denkt, die Funke zeigt an.**
+Programm für Mac und Windows zu unseren Ethos-Luas (Electric, Heli, Jet, Glider, Gas Engine, DLG). Grundsatz: **Der PC denkt, die Funke zeigt an.**
 
 **Funke live:** Das Display deiner FrSky-Funke erscheint am Computer, und du bedienst die Funke mit Maus und Tastatur
 über USB im Serialmodus. **Modelle** (ab 0.2.0): je Modell Kästchen, Grenzwerte und Einstellungen der Luas am PC
@@ -84,6 +84,7 @@ Schmuck braucht ein Lua, das Format 2 kann. Für ältere Luas schreibt das Studi
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.5.0 | format 2, «auch bei Motor aus» |
 | [Glider](https://github.com/Raffi1202/glider-lua) 0.6.0 | format 1, «auch bei Motor aus» |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.12.0 / 0.12.0 | format 1, «auch bei Motor aus» |
+| DLG 0.2.0 (Wurfgleiter, Repository noch nicht öffentlich) | format 2, nur Seite FLUG; kein Motorschalter |
 
 ## Lizenz
 

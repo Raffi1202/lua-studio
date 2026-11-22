@@ -22,10 +22,10 @@
 </head>
 <body>
 <h1>Lua-Studio – Manual</h1>
-<p class="unter">Version 0.11.2 · 22 Nov 2026 · Deutsche Anleitung: «Lua-Studio - Anleitung»</p>
+<p class="unter">Version 0.12.0 · 22 Nov 2026 · Deutsche Anleitung: «Lua-Studio - Anleitung»</p>
 
 <h2>1. What is Lua-Studio?</h2>
-<p>Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Electric, Heli, Jet, Glider, Gas Engine).
+<p>Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Electric, Heli, Jet, Glider, Gas Engine, DLG).
 <b>Radio live</b>: your FrSky radio's display appears on the computer and you
 operate the radio with mouse and keyboard, over a USB cable in the radio's <b>serial mode</b>.</p>
 <p><b>Models</b> (from 0.2.0, chapter 6): set up boxes, limits and settings per model on the computer and transfer them to the radio. Later: analyse flights.</p>
@@ -38,9 +38,9 @@ operate the radio with mouse and keyboard, over a USB cable in the radio's <b>se
   <li>Mac (Apple silicon or Intel) or Windows PC (64-bit), USB data cable.</li>
   <li>The matching file from the GitHub release (“Releases” on the right of the repository page):
     <ul>
-      <li>Mac with Apple silicon: <code>Lua-Studio-0.11.2-mac-arm64.dmg</code></li>
-      <li>Mac with Intel: <code>Lua-Studio-0.11.2-mac-x64.dmg</code></li>
-      <li>Windows: <code>Lua-Studio-0.11.2-win-x64.exe</code></li>
+      <li>Mac with Apple silicon: <code>Lua-Studio-0.12.0-mac-arm64.dmg</code></li>
+      <li>Mac with Intel: <code>Lua-Studio-0.12.0-mac-x64.dmg</code></li>
+      <li>Windows: <code>Lua-Studio-0.12.0-win-x64.exe</code></li>
     </ul>
   </li>
 </ul>
@@ -99,7 +99,7 @@ Text for the radio's on-screen keyboard (e.g. a model name) goes into <b>Text fo
 
 <h2>6. Setting up models (tab «Models»)</h2>
 <p>Here you set up per model what the Lua shows on the radio: boxes, limits and settings. This works for the Luas with studio
-support (Electric, Heli, Jet, Glider, Gas Engine ECU and Gas Engine Carb; until 21 Nov 2026 called Elektro, Heli RF, Segler, Motoren ECU and Motoren Vergaser).
+support (Electric, Heli, Jet, Glider, Gas Engine ECU, Gas Engine Carb and DLG; until 21 Nov 2026 called Elektro, Heli RF, Segler, Motoren ECU and Motoren Vergaser). With DLG (discus launch glider, from 0.12.0) the studio view applies to the FLIGHT page only; DLG draws the status bar with the message line on top and the page buttons FLIGHT / F3K / LAUNCHES at the bottom itself, the F3K and LAUNCHES pages stay fixed. DLG has no motor switch, «also when motor off» has no effect there. Templates: «Original (like the Lua)», «Current look» and «F3K contest».
 The radio does not recalculate anything; it only reads the finished, checked file.</p>
 <p>While no model is open, the tab shows two entry points (from 0.4.0): <b>Set up with the radio</b> (loads the connected
 radio's models or leads to the connection) and <b>Prepare without a radio</b> with the list of prepared models (clickable). The <b>+ Prepare</b> button at the top next to the
