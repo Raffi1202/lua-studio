@@ -4,7 +4,7 @@ New entries in English. Older entries in German.
 
 ## 0.10.5 (22 Nov 2026)
 
-- **Unit in the title only as a word of its own** (same rule as Electric 0.7.4 and Heli 1.14.2): before it the start, a space or a bracket, after it the end, a space, a bracket or «%». «Akku %», «Strom (A)», «Speed km/h» hide the unit at the value; «Höhe max» (m), «Akku Strom» (A), «Akku%» do not.
+- **Unit in the title only as a word of its own** (same rule as Electric 0.7.4 and Heli 1.14.3): before it the start, a space or a bracket, after it the end, a space, a bracket or «%». «Akku %», «Strom (A)», «Speed km/h» hide the unit at the value; «Höhe max» (m), «Akku Strom» (A), «Akku%» do not.
 - Boxes that reach into the header the Lua draws itself are still reported in the preview («lies on an area the Lua draws itself»).
 
 ## 0.10.4 (22 Nov 2026)

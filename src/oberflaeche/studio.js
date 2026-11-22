@@ -401,7 +401,7 @@ function luaKontext(stil, a) {
     symbol: (svg, q, farbe) => symbolUndEinheit(svg, q.p, farbe, q.einheit, q.zeit || q.darstellung === 'status', q.titel) }
 }
 // Einheit doppelt? Steht sie schon als eigenes Wort im Titel (z. B. «Akku %», «Strom (A)»), dann nicht am Wert.
-// Gleiche Regel wie Electric 0.7.3 (imTitel) und Heli 1.14.2 (einheitImTitel): davor Anfang, Leerzeichen, «(» oder «[»,
+// Gleiche Regel wie Electric 0.7.4 (imTitel) und Heli 1.14.3 (einheitImTitel): davor Anfang, Leerzeichen, «(» oder «[»,
 // danach Ende, Leerzeichen, «)», «]» oder «%». «A» in «Akku» zählt also nicht.
 function einheitImTitel(einheit, titel) {
   if (!einheit || typeof titel !== 'string') return false

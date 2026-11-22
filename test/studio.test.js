@@ -302,7 +302,7 @@ test('«fett» gibt es nicht mehr (0.10.4): Vorlagen von Heli und Jet ohne gross
   }
 })
 
-test('Einheit im Titel nur als eigenes Wort (0.10.5, Regel wie Electric 0.7.4 / Heli 1.14.2)', () => {
+test('Einheit im Titel nur als eigenes Wort (0.10.5, Regel wie Electric 0.7.4 / Heli 1.14.3)', () => {
   const quelle = fs.readFileSync(path.join(__dirname, '..', 'src', 'oberflaeche', 'studio.js'), 'utf8')
   const code = quelle.match(/function einheitImTitel[\s\S]*?\r?\n}\r?\n/)[0]
   const f = new Function(`${code}; return einheitImTitel`)()
