@@ -50,6 +50,10 @@ Transfer: with a connected radio transfer directly, otherwise «Save as file» f
 
 ![Transfer and quick test](../bilder/tutorial-en-8.png)
 
+## One layout for all models
+
+Under **Transfer**, choose **All models (default)** at «Applies to». Lua-Studio then writes `Standard.<lua>.lua`; the Lua uses it for every model without its own studio file. Order: choice in the widget menu «Studio layout» → the model's file → default → built-in display. Changes on the radio stay per model. A default project without a model: **+ Prepare → Default for all models**. Needs a new version of the Lua (Lua-Studio warns).
+
 ## Undo and redo
 
 Every change to the layout can be taken back: moving, resizing, adding, deleting, value, display, title, colour, limits, applying a template, arranging. Buttons **↶ Undo** and **↷ Redo** at the top right of the model (the tooltip says what is taken back), keys **Cmd/Ctrl+Z** and **Shift+Cmd/Ctrl+Z** or **Ctrl+Y**, on the Mac also in the **Edit** menu. One drag is one step. The history is kept per model (up to 100 steps) and stays after a transfer until Lua-Studio is closed.

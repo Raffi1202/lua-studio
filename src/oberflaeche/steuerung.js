@@ -150,11 +150,12 @@
       document.querySelector('[data-unter="uebertragen"]').click(); await warte(300)
       await uebertragenStart(); await warte(500); return { schritte: liste('schritte') }
     },
-    async speichernDatei({ pfad }) {
+    async speichernDatei({ pfad, fuerAlle: alle }) {   // fuerAlle: true = «Für alle Modelle (Standard)»
       if (!pfad) throw new Error('pfad')
       document.querySelector('[data-unter="uebertragen"]').click(); await warte(300)
+      if (alle !== undefined) { $('fuerAlle').value = alle ? 'alle' : 'modell'; fuerAlleZeigen() }
       await exportDatei(String(pfad)); await warte(200)
-      return { schritte: liste('schritte') }
+      return { schritte: liste('schritte'), kennung: zielKennung(), hinweis: $('fuerAlleHinweis').textContent }
     },
     async schnelltest() { await schnelltest(); return { punkte: liste('schnelltestListe') } },
   }

@@ -12,7 +12,9 @@ Lua-Studio ist ein Programm für Mac und Windows. Es gehört zu unseren Ethos-Lu
 
 Bild aus dem Ethos-Simulator.
 
-**Ab 0.13.0:** Eine geführte Tour mit 8 Schritten startet beim ersten Start (wieder über Hilfe → «Tutorial …»). Jede Änderung am Layout lässt sich mit **↶ Rückgängig** / **↷ Wiederholen** oder Cmd/Ctrl+Z bzw. Shift+Cmd/Ctrl+Z zurücknehmen (ein Ziehvorgang ist ein Schritt, je Modell bis 100 Schritte). Beim Start fragt Lua-Studio höchstens einmal am Tag bei GitHub nach einer neueren Version und zeigt dann oben einen Link auf die Release-Seite; kein Download, keine persönlichen Daten; ausschalten über Hilfe → «Nach Updates suchen».
+**Ab 0.14.0:** Eine geführte Tour mit 8 Schritten startet beim ersten Start (wieder über Hilfe → «Tutorial …»). Jede Änderung am Layout lässt sich mit **↶ Rückgängig** / **↷ Wiederholen** oder Cmd/Ctrl+Z bzw. Shift+Cmd/Ctrl+Z zurücknehmen (ein Ziehvorgang ist ein Schritt, je Modell bis 100 Schritte). Beim Start fragt Lua-Studio höchstens einmal am Tag bei GitHub nach einer neueren Version und zeigt dann oben einen Link auf die Release-Seite; kein Download, keine persönlichen Daten; ausschalten über Hilfe → «Nach Updates suchen».
+
+**Ein Layout für alle Modelle (ab 0.14.0):** Beim Übertragen und bei «Als Datei speichern» wählst du unter «Gilt für» entweder «Nur dieses Modell» oder «Für alle Modelle (Standard)». Bei «alle» heisst die Datei `Standard.&lt;lua>.lua` (z. B. `Standard.glider.lua`). Das Lua nimmt sie für jedes Modell ohne eigene Studio-Datei; Reihenfolge: Wahl im Widget-Menü «Studio-Layout», dann die Datei des Modells, dann Standard, sonst die eingebaute Anzeige. Änderungen am Sender bleiben je Modell. Ein Standard-Projekt ohne echtes Modell legst du unter «+ Vorbereiten» mit «Standard für alle Modelle» an. Ein Modell, das wirklich «Standard» heisst, gilt ebenfalls für alle. Die Luas brauchen dafür eine neue Version; Lua-Studio warnt, wenn das Lua auf der Funke zu alt ist. Der Schnelltest zeigt «(Standard)», wenn das Lua die Standard-Datei liest.
 
 ## Bekannte Grenzen
 

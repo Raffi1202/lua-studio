@@ -12,7 +12,9 @@ Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Elec
 
 Picture taken with the Ethos simulator.
 
-**From 0.13.0:** a guided tour with 8 steps starts on the first start (again via Help → «Tutorial …»). Every layout change can be taken back with **↶ Undo** / **↷ Redo** or Cmd/Ctrl+Z or Shift+Cmd/Ctrl+Z (one drag is one step, up to 100 steps per model). On start Lua-Studio asks GitHub at most once a day for a newer version and then shows a link to the release page at the top; no download, no personal data; switch off via Help → «Check for updates».
+**From 0.14.0:** a guided tour with 8 steps starts on the first start (again via Help → «Tutorial …»). Every layout change can be taken back with **↶ Undo** / **↷ Redo** or Cmd/Ctrl+Z or Shift+Cmd/Ctrl+Z (one drag is one step, up to 100 steps per model). On start Lua-Studio asks GitHub at most once a day for a newer version and then shows a link to the release page at the top; no download, no personal data; switch off via Help → «Check for updates».
+
+**One layout for all models (from 0.14.0):** when transferring and with «Save as file» you choose under «Applies to» either «This model only» or «All models (default)». With «all» the file is called `Standard.&lt;lua>.lua` (e.g. `Standard.glider.lua`). The Lua uses it for every model without its own studio file; order: choice in the widget menu «Studio layout», then the model's file, then the default, otherwise the built-in display. Changes on the radio stay per model. A default project without a real model is created under «+ Prepare» with «Default for all models». A model really called «Standard» also applies to all. The Luas need a new version for this; Lua-Studio warns if the Lua on the radio is too old. The quick test shows «(Standard)» when the Lua reads the default file.
 
 ## Known limitations
 

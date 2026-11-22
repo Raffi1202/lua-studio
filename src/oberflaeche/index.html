@@ -128,7 +128,7 @@
           <p class="klein leise" data-t="vorbereitenZone"></p>
           <label class="klein leise" data-t="modellnameFunke"></label><input id="vName" type="text" maxlength="40">
           <p class="leise klein"><span data-t="kennung"></span>: <code id="vKennung"></code></p>
-          <div class="zeile"><button id="vAnlegen" class="haupt" data-t="anlegen"></button><button id="vAbbrechen" class="neben" data-t="abbrechen"></button></div>
+          <div class="zeile"><button id="vAnlegen" class="haupt" data-t="anlegen"></button><button type="button" id="vStandard" data-t="vStandard"></button><button id="vAbbrechen" class="neben" data-t="abbrechen"></button></div>
           <p id="vMeldung" class="leise klein"></p>
         </div>
       </div>
@@ -217,6 +217,7 @@
         <label class="haken" id="symboleLoeschenZeile" hidden><input id="symboleLoeschen" type="checkbox"> <span id="symboleLoeschenText"></span></label>
         <details id="symboleListe" class="leise klein" hidden><summary data-t="symboleNamenZeigen"></summary><p id="symboleNamen"></p></details>
         <p id="funkeHinweis" class="leise klein"></p>
+        <p class="haken"><span data-t="fuerWen"></span> <select id="fuerAlle"><option value="modell" data-t="nurDiesesModell"></option><option value="alle" data-t="alleModelle"></option></select> <span id="fuerAlleHinweis" class="leise klein"></span></p>
         <button id="uebertragenKnopf" class="haupt" data-t="uebertragenKnopf"></button>
         <ol id="schritte" class="schritte"></ol>
         <p><button id="schnelltestKnopf" class="neben" data-t="schnelltest"></button> <span class="leise klein" data-t="schnelltestHinweis"></span></p>

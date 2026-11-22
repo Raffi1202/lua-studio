@@ -378,7 +378,7 @@
   "tour5": "Click a field: click a box. On the right you choose value, display and title. Boxes can be moved and resized. Moved something? «Undo» or Cmd/Ctrl+Z takes it back.",
   "tour6": "Limits and alarm: warning and alarm limits per value, e.g. battery 30 % / 20 %. They apply even if the value is on no box.",
   "tour7": "Check the preview: the preview draws like the Lua on the radio. Green dots in the size guard mean: the file fits into the memory of the radio.",
-  "tour8": "Transfer: with a connected radio transfer directly, otherwise «Save as file» for the SD card. Then the quick test shows whether the Lua reads the file.",
+  "tour8": "Transfer: with a connected radio transfer directly, otherwise «Save as file» for the SD card. Then the quick test shows whether the Lua reads the file. For all models: choose «All models (default)» under «Applies to».",
   "wiederholen": "Redo",
   "v_verschoben": "field moved",
   "v_groesse": "size changed",
@@ -389,5 +389,13 @@
   "v_schmuck": "decoration changed",
   "v_grenzen": "limits changed",
   "v_einstellungen": "settings changed",
-  "menueBearbeiten": "Edit"
+  "menueBearbeiten": "Edit",
+  "fuerWen": "Applies to:",
+  "nurDiesesModell": "This model only",
+  "alleModelle": "All models (default)",
+  "alleHinweis": "File {datei}: the Lua shows it for all models without their own studio file. Changes on the radio stay per model.",
+  "standardZuAlt": "Attention: the Lua on the radio ({v}) knows the default file only from {ab}.",
+  "standardOffen": "The default file needs a new version of the Lua (minimum version follows).",
+  "vStandard": "Default for all models",
+  "studioWahlStandard": " (default, all models)"
 }

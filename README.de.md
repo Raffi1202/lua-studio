@@ -59,6 +59,10 @@ Dazu: Knöpfe für alle Tasten, Textfeld für die Bildschirmtastatur, Bildschirm
 - **Rückgängig / Wiederholen:** jede Änderung am Layout, Knöpfe ↶ ↷, Cmd/Ctrl+Z und Shift+Cmd/Ctrl+Z bzw. Ctrl+Y.
 - **Hinweis auf neue Version:** Beim Start fragt Lua-Studio höchstens einmal am Tag die öffentliche GitHub-API nach neueren Releases (Pre-releases eingeschlossen) und zeigt eine Leiste mit Link auf die Release-Seite. Kein Download, keine Installation, keine persönlichen Daten (nur die normale Anfrage an api.github.com). Ausschalten über Hilfe → Nach Updates suchen.
 
+## Ein Layout für alle Modelle (ab 0.14.0)
+
+Übertragen oder «Als Datei speichern» mit «Für alle Modelle (Standard)»: Das Lua nimmt die Datei `Standard.<lua>.lua` für jedes Modell ohne eigene Studio-Datei (braucht eine neue Version des Luas). Änderungen am Sender bleiben je Modell.
+
 ## Modelle einstellen (ab 0.2.0)
 
 Im Reiter **Modelle** stellst du je Modell ein, was das Lua zeigt: Kästchen frei anordnen (Zahl, Ring, Balken, Kurve,

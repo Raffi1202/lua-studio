@@ -43,6 +43,10 @@ A program for Mac and Windows that belongs to our FrSky Ethos Lua widgets (Elect
 - **Undo / redo:** every layout change, buttons ↶ ↷, Cmd/Ctrl+Z and Shift+Cmd/Ctrl+Z or Ctrl+Y.
 - **New version notice:** on start Lua-Studio asks the public GitHub API at most once a day for newer releases (pre-releases included) and shows a bar with a link to the release page. No download, no installation, no personal data sent (only the normal request to api.github.com). Off via Help → Check for updates.
 
+## One layout for all models (from 0.14.0)
+
+Transfer or «Save as file» with «All models (default)»: the file `Standard.<lua>.lua` is used by the Lua for every model without its own studio file (needs a new version of the Lua). Changes on the radio stay per model.
+
 ## Supported Luas
 
 | Lua | Studio support |

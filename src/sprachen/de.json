@@ -378,7 +378,7 @@
   "tour5": "Platz anklicken: Klick auf ein Kästchen. Rechts wählst du Wert, Darstellung und Titel. Kästchen lassen sich verschieben und in der Grösse ändern. Verschoben? Mit «Rückgängig» oder Cmd/Ctrl+Z zurück.",
   "tour6": "Grenzen und Alarm: Warn- und Alarmgrenzen je Wert, z. B. Akku 30 % / 20 %. Sie gelten auch, wenn der Wert auf keinem Kästchen steht.",
   "tour7": "Vorschau prüfen: Die Vorschau zeichnet so wie das Lua auf der Funke. Grüne Punkte im Grössenwächter heissen: Die Datei passt in den Speicher der Funke.",
-  "tour8": "Übertragen: Mit verbundener Funke direkt übertragen, sonst «Als Datei speichern» für die SD-Karte. Danach zeigt der Schnelltest, ob das Lua die Datei liest.",
+  "tour8": "Übertragen: Mit verbundener Funke direkt übertragen, sonst «Als Datei speichern» für die SD-Karte. Danach zeigt der Schnelltest, ob das Lua die Datei liest. Für alle Modelle: bei «Gilt für» «Für alle Modelle (Standard)» wählen.",
   "wiederholen": "Wiederholen",
   "v_verschoben": "Platz verschoben",
   "v_groesse": "Grösse geändert",
@@ -389,5 +389,13 @@
   "v_schmuck": "Schmuck geändert",
   "v_grenzen": "Grenzen geändert",
   "v_einstellungen": "Einstellungen geändert",
-  "menueBearbeiten": "Bearbeiten"
+  "menueBearbeiten": "Bearbeiten",
+  "fuerWen": "Gilt für:",
+  "nurDiesesModell": "Nur dieses Modell",
+  "alleModelle": "Für alle Modelle (Standard)",
+  "alleHinweis": "Datei {datei}: Das Lua zeigt sie bei allen Modellen ohne eigene Studio-Datei. Änderungen am Sender bleiben je Modell.",
+  "standardZuAlt": "Achtung: Das Lua auf der Funke ({v}) kennt die Standard-Datei erst ab {ab}.",
+  "standardOffen": "Die Standard-Datei braucht eine neue Version des Luas (Mindestversion folgt).",
+  "vStandard": "Standard für alle Modelle",
+  "studioWahlStandard": " (Standard, alle Modelle)"
 }

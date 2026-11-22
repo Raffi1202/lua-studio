@@ -602,7 +602,7 @@ async function schnelltest({ ziel, kennung, lua, format, vorher, logZeilen, groe
       else p('gut', 'sensoren', String(info.sensoren.length))
       if (info.luaVersion) p('gut', 'luaVersion', String(info.luaVersion))
       // Neue Felder ab den Luas mit «Studio-Layout sicher finden» (R4, 22.11.2026)
-      if (typeof info.studioQuelle === 'string' && info.studioQuelle) p('gut', 'studioQuelle', `${info.studioQuelle}${info.studioWahl === 'menue' ? ' (Menü)' : ''}`)
+      if (typeof info.studioQuelle === 'string' && info.studioQuelle) p('gut', 'studioQuelle', `${info.studioQuelle}${info.studioWahl === 'menue' ? ' (Menü)' : info.studioWahl === 'standard' ? ' (Standard)' : ''}`)
       if (typeof info.ansichtGenutzt === 'string' && info.ansichtGenutzt) p(info.angepasst ? 'warn' : 'gut', info.angepasst ? 'ansichtAngepasst' : 'ansichtGenutzt', info.ansichtGenutzt)
       if (typeof info.hinweis === 'string' && info.hinweis) p('warn', 'luaHinweis', info.hinweis)
       if (info.luaVersion && NEUE_WAHL[lua] && versionKleiner(String(info.luaVersion), NEUE_WAHL[lua])) p('warn', 'keineMenueWahl', `${info.luaVersion} < ${NEUE_WAHL[lua]}`)

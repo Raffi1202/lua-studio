@@ -50,6 +50,10 @@ Vorschau prüfen: Die Vorschau zeichnet so wie das Lua auf der Funke. Grüne Pun
 
 ![Übertragen und Schnelltest](../bilder/tutorial-de-8.png)
 
+## Ein Layout für alle Modelle
+
+Unter **Übertragen** bei «Gilt für» **Für alle Modelle (Standard)** wählen. Lua-Studio schreibt dann `Standard.<lua>.lua`; das Lua nimmt sie für jedes Modell ohne eigene Studio-Datei. Reihenfolge: Wahl im Widget-Menü «Studio-Layout» → Datei des Modells → Standard → eingebaute Anzeige. Änderungen am Sender bleiben je Modell. Ein Standard-Projekt ohne Modell: **+ Vorbereiten → Standard für alle Modelle**. Braucht eine neue Version des Luas (Lua-Studio warnt).
+
 ## Rückgängig und Wiederholen
 
 Jede Änderung am Layout lässt sich zurücknehmen: Verschieben, Grösse ändern, Hinzufügen, Löschen, Wert, Darstellung, Titel, Farbe, Grenzen, Vorlage anwenden, Anordnen. Knöpfe **↶ Rückgängig** und **↷ Wiederholen** oben rechts im Modell (der Tooltip sagt, was zurückgenommen wird), Tasten **Cmd/Ctrl+Z** und **Shift+Cmd/Ctrl+Z** bzw. **Ctrl+Y**, auf dem Mac auch im Menü **Bearbeiten**. Ein Ziehvorgang ist ein Schritt. Der Verlauf gilt je Modell (bis 100 Schritte) und bleibt nach dem Übertragen erhalten, bis Lua-Studio geschlossen wird.

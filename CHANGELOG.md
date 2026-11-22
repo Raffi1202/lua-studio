@@ -2,6 +2,14 @@
 
 New entries in English. Older entries in German.
 
+## 0.14.0 (22 Nov 2026)
+
+- **One layout for all models:** «Applies to: This model only / All models (default)» when transferring and with «Save as file». «All» writes `Standard.<lua>.lua`, which the Luas use for every model without its own studio file (order: widget menu choice → model file → default → built-in). «Take over radio changes» is off for the default file, `.funke.lua` stays per model.
+- Default project without a real model: «+ Prepare → Default for all models» (ID «Standard»).
+- Quick test shows «(Standard)» when the Lua reads the default file (`studioWahl: "standard"`).
+- Warning when the Lua on the radio is older than the version that knows the default file.
+- Tutorial step 8 mentions «All models (default)»; manual, README and wiki.
+
 ## 0.13.0 (22 Nov 2026)
 
 - **Tutorial:** guided tour with 8 steps (choose Lua → model and ID → template → click a field → limits and alarm → preview → transfer or «Save as file» → quick test), highlighted step by step, DE/EN, skippable (Esc), on the first start and via Help → «Tutorial …». Uses a practice model «Tutorial» and offers to delete it at the end. Wiki page «Tutorial» / «Erste Schritte» with pictures.

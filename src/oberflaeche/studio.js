@@ -1219,7 +1219,7 @@ async function exportDatei(pfad) {
   if (!st.m || !st.projekt) return
   if (typeof pfad !== 'string') pfad = undefined
   if (!extraWarnungOk()) return
-  const r = await api.studio('exportDatei', { lua: st.m.lua, kennung: st.m.kennung, projekt: st.projekt, meta: meta(), pfad })
+  const r = await api.studio('exportDatei', { lua: st.m.lua, kennung: zielKennung(), projekt: st.projekt, meta: meta(), pfad })
   if (r.abgebrochen) return
   $('schritte').textContent = ''
   if (!r.ok) { $('schritte').appendChild(el('li', { class: 'fehler', text: `${t('fehler')}: ${fehlerText(String(r.fehler).startsWith('pruefen|') ? r.fehler : 'u_' + r.fehler)}` })); return }
@@ -1240,7 +1240,30 @@ async function exportDatei(pfad) {
 }
 $('exportDateiKnopf').addEventListener('click', exportDatei)
 
+// Für alle Modelle (0.14.0): Datei «Standard.<lua>.lua»; die Luas lesen sie, wenn das Modell keine eigene Datei hat
+// (Reihenfolge: Wahl im Menü, <Kennung>.<lua>.lua, Standard.<lua>.lua, eingebaute Anzeige). Änderungen am Sender bleiben je Modell.
+// Mindestversion je Lua, ab der es Standard.<lua>.lua kennt (null = noch nicht bekannt, keine Warnung)
+const STANDARD_AB = { electric: '0.9.0', heli: '1.16.0', jet: '0.7.0', glider: '0.7.0', gas_ecu: '1.13.0', gas_carb: '0.13.0', dlg: '0.3.0' }
+const istStandardModell = () => !!(st.m && String(st.m.kennung).toLowerCase() === 'standard')
+const fuerAlle = () => istStandardModell() || $('fuerAlle').value === 'alle'
+const zielKennung = () => (fuerAlle() ? 'Standard' : st.m.kennung)
+function fuerAlleZeigen() {
+  const sel = $('fuerAlle')
+  if (istStandardModell()) sel.value = 'alle'
+  sel.disabled = istStandardModell()
+  const ab = st.m && STANDARD_AB[st.m.lua], v = st.m && st.m.info && st.m.info.luaVersion
+  const h = []
+  if (fuerAlle()) h.push(t('alleHinweis').replace('{datei}', `Standard.${st.m.lua}.lua`))
+  if (fuerAlle() && ab && v && versionKleinerUI(String(v), ab)) h.push(t('standardZuAlt').replace('{v}', v).replace('{ab}', ab))
+  if (fuerAlle() && !ab) h.push(t('standardOffen'))
+  $('fuerAlleHinweis').textContent = h.join(' ')
+  $('fuerAlleHinweis').style.color = fuerAlle() && ab && v && versionKleinerUI(String(v), ab) ? 'var(--fehler)' : ''
+}
+$('fuerAlle').addEventListener('change', () => { fuerAlleZeigen(); uebertragenZeigen() })
+$('vStandard').addEventListener('click', () => { $('vName').value = 'Standard'; $('vName').dispatchEvent(new Event('input')) })
+
 async function uebertragenZeigen() {
+  if (st.m) fuerAlleZeigen()
   const vorbereitet = st.m && st.m.vorbereitet
   $('exportZeile').hidden = !vorbereitet
   if (vorbereitet && !st.exportZiele) await exportZieleZeigen()
@@ -1364,7 +1387,7 @@ async function uebertragenStart() {
   } catch (e) { $('uebertragenKnopf').disabled = false; $('schritte').appendChild(el('li', { class: 'fehler', text: `${t('fehler')}: ${t('symbolRechnen')}` })); return }
   // Symbole löschen nur mit Haken und nur die angekündigten
   const symboleLoeschen = !$('symboleLoeschenZeile').hidden && $('symboleLoeschen').checked ? st.symboleAngekuendigt || [] : []
-  const r = await api.studio('uebertragen', { spec: ziel, funkeName: funkeName(), lua: st.m.lua, kennung: st.m.kennung, projekt: st.projekt, meta: meta(), funkeUebernehmen: !$('funkeUebernehmenZeile').hidden && $('funkeUebernehmen').checked, symbole, symboleLoeschen })
+  const r = await api.studio('uebertragen', { spec: ziel, funkeName: funkeName(), lua: st.m.lua, kennung: zielKennung(), projekt: st.projekt, meta: meta(), funkeUebernehmen: !fuerAlle() && !$('funkeUebernehmenZeile').hidden && $('funkeUebernehmen').checked, symbole, symboleLoeschen })
   $('uebertragenKnopf').disabled = false
   if (!r.ok) $('schritte').appendChild(el('li', { class: 'fehler', text: `${t('fehler')}: ${fehlerText(r.fehler.startsWith('pruefen|') ? r.fehler : r.fehler.includes('|') ? r.fehler : 'u_' + r.fehler)}` }))
   else {
