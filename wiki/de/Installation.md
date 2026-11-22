@@ -8,9 +8,9 @@
 - Mac (Apple-Chip oder Intel) oder Windows-PC (64 Bit), USB-Datenkabel.
 - Die passende Datei aus dem GitHub-Release (Seite «Releases» rechts im Repo):
 
-- Mac mit Apple-Chip: `Lua-Studio-0.10.1-mac-arm64.dmg`
-- Mac mit Intel: `Lua-Studio-0.10.1-mac-x64.dmg`
-- Windows: `Lua-Studio-0.10.1-win-x64.exe`
+- Mac mit Apple-Chip: `Lua-Studio-0.10.2-mac-arm64.dmg`
+- Mac mit Intel: `Lua-Studio-0.10.2-mac-x64.dmg`
+- Windows: `Lua-Studio-0.10.2-win-x64.exe`
 
 «Funke live» liest nur das Display und schickt Tasten und Berührungen, so als würdest du die Funke selbst bedienen. «Modelle» schreibt nur in den Ordner `scripts/studio` der Funke und sichert vorher die alten Dateien am PC. Modelle selbst ändert Lua-Studio nicht.
 

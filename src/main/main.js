@@ -286,7 +286,7 @@ ipcMain.handle('studio:exportDatei', async (_e, a) => {
   try {
     namePruefen(a.lua, a.kennung)
     const b = beschreibungen()[a.lua] || {}
-    const gebaut = S.bauenMitWaechter(a.projekt, { ...(a.meta || {}), studioVersion: VERSION, immerAlarm: immerAlarm(a.lua), extra: S.extraDarstellungen(b, (a.meta || {}).luaVersion) })
+    const gebaut = S.bauenMitWaechter(a.projekt, { ...(a.meta || {}), studioVersion: VERSION, immerAlarm: immerAlarm(a.lua), werk: werkEinstellungen(a.lua), extra: S.extraDarstellungen(b, (a.meta || {}).luaVersion) })
     if (gebaut.fehler.length) return { ok: false, fehler: `pruefen|${gebaut.fehler.join('; ')}` }
     const r = steuerung && a.pfad ? { canceled: false, filePath: String(a.pfad) } : await dialog.showSaveDialog(fenster && !fenster.isDestroyed() ? fenster : undefined, { defaultPath: `${a.kennung}.${a.lua}.lua`, filters: [{ name: 'Lua-Studio', extensions: ['lua'] }] })
     if (r.canceled || !r.filePath) { P.info('export', 'Als Datei speichern abgebrochen'); return { ok: false, abgebrochen: true } }
@@ -367,7 +367,7 @@ ipcMain.handle('studio:uebertragen', async (_e, a) => {
     const nSym = Object.keys(a.symbole || {}).length
     P.info('uebertragen', `Start: ${a.kennung}.${a.lua} nach ${a.spec.art}${a.spec.art === 'funke' ? '' : ' ' + (a.spec.wurzel || a.spec.pfad)}, Format ${JSON.stringify((a.meta || {}).formate || null)}, ${nSym} Symboldateien${a.funkeUebernehmen ? ', Änderungen der Funke übernehmen' : ''}`)
     const r = await S.uebertragen({ ziel, ablage: studioAblage(), funkeName: a.funkeName, kennung: a.kennung, lua: a.lua, projekt: a.projekt,
-      meta: { ...a.meta, studioVersion: VERSION, immerAlarm: immerAlarm(a.lua), extra: S.extraDarstellungen(beschreibungen()[a.lua], (a.meta || {}).luaVersion) }, funkeUebernehmen: a.funkeUebernehmen,
+      meta: { ...a.meta, studioVersion: VERSION, immerAlarm: immerAlarm(a.lua), werk: werkEinstellungen(a.lua), extra: S.extraDarstellungen(beschreibungen()[a.lua], (a.meta || {}).luaVersion) }, funkeUebernehmen: a.funkeUebernehmen,
       werkGrenzen: ((beschreibungen()[a.lua] || {}).standard || {}).grenzen || {}, schritt: (t, ok) => { (ok ? P.info : P.warnung).call(P, 'uebertragen', `${ok ? 'Schritt' : 'Abbruch'}: ${t}`); melden('studio:schritt', { t, ok }) },
       symbolDateien: symbolePuffer(a.symbole), symboleLoeschen: symbolNamen(a.symboleLoeschen) })
     if (a.funkeUebernehmen) studioAblage().projektSpeichern(a.funkeName, a.lua, a.kennung, { einstellungen: r.daten.einstellungen, werte: r.daten.werte, grenzen: r.daten.grenzen, ansichten: r.daten.ansichten })
@@ -376,6 +376,8 @@ ipcMain.handle('studio:uebertragen', async (_e, a) => {
   } catch (e) { return fehlerAntwort(e) }
 })
 // Werte mit immerAlarm (Abschaltgründe, Format 2 §3.5) eines Luas
+// Werkwerte der Einstellungen eines Luas (für einstellungenSchreiben)
+function werkEinstellungen(lua) { return Object.fromEntries(((beschreibungen()[lua] || {}).einstellungen || []).filter((e) => e && e.s).map((e) => [e.s, e.werk])) }
 function immerAlarm(lua) { return ((beschreibungen()[lua] || {}).werte || []).filter((w) => w && w.immerAlarm).map((w) => `lua:${w.s}`) }
 // Freigegebene Symbolnamen aus der Oberfläche: nur gültige Dateinamen
 function symbolNamen(roh) { return Array.isArray(roh) ? roh.filter((n) => typeof n === 'string' && Y.DATEI.test(n)).slice(0, 2000) : [] }
@@ -386,7 +388,7 @@ ipcMain.handle('studio:symboleUnbenutzt', async (_e, a) => {
     if (!a.spec || a.spec.art === 'ordner') return { ok: true, namen: [] }
     const ziel = zielAus(a.spec, a.lua)
     if (ziel.art === 'ordner') return { ok: true, namen: [] }
-    const d = S.dateiDaten(a.projekt, { ...(a.meta || {}), immerAlarm: immerAlarm(a.lua), extra: S.extraDarstellungen(beschreibungen()[a.lua], (a.meta || {}).luaVersion) })
+    const d = S.dateiDaten(a.projekt, { ...(a.meta || {}), immerAlarm: immerAlarm(a.lua), werk: werkEinstellungen(a.lua), extra: S.extraDarstellungen(beschreibungen()[a.lua], (a.meta || {}).luaVersion) })
     const r = await S.symboleUnbenutzt(ziel, `${a.kennung}.${a.lua}.lua`, d.format === 2 ? d.symbole || [] : [])
     return { ok: true, ...r }
   } catch (e) { return fehlerAntwort(e) }

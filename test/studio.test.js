@@ -262,3 +262,29 @@ test('Funke (0.9.0): ohne Info-Datei und ohne Lua-Ordner auf SD gilt der erste O
   const f2 = { dateien: async (o) => (baum2[o] ? { status: 0, liste: baum2[o] } : { status: -4, liste: [] }) }
   assert.strictEqual(await funkenZiel(f2, 'gas_carb').basis(), '/scripts/studio')
 })
+
+test('Einstellungen (0.10.2): nur Abweichungen vom Werkwert; frischer Glider nicht gesperrt, >48 Änderungen gesperrt, sonst gleich', () => {
+  const b = S.beschreibungenLaden(path.join(__dirname, '..', 'src', 'luas'))
+  const werkVon = (lua) => Object.fromEntries((b[lua].einstellungen || []).map((e) => [e.s, e.werk]))
+  // 1. frisch vorbereitetes Glider-Modell (51 Einstellungen in der Beschreibung): nicht gesperrt
+  const info = S.vorbereitetInfo('L', b.glider, 'Segler Test')
+  const g = S.neuesProjekt(b.glider, info)
+  assert.ok(Object.keys(g.einstellungen).length > 48, 'Glider hat mehr als 48 Einstellungen')
+  const meta = { formate: info.formate, werk: werkVon('glider') }
+  const r1 = S.bauenMitWaechter(g, meta)
+  assert.deepStrictEqual(r1.fehler, [], 'frischer Glider nicht gesperrt')
+  assert.strictEqual(Object.keys(r1.daten.einstellungen).length, 0)
+  // 2. mehr als 48 geänderte Einstellungen: weiterhin gesperrt
+  const g2 = JSON.parse(JSON.stringify(g))
+  for (const e of b.glider.einstellungen) g2.einstellungen[e.s] = typeof e.werk === 'number' ? e.werk + 1 : (typeof e.werk === 'boolean' ? !e.werk : 'x')
+  const r2 = S.bauenMitWaechter(g2, meta)
+  assert.ok(r2.fehler.some((f) => /listen/.test(f)), 'mehr als 48 Änderungen gesperrt: ' + JSON.stringify(r2.fehler))
+  // 3. andere Luas: Datei gleich wie bisher bis auf die weggelassenen Werkeinstellungen
+  for (const lua of ['electric', 'heli', 'jet', 'gas_ecu', 'gas_carb']) {
+    const i = S.vorbereitetInfo('L', b[lua], 'X'); const p = S.neuesProjekt(b[lua], i)
+    p.einstellungen[Object.keys(p.einstellungen)[0]] = 'geändert'
+    const alt = S.dateiDaten(p, { formate: i.formate }), neu = S.dateiDaten(p, { formate: i.formate, werk: werkVon(lua) })
+    assert.deepStrictEqual({ ...neu, einstellungen: null }, { ...alt, einstellungen: null }, lua)
+    assert.deepStrictEqual(Object.keys(neu.einstellungen), [Object.keys(p.einstellungen)[0]], lua)
+  }
+})

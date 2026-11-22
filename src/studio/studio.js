@@ -224,7 +224,7 @@ function dateiDatenMitInfo(projekt, meta) {
     funke: meta.funke,
     modell: meta.modell,
     luaVersion: meta.luaVersion,
-    einstellungen: projekt.einstellungen,
+    einstellungen: einstellungenSchreiben(projekt.einstellungen, meta.werk),
     werte: projekt.werte,
     grenzen: grenzenSchreiben(projekt.grenzen, meta.immerAlarm),
   }
@@ -236,6 +236,15 @@ function dateiDatenMitInfo(projekt, meta) {
   // Ansichten ohne Kästchen nicht schreiben: Dann zeichnet das Lua für diese Grösse seine eingebaute Belegung
   daten.ansichten = ansichten
   return { daten, wegfall, verworfen }
+}
+// Einstellungen zum Schreiben (ab 0.10.2): nur Werte, die vom Werkwert des Luas abweichen. Fehlt ein Eintrag, nimmt das Lua
+// den Werkwert; so bleiben auch Luas mit vielen Einstellungen (Glider 0.6.0: 51) unter der Listengrenze von 48 (Format 2 §7.2).
+// werk: { schlüssel: werkwert } aus beschreibung.json; ohne werk bleibt alles wie bisher.
+function einstellungenSchreiben(einstellungen, werk) {
+  if (!werk) return einstellungen
+  const r = {}
+  for (const [k, v] of Object.entries(einstellungen || {})) if (!(k in werk) || JSON.stringify(werk[k]) !== JSON.stringify(v)) r[k] = v
+  return r
 }
 // Grenzen zum Schreiben: «auch bei Motor aus» (Format 2 §3.5) nur als false, fehlt = true (spart Platz)
 // immer = Wert-Schlüssel mit immerAlarm (Abschaltgründe): dort hat das Feld keine Wirkung und wird nie geschrieben
@@ -597,5 +606,5 @@ async function schnelltest({ ziel, kennung, lua, format, vorher, logZeilen, groe
   return { ok: !punkte.some((x) => x.stufe === 'fehler'), unsicher: alt, punkte }
 }
 
-module.exports = { NEUE_WAHL, extraDarstellungen, versionKleiner, ALIAS, aliasAktiv, ablageUmziehen, grenzenSchreiben, symboleUnbenutzt, beschreibungenLaden, Ablage, modelleLesen, neuesProjekt, dateiDaten, dateiDatenMitInfo, bauenMitWaechter, presets, presetAnwenden,
+module.exports = { einstellungenSchreiben, NEUE_WAHL, extraDarstellungen, versionKleiner, ALIAS, aliasAktiv, ablageUmziehen, grenzenSchreiben, symboleUnbenutzt, beschreibungenLaden, Ablage, modelleLesen, neuesProjekt, dateiDaten, dateiDatenMitInfo, bauenMitWaechter, presets, presetAnwenden,
   GRUPPEN, VORBEREITET, gruppeVonFenster, vorbereitetInfo, symboleSchreiben, symboleAufraeumen, schnelltest, funkeAenderungenUebernehmen, uebertragen }

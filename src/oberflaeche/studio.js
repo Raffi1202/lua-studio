@@ -167,7 +167,8 @@ function meta() {
   const i = (st.m && st.m.info) || {}
   const immerAlarm = (beschreibung().werte || []).filter((w) => w && w.immerAlarm).map((w) => `lua:${w.s}`)
   const extra = extraErlaubt()
-  return { funke: i.funke, modell: i.modell, luaVersion: i.luaVersion, modellPfad: i.modellPfad, formate: i.formate, immerAlarm, extra }
+  const werk = Object.fromEntries((beschreibung().einstellungen || []).filter((e) => e && e.s).map((e) => [e.s, e.werk]))
+  return { funke: i.funke, modell: i.modell, luaVersion: i.luaVersion, modellPfad: i.modellPfad, formate: i.formate, immerAlarm, extra, werk }
 }
 async function pruefen() {
   if (!st.projekt) return
