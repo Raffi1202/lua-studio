@@ -2,6 +2,10 @@
 
 New entries in English. Older entries in German.
 
+## 0.10.7 (22 Nov 2026)
+
+- **Preview like Electric 0.7.5 (32d26db):** the header symbol sits at x + margin, centred on the title line when its edge is not higher than the title (floor of the title height), otherwise top left as before. The reference `studio_symbole.lua` of format 2 is updated (small masks 12/16 px only by file name, one attempt each, not counted towards the 20 symbols).
+
 ## 0.10.6 (22 Nov 2026)
 
 User decision «symbols as large as the text» (like Electric 0.7.5; Heli and Jet follow):

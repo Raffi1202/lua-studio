@@ -427,8 +427,11 @@ function symbolUndEinheit(svg, p, farbe, einheit, zeitOderStatus, titel, th, pad
   let x = r, da = false
   if (p.symbol && katalog(p.symbol) && symboleAn()) {
     const kopf = th !== undefined
-    const k = kante(kopf ? kopfPx(th, B) : (p.symbolPx || 24), B)
-    const x0 = kopf ? pad : r, y0 = kopf ? Math.round(pad + th / 2 - k / 2) : r
+    // wie studio_symbole.lua (Electric 0.7.5): hoch = floor(th), ty = pad; Symbol bei x + rand, mittig auf der Titelzeile
+    // (ty + (hoch − kante) // 2); ist die Kante grösser als hoch, oben links (y + rand)
+    const hoch = kopf ? Math.floor(th) : 0
+    const k = kante(kopf ? kopfPx(hoch, B) : (p.symbolPx || 24), B)
+    const x0 = r, y0 = kopf && k <= hoch ? pad + Math.floor((hoch - k) / 2) : r
     const e = svgSymbol(p.symbol, x0, y0, k, farbe)
     if (e) { svg.appendChild(e); x = x0 + k + r; da = true }
   }
