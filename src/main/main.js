@@ -76,6 +76,7 @@ function fensterOeffnen() {
     minWidth: 900,
     minHeight: 600,
     title: 'Lua-Studio',
+    icon: path.join(__dirname, '..', 'bilder', 'logo-256.png'),   // Fenster-/Taskleisten-Symbol (Windows, Linux); Mac nimmt das .icns der App
     backgroundColor: '#14161a',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),

@@ -2,6 +2,10 @@
 
 New entries in English. Older entries in German.
 
+## 0.11.2 (22 Nov 2026)
+
+- **Own logo** (user's choice: a stylised radio screen with header bar and coloured layout tiles): app icon for Mac (`.icns`), Windows (`.ico`) and Linux (`.png`), window and taskbar icon, logo in README and wiki. Own design, no third-party marks or icons. Source: `bau/logo/lua-studio-logo.svg`.
+
 ## 0.11.1 (22 Nov 2026)
 
 Clean-up after removing the symbols:

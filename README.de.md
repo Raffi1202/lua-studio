@@ -1,3 +1,5 @@
+<img src="bau/logo/lua-studio-logo.svg" alt="Lua-Studio-Logo" width="96" align="right">
+
 # Lua-Studio
 
 🇬🇧 [English](README.md) · 🇩🇪 Deutsch · Dokumentation: [Wiki (Deutsch)](wiki/Home.md#deutsch)
