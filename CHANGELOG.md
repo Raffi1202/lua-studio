@@ -2,6 +2,14 @@
 
 New entries in English. Older entries in German.
 
+## 0.11.0 (22 Nov 2026)
+
+User decision: **symbols are removed completely.**
+- No symbol choice in the box editor, no symbol decoration, no symbols in templates; no symbol images are transferred (also no 12/16 px masks). The switch «All symbols off» is gone.
+- Old projects and studio files with symbols are loaded, the symbols dropped and the note «Symbols are no longer supported and were removed» is shown once; the layout stays.
+- Old symbol images on the radio (studio/symbole) are offered for deletion with the tick «Delete symbols», as before.
+- Size guard without the lines «Symbols» and «Image memory». Format 2: the symbol part is marked «dropped from 0.11.0».
+
 ## 0.10.7 (22 Nov 2026)
 
 - **Preview like Electric 0.7.5 (32d26db):** the header symbol sits at x + margin, centred on the title line when its edge is not higher than the title (floor of the title height), otherwise top left as before. The reference `studio_symbole.lua` of format 2 is updated (small masks 12/16 px only by file name, one attempt each, not counted towards the 20 symbols).

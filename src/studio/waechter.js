@@ -53,12 +53,7 @@ function pruefen(text, daten) {
   if (daten.format === 2) {
     const maxD = Math.max(0, ...ans.map((a) => (a.deko || []).length))
     zeile('deko', maxD, GRENZEN.deko, `${maxD} / ${GRENZEN.deko[1]}`)
-    const sy = daten.symbole || []
-    const gross = Y.grosseSymbole(sy).length   // ab 0.10.6: kleine Masken 12/16 zählen nicht (stehen im Bildspeicher)
-    zeile('symbole', gross, GRENZEN.symbole, `${gross} / ${GRENZEN.symbole[1]}`)
-    const B = Y.displayBreite((ans[0] || {}).breite || 800)
-    const bild = sy.reduce((n, s) => n + Y.kante(s.px, B) ** 2, 0)
-    zeilen.push({ k: 'bild', wert: bild, ampel: 'gruen', anzeige: `${(bild / 1024).toFixed(1)} KB` })
+    // ab 0.11.0 keine Symbole und keine Symbolbilder mehr: Zeilen «Symbole» und «Bildspeicher» entfallen
   }
   return { zeilen, gesperrt: zeilen.filter((r) => r.ampel === 'rot').map((r) => r.k) }
 }

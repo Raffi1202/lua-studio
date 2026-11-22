@@ -60,21 +60,21 @@ test('Graustufen-PNG: gültiger Kopf, Farbtyp 0, Inhalt stimmt; Kopfprüfung wei
 })
 
 test('Format-Wahl: Format 2 nur wenn das Lua es kann und die Gestaltung es braucht', () => {
-  const p = projekt([platz({ symbol: 'akku', symbolPx: 48, einheitZeigen: false })], [{ art: 'symbol', x: 600, y: 10, name: 'elektromotor', px: 64 }])
+  const p = projekt([platz({ symbol: 'akku', symbolPx: 48, einheitZeigen: false })], [{ art: 'symbol', x: 600, y: 10, name: 'elektromotor', px: 64 }, { art: 'rahmen', x: 600, y: 100, b: 100, h: 50 }])
   const r2 = S.dateiDatenMitInfo(p, meta2)
   assert.strictEqual(r2.daten.format, 2)
-  assert.deepStrictEqual(r2.daten.symbole, [{ name: 'akku', px: 48 }, { name: 'elektromotor', px: 64 }])
+  assert.strictEqual(r2.daten.symbole, undefined, 'ab 0.11.0 keine Symbole')
   const g = F.bauen(r2.daten)
   assert.deepStrictEqual(g.fehler, [])
   assert.strictEqual(F.pruefenWieFunke(g.text), null)
   const zurueck = F.lesen(g.text)
   assert.strictEqual(zurueck.format, 2)
-  assert.strictEqual(zurueck.ansichten[0].plaetze[0].symbol, 'akku')
+  assert.strictEqual(zurueck.ansichten[0].plaetze[0].symbol, undefined)
   assert.strictEqual(zurueck.ansichten[0].plaetze[0].einheitZeigen, false)
   // 0.10.4: altes «fett» wird nicht mehr geschrieben (gilt wie «am Wert»)
   const pf = projekt([platz({ symbol: 'akku', symbolPx: 48, einheitZeigen: 'fett' })])
   assert.strictEqual(S.dateiDatenMitInfo(pf, meta2).daten.ansichten[0].plaetze[0].einheitZeigen, undefined)
-  assert.strictEqual(zurueck.ansichten[0].deko[0].name, 'elektromotor')
+  assert.deepStrictEqual(zurueck.ansichten[0].deko.map((d) => d.art), ['rahmen'])
 
   const r1 = S.dateiDatenMitInfo(p, { ...meta2, formate: [1] })
   assert.strictEqual(r1.daten.format, 1)
@@ -105,29 +105,8 @@ test('Ungültiges wird nicht geschrieben: fremde Symbole, Schlepp unter 48 px, k
   assert.strictEqual(a.deko[0].art, 'text')
   assert.deepStrictEqual(a.deko[1], { art: 'linie', x: 10, y: 300, b: 100, h: -100 })
   assert.ok(!a.plaetze.some((p) => p.symbol))
-  assert.ok(r.verworfen.includes('symbol:rotor') && r.verworfen.includes('symbol:schlepp') && r.verworfen.includes('deko:anzahl'))
+  assert.ok(r.verworfen.includes('deko:anzahl'))   // Symbole fallen ab 0.11.0 still weg
   assert.strictEqual(F.pruefenWieFunke(F.bauen(r.daten).text), null)
-})
-
-test('Grössenwächter: mehr als 20 Symbole sperren, Speicher wird geschätzt, Bildspeicher je Kante', () => {
-  const namen = Y.KATALOG.slice(0, 21).map((k) => k.name)
-  const plaetze = namen.slice(0, 16).map((n, i) => platz({ x: (i % 4) * 196, y: (i >> 2) * 79, b: 190, h: 75, symbol: n, symbolPx: 24 }))
-  const deko = namen.slice(16).map((n, i) => ({ art: 'symbol', x: i * 40, y: 0, name: n, px: 24 }))
-  const r = S.bauenMitWaechter(projekt(plaetze, deko), meta2)
-  assert.strictEqual(r.daten.symbole.length, 21)
-  assert.ok(r.fehler.some((f) => f.includes('symbole')), r.fehler.join())
-  const z = Object.fromEntries(r.waechter.zeilen.map((x) => [x.k, x]))
-  assert.strictEqual(z.symbole.ampel, 'rot')
-  assert.strictEqual(z.bild.wert, 21 * 24 * 24)
-  assert.ok(z.spitze.wert > 4.5)
-  const ok = S.bauenMitWaechter(projekt(plaetze.slice(0, 5)), meta2)
-  assert.deepStrictEqual(ok.fehler, [])
-  // Eichung an der Messung X18RS (typisch 58,6 KB, g16_lang24 125,8 KB): eher zu hoch
-  const ordner = process.env.LUA_STUDIO_FORMAT
-  if (ordner) {
-    const typisch = fs.readFileSync(path.join(ordner, 'Lua-Studio-Format v1 - Testdateien', 'typisch.lua'), 'utf8')
-    assert.ok(W.spitzeSchaetzen(typisch) >= 58.6)
-  }
 })
 
 test('Listen über 48 Einträge sperren (Format 2 §7.2)', () => {
@@ -176,67 +155,6 @@ function mitMasken(d) {
   for (const n of Object.keys(d || {})) { const name = n.replace(/_\d+\.png$/, ''); for (const k of [12, 16]) if (!r[`${name}_${k}.png`]) r[`${name}_${k}.png`] = Y.pngGrau(k, Buffer.alloc(k * k, 200)) }
   return r
 }
-test('Übertragen mit Symbolen: PNG nach symbole/, Studio-Datei Format 2, Aufräumen ungenutzter Symbole, Kennungskonflikt', async () => {
-  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'lua-studio-f2-'))
-  const ablage = new S.Ablage(path.join(tmp, 'pc'))
-  // SD-Laufwerk: <wurzel>/scripts/studio (nur dort räumt das Studio Symbole auf)
-  const ziel = ordnerZiel('laufwerk', path.join(tmp, 'sd'))
-  fs.mkdirSync(path.join(tmp, 'sd', 'scripts', 'studio'), { recursive: true })
-  fs.symlinkSync(path.join(tmp, 'sd', 'scripts', 'studio'), path.join(tmp, 'studio'))
-  const schritte = []
-  // Gelöscht wird nur, was vorher angekündigt und freigegeben wurde (ab 0.4.1): hier immer alles Angekündigte freigeben
-  const lauf = async (p, symbolDateien, kennung = 'Test', freigeben = true) => {
-    const d = S.dateiDaten(p, meta2)
-    const u = await S.symboleUnbenutzt(ziel, `${kennung}.testlua.lua`, d.format === 2 ? d.symbole || [] : [])
-    return S.uebertragen({ ziel, ablage, funkeName: 'X18RS', kennung, lua: 'testlua', projekt: p,
-      meta: meta2, funkeUebernehmen: false, schritt: (t) => schritte.push(t), werkGrenzen: {}, symbolDateien: mitMasken(symbolDateien), symboleLoeschen: freigeben ? u.namen : [] })
-  }
-  const png48 = Y.pngGrau(48, grau(48, 255))
-  const png24 = Y.pngGrau(24, grau(24, 0))
-  // fremde Datei im Symbolordner bleibt, eine alte ungenutzte Symboldatei wird aufgeräumt
-  fs.mkdirSync(path.join(tmp, 'studio', 'symbole'), { recursive: true })
-  fs.writeFileSync(path.join(tmp, 'studio', 'symbole', 'LIESMICH.txt'), 'x')
-  fs.writeFileSync(path.join(tmp, 'studio', 'symbole', 'uhr_32.png'), 'alt')
-  // ohne Freigabe: nichts gelöscht, nur gemeldet
-  await lauf(projekt([platz({ symbol: 'akku', symbolPx: 48 }), platz({ x: 300, symbol: 'stern' })]), { 'akku_48.png': png48, 'stern_24.png': png24 }, 'Test', false)
-  assert.ok(fs.existsSync(path.join(tmp, 'studio', 'symbole', 'uhr_32.png')))
-  assert.ok(schritte.includes('symboleBleiben|1') && !schritte.some((x) => x.startsWith('symboleGeloescht')))
-  // Freigabe nur für eine Datei, die gar nicht unbenutzt ist: wird nicht gelöscht
-  await S.uebertragen({ ziel, ablage, funkeName: 'X18RS', kennung: 'Test', lua: 'testlua', projekt: projekt([platz({ symbol: 'akku', symbolPx: 48 }), platz({ x: 300, symbol: 'stern' })]),
-    meta: meta2, funkeUebernehmen: false, schritt: () => {}, werkGrenzen: {}, symbolDateien: mitMasken({ 'akku_48.png': png48, 'stern_24.png': png24 }), symboleLoeschen: ['akku_48.png'] })
-  assert.ok(fs.existsSync(path.join(tmp, 'studio', 'symbole', 'akku_48.png')))
-  await lauf(projekt([platz({ symbol: 'akku', symbolPx: 48 }), platz({ x: 300, symbol: 'stern' })]), { 'akku_48.png': png48, 'stern_24.png': png24 })
-  const sym = fs.readdirSync(path.join(tmp, 'studio', 'symbole')).sort()
-  assert.deepStrictEqual(sym, ['LIESMICH.txt', 'akku_12.png', 'akku_16.png', 'akku_48.png', 'stern_12.png', 'stern_16.png', 'stern_24.png'])
-  assert.ok(fs.readFileSync(path.join(tmp, 'studio', 'symbole', 'akku_48.png')).equals(png48))
-  const datei = F.lesen(fs.readFileSync(path.join(tmp, 'studio', 'Test.testlua.lua'), 'utf8'))
-  assert.strictEqual(datei.format, 2)
-  assert.ok(schritte.some((s) => /^symbole\|\d+\/6$/.test(s)))  // 0.10.6: 2 Symbole + je 2 kleine Masken
-  assert.ok(schritte.some((s) => s === 'symboleGeloescht|1'))
-
-  // Ein zweites Modell nutzt «stern»; das erste verzichtet auf Symbole: akku weg, stern bleibt
-  await lauf(projekt([platz({ symbol: 'stern' })]), { 'stern_24.png': png24 }, 'Zwei')
-  await lauf(projekt([platz()]), {})
-  assert.deepStrictEqual(fs.readdirSync(path.join(tmp, 'studio', 'symbole')).sort(), ['LIESMICH.txt', 'stern_12.png', 'stern_16.png', 'stern_24.png'])
-
-  // Fehlende oder falsche Maske: Abbruch, bevor die Studio-Datei geschrieben wird
-  const vorher = fs.readFileSync(path.join(tmp, 'studio', 'Test.testlua.lua'))
-  await assert.rejects(lauf(projekt([platz({ symbol: 'akku', symbolPx: 48 })]), { 'akku_48.png': png24 }), /symbolUngueltig/)
-  await assert.rejects(lauf(projekt([platz({ symbol: 'uhr', symbolPx: 48 })]), {}), /symbolUngueltig/)
-  assert.ok(fs.readFileSync(path.join(tmp, 'studio', 'Test.testlua.lua')).equals(vorher))
-
-  // Kaputte Studio-Datei im Ordner: nichts aufräumen
-  fs.writeFileSync(path.join(tmp, 'studio', 'Kaputt.testlua.lua'), 'return { x = os.exit() }')
-  schritte.length = 0
-  await lauf(projekt([platz()]), {}, 'Zwei')
-  assert.ok(schritte.includes('symboleNichtAufgeraeumt'))
-  assert.ok(fs.existsSync(path.join(tmp, 'studio', 'symbole', 'stern_24.png')))
-
-  // Gleiche Kennung in anderer Schreibweise: nichts schreiben
-  await assert.rejects(lauf(projekt([platz()]), {}, 'zwei'), /kennungKonflikt/)
-  assert.ok(!fs.readdirSync(path.join(tmp, 'studio')).includes('zwei.testlua.lua'))
-})
-
 test('Preset auf ein X14-Modell: Grössen des Modells bleiben, fremde Preset-Ansichten fallen weg', () => {
   const preset = { ansichten: [{ breite: 784, hoehe: 316, plaetze: [platz()] }, { breite: 800, hoehe: 480, plaetze: [platz()] }, { breite: 630, hoehe: 258, plaetze: [platz({ b: 150 })] }] }
   const x14 = [{ breite: 630, hoehe: 258 }, { breite: 640, hoehe: 360 }]
@@ -258,30 +176,12 @@ test('Ungültige Werte aus Vorlagen werden nicht geschrieben und gemeldet', () =
   const p = v.ansichten[0].plaetze[0]
   assert.strictEqual(p.symbolPx, undefined); assert.strictEqual(p.einheitZeigen, undefined); assert.strictEqual(p.farbe, undefined); assert.strictEqual(p.darstellung, undefined)
   assert.strictEqual(v.ansichten[0].deko[0].farbe, undefined)
-  assert.ok(v.verworfen.includes('symbolPx') && v.verworfen.includes('farbe'))
+  assert.ok(v.verworfen.includes('farbe'))
   // auch direkt im Projekt: das Studio schreibt keine Werte ausserhalb von Format 2
   const r = S.dateiDatenMitInfo(projekt([platz({ symbol: 'akku', symbolPx: 40, einheitZeigen: 'xx', farbeWarn: [1, 2] })]), meta2)
   const q = r.daten.ansichten[0].plaetze[0]
   assert.strictEqual(q.symbolPx, undefined); assert.strictEqual(q.einheitZeigen, undefined); assert.strictEqual(q.farbeWarn, undefined)
-  assert.ok(r.verworfen.includes('symbolPx'))
-})
-
-test('Export in einen frei gewählten Ordner räumt nichts auf; Symbol einer anderen Displaygrösse wird nicht überschrieben', async () => {
-  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'lua-studio-f2b-'))
-  const ablage = new S.Ablage(path.join(tmp, 'pc'))
-  const ziel = ordnerZiel('ordner', path.join(tmp, 'export'))
-  fs.mkdirSync(path.join(tmp, 'export', 'symbole'), { recursive: true })
-  fs.writeFileSync(path.join(tmp, 'export', 'symbole', 'uhr_32.png'), Y.pngGrau(32, grau(32)))
-  const lauf = (p, symbolDateien, kennung = 'A') => S.uebertragen({ ziel, ablage, funkeName: 'X', kennung, lua: 'testlua', projekt: p,
-    meta: meta2, funkeUebernehmen: false, schritt: () => {}, werkGrenzen: {}, symbolDateien: mitMasken(symbolDateien) })
-  await lauf(projekt([platz()]), {})
-  assert.ok(fs.existsSync(path.join(tmp, 'export', 'symbole', 'uhr_32.png')))
-  // akku_48 für X14 (38 px) liegt schon da, jetzt käme die X18RS-Fassung (48 px)
-  fs.writeFileSync(path.join(tmp, 'export', 'symbole', 'akku_48.png'), Y.pngGrau(38, grau(38)))
-  await assert.rejects(lauf(projekt([platz({ symbol: 'stern', symbolPx: 48 }), platz({ x: 300, symbol: 'akku', symbolPx: 48 })]),
-    { 'akku_48.png': Y.pngGrau(48, grau(48)), 'stern_48.png': Y.pngGrau(48, grau(48)) }, 'B'), /symbolAndereGruppe/)
-  assert.ok(!fs.existsSync(path.join(tmp, 'export', 'symbole', 'stern_48.png')), 'nichts teilweise geschrieben')
-  assert.strictEqual(Y.pngPruefen(fs.readFileSync(path.join(tmp, 'export', 'symbole', 'akku_48.png')), 38), null)
+  assert.ok(r.verworfen.includes('farbeWarn'))
 })
 
 test('Funken-Schnelltest: Info-Datei und Log auswerten', async () => {
@@ -317,7 +217,7 @@ test('M6: formate aus der Info-Datei, wenn meta.formate fehlt; Schnelltest melde
   const ziel = ordnerZiel('ordner', tmp)
   fs.writeFileSync(path.join(tmp, 'E.testlua.info.json'), JSON.stringify({ lua: 'testlua', formate: [1, 2], studioDatei: 'geladen', fenster: [{ breite: 800, hoehe: 480 }], sensoren: [{ appId: 1, sub: 0, phys: 0, name: 'x' }] }))
   const { formate, ...ohne } = meta2
-  const p = { einstellungen: {}, werte: {}, grenzen: {}, ansichten: [{ breite: 784, hoehe: 316, plaetze: [platz({ symbol: 'akku' })] }] }
+  const p = { einstellungen: {}, werte: {}, grenzen: {}, ansichten: [{ breite: 784, hoehe: 316, plaetze: [platz({ einheitZeigen: false })] }] }
   await S.uebertragen({ ziel, ablage: new S.Ablage(path.join(tmp, 'pc')), funkeName: 'X', kennung: 'E', lua: 'testlua', projekt: p, meta: ohne,
     funkeUebernehmen: false, schritt: () => {}, werkGrenzen: {}, symbolDateien: mitMasken({ 'akku_24.png': Y.pngGrau(24, grau(24)) }) })
   assert.strictEqual(F.lesen(fs.readFileSync(path.join(tmp, 'E.testlua.lua'), 'utf8')).format, 2)
@@ -362,4 +262,30 @@ test('Schalter «Alle Symbole aus» (0.10.6): keine Symbole in der Datei, Projek
   assert.ok(!(d.ansichten[0].deko || []).some((x) => x.art === 'symbol'))
   assert.strictEqual(Y.dateiListe(d).length, 0, 'keine Symbolbilder')
   assert.strictEqual(p.ansichten[0].plaetze[0].symbol, 'akku', 'Projekt behält das Symbol')
+})
+
+test('Symbole entfallen ab 0.11.0: keine Symbole in Datei und Vorlagen, keine Bilder, alte Bilder als Angebot zum Löschen', async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'lua-studio-ohne-sym-'))
+  const ziel = ordnerZiel('laufwerk', path.join(tmp, 'sd'))
+  fs.mkdirSync(path.join(tmp, 'sd', 'scripts', 'studio', 'symbole'), { recursive: true })
+  const alt = path.join(tmp, 'sd', 'scripts', 'studio', 'symbole')
+  for (const n of ['akku_48.png', 'akku_12.png', 'stern_24.png']) fs.writeFileSync(path.join(alt, n), Y.pngGrau(4, grau(4)))
+  const p = projekt([platz({ symbol: 'akku', symbolPx: 48 })], [{ art: 'symbol', x: 600, y: 10, name: 'stern', px: 32 }])
+  assert.ok(S.symboleIn(p))
+  const d = S.dateiDaten(p, meta2)
+  assert.strictEqual(d.symbole, undefined)
+  assert.ok(!d.ansichten[0].plaetze[0].symbol && !(d.ansichten[0].deko || []).some((x) => x.art === 'symbol'))
+  assert.strictEqual(Y.dateiListe(d).length, 0, 'keine Symbolbilder')
+  // alte Bilder: Angebot zum Löschen (nur mit Haken), danach sind sie weg
+  const u = await S.symboleUnbenutzt(ziel, 'Test.testlua.lua', [])
+  assert.deepStrictEqual(u.namen.sort(), ['akku_12.png', 'akku_48.png', 'stern_24.png'])
+  await S.uebertragen({ ziel, ablage: new S.Ablage(path.join(tmp, 'pc')), funkeName: 'X18RS', kennung: 'Test', lua: 'testlua', projekt: p,
+    meta: meta2, funkeUebernehmen: false, schritt: () => {}, werkGrenzen: {}, symbolDateien: {}, symboleLoeschen: u.namen })
+  assert.deepStrictEqual(fs.readdirSync(alt).filter((n) => n.endsWith('.png')), [])
+  // Vorlagen ohne Symbole
+  const b = { ...B.testlua, vorlagen: [{ s: 'v', name: { de: 'v', en: 'v' }, ansichten: [{ breite: 784, hoehe: 316, plaetze: [platz({ symbol: 'akku', symbolPx: 48 })],
+    deko: [{ art: 'symbol', x: 600, y: 10, name: 'stern', px: 32 }] }] }] }
+  const v = S.presets(b)[0]
+  assert.strictEqual(v.ansichten[0].plaetze[0].symbol, undefined)
+  assert.ok(!(v.ansichten[0].deko || []).some((x) => x.art === 'symbol'))
 })

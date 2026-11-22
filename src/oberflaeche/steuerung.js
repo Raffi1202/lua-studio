@@ -48,7 +48,7 @@
 
   // Befehle: dieselben Abläufe wie die Knöpfe; Rückfragen (confirm) gelten als «ja», Meldungen (alert) kommen zurück
   // Nur Felder, die die Eigenschaften-Felder der Oberfläche auch setzen (kein __proto__ o. ä.)
-  const PLATZ_FELDER = ['x', 'y', 'b', 'h', 'w', 'darstellung', 'titel', 'min', 'max', 'farbe', 'farbeWarn', 'farbeAlarm', 'hintergrund', 'stufen', 'symbol', 'symbolPx', 'einheitZeigen', 'zusatz']
+  const PLATZ_FELDER = ['x', 'y', 'b', 'h', 'w', 'darstellung', 'titel', 'min', 'max', 'farbe', 'farbeWarn', 'farbeAlarm', 'hintergrund', 'stufen', 'einheitZeigen', 'zusatz']
   const GRENZ_FELDER = ['richtung', 'warnung', 'alarm', 'ansage', 'vibration', 'aus', 'beiMotorAus']
   const BEFEHLE = {
     async anschluesseSuchen() { await anschluesseSuchen(); return { ziele: [...document.getElementById('ziel').options].map((o) => o.value).filter(Boolean) } },

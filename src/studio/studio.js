@@ -178,10 +178,8 @@ function neuesProjekt(beschreibung, info) {
 // Rückgabe { daten, wegfall: [Gründe], verworfen: [Gründe] }
 function dateiDatenMitInfo(projekt, meta) {
   let ansichten = (projekt.ansichten || []).filter((a) => a.plaetze && a.plaetze.length > 0).slice(0, 2)
-  // Schalter «Alle Symbole aus» (ab 0.10.6, je Modell): keine Symbole schreiben und keine Bilder übertragen;
-  // im Projekt bleiben sie gespeichert. Kein Feld im Format: es fehlen einfach die Symbole.
-  if (projekt.symboleAus) ansichten = ansichten.map((a) => ({ ...a, deko: (a.deko || []).filter((d) => d.art !== 'symbol'),
-    plaetze: a.plaetze.map(({ symbol: _s, symbolPx: _p, ...p }) => p) }))
+  // ab 0.11.0 keine Symbole mehr (Entscheid User 22.11.): nie Symbole schreiben, keine Symbolbilder
+  ansichten = ansichten.map(ohneSymbole)
   const kann2 = Array.isArray(meta.formate) && meta.formate.includes(2)
   const braucht2 = Y.benutztFormat2(ansichten)
   const wegfall = []
@@ -287,8 +285,14 @@ function extraDarstellungen(b, luaVersion) {
   return Object.keys(b.darstellungenExtra).filter((d) => !d.startsWith('_'))
 }
 // extra: zusätzliche Darstellungen des Luas (beschreibung.json «darstellungenExtra», z. B. Gas Engine «zylinder», «tank»)
+// ab 0.11.0: Symbole (Platzsymbol, Symbol-Schmuck) gibt es nicht mehr; das übrige Layout bleibt
+function ohneSymbole(a) {
+  return { ...a, plaetze: (a.plaetze || []).map(({ symbol: _s, symbolPx: _p, ...p }) => p), ...(a.deko ? { deko: a.deko.filter((d) => d.art !== 'symbol') } : {}) }
+}
+function symboleIn(projekt) { return (projekt && projekt.ansichten || []).some((a) => (a.plaetze || []).some((p) => p.symbol !== undefined) || (a.deko || []).some((d) => d.art === 'symbol')) }
 function platzSauber(p, verworfen, extra = []) {
   const q = { ...p }
+  delete q.symbol; delete q.symbolPx   // ab 0.11.0 keine Symbole
   for (const k of FARBFELDER) if (q[k] !== undefined && !farbeGut(q[k])) { verworfen.push(`${k}`); delete q[k] }
   if (q.darstellung !== undefined && !DARSTELLUNGEN.includes(q.darstellung) && !(extra || []).includes(q.darstellung)) { verworfen.push('darstellung'); delete q.darstellung }
   if (q.symbolPx !== undefined && !Y.PX_WAHL.includes(q.symbolPx)) { verworfen.push('symbolPx'); delete q.symbolPx }
@@ -331,7 +335,7 @@ function presets(beschreibung) {
       if (q.symbol !== undefined && (!Y.imKatalog(q.symbol) || (q.symbolPx || 24) < Y.imKatalog(q.symbol).minPx)) { verworfen.push('symbol'); delete q.symbol; delete q.symbolPx }
       return q
     })
-    const dk = (a.deko || []).filter((d) => !Y.dekoPruefen(d, a))
+    const dk = (a.deko || []).filter((d) => d.art !== 'symbol' && !Y.dekoPruefen(d, a))
     if (dk.length !== (a.deko || []).length || dk.length > Y.MAX_DEKO) verworfen.push('deko')
     const deko = dk.slice(0, Y.MAX_DEKO).map(dekoSauber)
     const x = { breite: a.breite, hoehe: a.hoehe, plaetze }
@@ -615,5 +619,5 @@ async function schnelltest({ ziel, kennung, lua, format, vorher, logZeilen, groe
   return { ok: !punkte.some((x) => x.stufe === 'fehler'), unsicher: alt, punkte }
 }
 
-module.exports = { einstellungenSchreiben, NEUE_WAHL, extraDarstellungen, versionKleiner, ALIAS, aliasAktiv, ablageUmziehen, grenzenSchreiben, symboleUnbenutzt, beschreibungenLaden, Ablage, modelleLesen, neuesProjekt, dateiDaten, dateiDatenMitInfo, bauenMitWaechter, presets, presetAnwenden,
+module.exports = { ohneSymbole, symboleIn, einstellungenSchreiben, NEUE_WAHL, extraDarstellungen, versionKleiner, ALIAS, aliasAktiv, ablageUmziehen, grenzenSchreiben, symboleUnbenutzt, beschreibungenLaden, Ablage, modelleLesen, neuesProjekt, dateiDaten, dateiDatenMitInfo, bauenMitWaechter, presets, presetAnwenden,
   GRUPPEN, VORBEREITET, gruppeVonFenster, vorbereitetInfo, symboleSchreiben, symboleAufraeumen, schnelltest, funkeAenderungenUebernehmen, uebertragen }

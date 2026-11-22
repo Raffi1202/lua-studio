@@ -135,7 +135,7 @@
   "a_wert": "Value",
   "a_faktor": "Factor",
   "a_versatz": "Offset",
-  "symboleAus": "All symbols off",
+  "symboleEntfernt": "Symbols are no longer supported and were removed. The layout stays.",
   "a_einheit": "Unit",
   "a_stellen": "Decimals",
   "vorlage": "Template",

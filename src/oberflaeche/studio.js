@@ -39,8 +39,19 @@ function displayBreite(b) { return b >= 784 ? 800 : b >= 630 ? 640 : 480 }
 function kante(px, B) { return Math.round(px * B / 800) }
 // Stufe für den Platzkopf (wie symbole.js kopfPx): grösste Kante ≤ Titelhöhe, sonst die kleinste
 function kopfPx(th, B) { let px = 12; for (const s of [12, 16, 24, 32, 48, 64]) if (kante(s, B) <= th) px = s; return px }
-// Schalter «Alle Symbole aus» (ab 0.10.6, je Modell): projekt.symboleAus
-function symboleAn() { return !(st.projekt && st.projekt.symboleAus) }
+// ab 0.11.0 keine Symbole mehr (Entscheid User 22.11.)
+function symboleAn() { return false }
+// Alte Projekte/Vorlagen mit Symbolen: Symbole verwerfen (Layout bleibt), einmal melden
+function symboleVerwerfen(projekt) {
+  let weg = false
+  for (const a of (projekt && projekt.ansichten) || []) {
+    for (const p of a.plaetze || []) if (p.symbol !== undefined || p.symbolPx !== undefined) { delete p.symbol; delete p.symbolPx; weg = true }
+    if (a.deko && a.deko.some((d) => d.art === 'symbol')) { a.deko = a.deko.filter((d) => d.art !== 'symbol'); weg = true }
+  }
+  delete projekt.symboleAus
+  if (weg) alert(t('symboleEntfernt'))
+  return weg
+}
 // Fenstergrössen, in denen das Lua auf der Funke zuletzt lief (Info-Datei «fenster»)
 // Info-Datei «fenster» nur mit gültigen Einträgen (eine kaputte Info darf das Öffnen nicht abbrechen)
 function fensterListe(info) { const f = info && info.fenster; return Array.isArray(f) ? f.filter((x) => x && Number.isInteger(x.breite) && Number.isInteger(x.hoehe)) : [] }
@@ -275,6 +286,7 @@ async function modellOeffnen(m) {
   st.projekt = r.projekt
   // Ansicht vorwählen, die das Lua auf der Funke zeigt (M6, 21.11.: der User gestaltete die kompakte, die Funke zeigte Vollbild)
   st.projekt = r.projekt
+  symboleVerwerfen(st.projekt)   // ab 0.11.0: alte Symbole verwerfen, einmal melden
   ansichtVorwaehlen()
   st.gewaehlt = -1
   st.gewaehltDeko = -1
@@ -297,7 +309,6 @@ async function modellOeffnen(m) {
 }
 
 function allesZeigen() {
-  if ($('symboleAus')) $('symboleAus').checked = !!(st.projekt && st.projekt.symboleAus)
   vergessen()
   abstandAnzeigen()
   presetsZeigen()
@@ -721,20 +732,8 @@ function eigenschaftenZeigen() {
   } })
   feld(t('titel'), titel)
 
-  // Format 2: Symbol, Grösse, Einheit
+  // Format 2: Einheit (Symbole entfallen ab 0.11.0)
   if (kann2()) {
-    const sSel = el('select', { onchange: (e) => {
-      if (e.target.value) { p.symbol = e.target.value; const k = katalog(p.symbol); if ((p.symbolPx || 24) < k.minPx) p.symbolPx = k.minPx } else { delete p.symbol; delete p.symbolPx }
-      eigenschaftenZeigen(); neu()
-    } })
-    sSel.appendChild(el('option', { value: '', text: t('keinSymbol') }))
-    for (const k of st.symbole.katalog) sSel.appendChild(el('option', { value: k.name, text: name({ de: k.de, en: k.en }), selected: k.name === p.symbol }))
-    feld(t('symbol'), sSel)
-    if (p.symbol && katalog(p.symbol)) {
-      const pSel = el('select', { onchange: (e) => { const v = Number(e.target.value); if (v === 24) delete p.symbolPx; else p.symbolPx = v; neu() } })
-      for (const x of PX.filter((x) => x >= katalog(p.symbol).minPx)) pSel.appendChild(el('option', { value: x, text: `${x} px`, selected: x === (p.symbolPx || 24) }))
-      feld(t('symbolGroesse'), pSel)
-    }
     const eSel = el('select', { onchange: (e) => { if (e.target.value === 'true') delete p.einheitZeigen; else p.einheitZeigen = false; neu() } })
     const jetzt = p.einheitZeigen === false ? 'false' : 'true'   // altes «fett» gilt wie «am Wert»
     for (const [v, k] of [['true', 'einheitNeben'], ['false', 'einheitKeine']]) eSel.appendChild(el('option', { value: v, text: t(k), selected: v === jetzt }))
@@ -950,6 +949,7 @@ async function vonVorbereitetKopieren(schonGefragt, kennung) {
   if (!p) return
   const { vorbereitetInfo, ...rest } = p
   st.projekt = JSON.parse(JSON.stringify(rest))
+  symboleVerwerfen(st.projekt)
   // eigene Sensoren und Grössen des Modells bleiben die der Funke; Ansichten mit fremden Grössen fallen weg
   const fenster = (st.m.info && st.m.info.fenster) || []
   if (fenster.length) st.projekt.ansichten = st.projekt.ansichten.filter((a) => fenster.some((f) => f.breite === a.breite && f.hoehe === a.hoehe))
@@ -1462,7 +1462,6 @@ $('vorlageSpeichern').addEventListener('click', vorlageSpeichern)
 $('vonModellKopieren').addEventListener('click', vonModellKopieren)
 $('vonVorbereitetKopieren').addEventListener('click', vonVorbereitetKopieren)
 $('presetAnwenden').addEventListener('click', presetAnwenden)
-$('symboleAus').addEventListener('change', (e) => { if (!st.projekt) return; if (e.target.checked) st.projekt.symboleAus = true; else delete st.projekt.symboleAus; allesZeigen(); geaendert() })
 $('presetWahl').addEventListener('change', presetHinweis)
 for (const art of ['symbol', 'text', 'linie', 'rahmen']) $('deko' + art[0].toUpperCase() + art.slice(1)).addEventListener('click', () => dekoNeu(art))
 
