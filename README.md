@@ -55,7 +55,7 @@ Transfer or «Save as file» with «All models (default)»: the file `Standard.<
 | [Heli](https://github.com/Raffi1202/heli-lua) 1.16.0 | format 2, «also when motor off» |
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.7.0 | format 2, «also when motor off» |
 | [Glider](https://github.com/Raffi1202/glider-lua) 0.7.0 | format 1, «also when motor off» |
-| [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.12.0 / 0.12.0 | format 1, «also when motor off» |
+| [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.13.0 / 0.13.0 | format 1, «also when motor off» |
 | [DLG](https://github.com/Raffi1202/dlg-lua) 0.3.0 (discus launch glider) | format 2, FLIGHT page only; no motor switch |
 
 Luas with format 2 also get decoration and templates; for format 1 the studio writes the file without them. Symbols and bold units are **removed from 0.11.0**: old projects load without them (one-time note), old symbol images on the radio are offered for deletion.
