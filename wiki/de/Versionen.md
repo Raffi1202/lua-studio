@@ -4,6 +4,7 @@
 
 Alle Änderungen: [CHANGELOG.md](../../CHANGELOG.md). Releases: siehe GitHub-Releases dieses Repos.
 
+- 0.10.5 (22 Nov 2026)
 - 0.10.4 (22 Nov 2026)
 - 0.10.3 (22 Nov 2026)
 - 0.10.2 (22 Nov 2026)

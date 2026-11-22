@@ -22,7 +22,7 @@
 </head>
 <body>
 <h1>Lua-Studio – Manual</h1>
-<p class="unter">Version 0.10.4 · 22 Nov 2026 · Deutsche Anleitung: «Lua-Studio - Anleitung»</p>
+<p class="unter">Version 0.10.5 · 22 Nov 2026 · Deutsche Anleitung: «Lua-Studio - Anleitung»</p>
 
 <h2>1. What is Lua-Studio?</h2>
 <p>Lua-Studio is a program for Mac and Windows that belongs to our Ethos Luas (Electric, Heli, Jet, Glider, Gas Engine).
@@ -38,9 +38,9 @@ operate the radio with mouse and keyboard, over a USB cable in the radio's <b>se
   <li>Mac (Apple silicon or Intel) or Windows PC (64-bit), USB data cable.</li>
   <li>The matching file from the GitHub release (“Releases” on the right of the repository page):
     <ul>
-      <li>Mac with Apple silicon: <code>Lua-Studio-0.10.4-mac-arm64.dmg</code></li>
-      <li>Mac with Intel: <code>Lua-Studio-0.10.4-mac-x64.dmg</code></li>
-      <li>Windows: <code>Lua-Studio-0.10.4-win-x64.exe</code></li>
+      <li>Mac with Apple silicon: <code>Lua-Studio-0.10.5-mac-arm64.dmg</code></li>
+      <li>Mac with Intel: <code>Lua-Studio-0.10.5-mac-x64.dmg</code></li>
+      <li>Windows: <code>Lua-Studio-0.10.5-win-x64.exe</code></li>
     </ul>
   </li>
 </ul>
@@ -133,7 +133,7 @@ tabs opens the prepare form from anywhere.</p>
 <p>Only with a Lua version that supports Lua-Studio format 2. Otherwise the studio shows a note and writes format 1.</p>
 <ul>
   <li><b>Symbol</b> per box: top left in front of the title, coloured like the value (normal, warning, alarm). Size 24, 32, 48 or 64 px (on the X18RS; scaled down on X14 and X18). Tow only from 48 px.</li>
-  <li><b>Unit:</b> at the value (small) or none. If the unit is already in the title (e.g. «Battery %»), the Lua does not show it again. The title is as high as the symbol, at most a third of the box. The former choice «bold top left» is gone from 0.10.4; old settings count as «at the value».</li>
+  <li><b>Unit:</b> at the value (small) or none. If the unit is already a word of its own in the title (e.g. «Battery %», «Current (A)»), the Lua does not show it again. The title is as high as the symbol, at most a third of the box. The former choice «bold top left» is gone from 0.10.5; old settings count as «at the value».</li>
   <li><b>Unused symbols</b> (from 0.4.1): if no studio file on the radio names a symbol any more, the «Transfer» tab shows «Delete n unused symbols …» beforehand («Which files?» expands all names). They are deleted only if you tick the box, and only those files. Without the tick they stay on the SD card and do no harm.</li>
   <li><b>Decoration:</b> <b>+ Symbol</b>, <b>+ Text</b>, <b>+ Line</b>, <b>+ Frame</b> places free elements without a value, at most 24 per view, below the boxes. Drag to move; position, size and colour on the right; Delete removes.</li>
   <li><b>Preset</b> sets the layout to the Lua's look («Lua default» or the Lua's templates). New models start with the template «Original» where Lua-Studio has one; to change it, delete or move boxes. Limits and settings stay.</li>

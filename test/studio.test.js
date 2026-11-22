@@ -301,3 +301,11 @@ test('«fett» gibt es nicht mehr (0.10.4): Vorlagen von Heli und Jet ohne gross
     assert.ok(!v.includes('"fett"'), `${lua}: Vorlage ohne «fett»`)
   }
 })
+
+test('Einheit im Titel nur als eigenes Wort (0.10.5, Regel wie Electric 0.7.4 / Heli 1.14.2)', () => {
+  const quelle = fs.readFileSync(path.join(__dirname, '..', 'src', 'oberflaeche', 'studio.js'), 'utf8')
+  const code = quelle.match(/function einheitImTitel[\s\S]*?\n}\n/)[0]
+  const f = new Function(`${code}; return einheitImTitel`)()
+  for (const [e, t] of [['%', 'Akku %'], ['A', 'Strom (A)'], ['km/h', 'Speed km/h'], ['V', '[V] Akku'], ['%', 'Gas %%']]) assert.strictEqual(f(e, t), true, `${t} / ${e}`)
+  for (const [e, t] of [['m', 'Höhe max'], ['A', 'Akku Strom'], ['%', 'Akku%'], ['', 'Akku'], ['%', undefined]]) assert.strictEqual(f(e, t), false, `${t} / ${e}`)
+})

@@ -400,8 +400,17 @@ function luaKontext(stil, a) {
   return { ansicht: a, T, regeln: stil.regeln, reserviert: reserviert(a), modell: String((st.m && st.m.info && st.m.info.modell) || 'DEMO').toUpperCase(),
     symbol: (svg, q, farbe) => symbolUndEinheit(svg, q.p, farbe, q.einheit, q.zeit || q.darstellung === 'status', q.titel) }
 }
-// Einheit doppelt? (steht schon im Titel, z. B. «Akku %»): dann nicht am Wert (Electric 0.7.3)
-function einheitImTitel(einheit, titel) { return !!einheit && typeof titel === 'string' && titel.includes(einheit) }
+// Einheit doppelt? Steht sie schon als eigenes Wort im Titel (z. B. «Akku %», «Strom (A)»), dann nicht am Wert.
+// Gleiche Regel wie Electric 0.7.3 (imTitel) und Heli 1.14.2 (einheitImTitel): davor Anfang, Leerzeichen, «(» oder «[»,
+// danach Ende, Leerzeichen, «)», «]» oder «%». «A» in «Akku» zählt also nicht.
+function einheitImTitel(einheit, titel) {
+  if (!einheit || typeof titel !== 'string') return false
+  for (let i = titel.indexOf(einheit); i >= 0; i = titel.indexOf(einheit, i + 1)) {
+    const v = titel[i - 1], n = titel[i + einheit.length]
+    if ((v === undefined || /[\s([]/.test(v)) && (n === undefined || /[\s)\]%]/.test(n))) return true
+  }
+  return false
+}
 // Symbol oben links (Format 2 §5, wie ansicht.lua ab Electric 0.7.3); Rückgabe Einzug des Titels und ob die Einheit am Wert steht.
 // «fett» (grosse Einheit im Kopf) gibt es ab 0.10.4 nicht mehr: gilt wie «am Wert».
 function symbolUndEinheit(svg, p, farbe, einheit, zeitOderStatus, titel) {
