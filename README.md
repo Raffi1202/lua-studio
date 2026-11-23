@@ -51,7 +51,7 @@ Transfer or «Save as file» with «All models (default)»: the file `Standard.<
 
 | Lua | Studio support |
 |---|---|
-| [Electric](https://github.com/Raffi1202/electric-lua) 0.9.0 | format 2, «also when motor off» |
+| [Electric](https://github.com/Raffi1202/electric-lua) 0.10.0 | format 2, «also when motor off» |
 | [Heli](https://github.com/Raffi1202/heli-lua) 1.16.0 | format 2, «also when motor off» |
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.7.0 | format 2, «also when motor off» |
 | [Glider](https://github.com/Raffi1202/glider-lua) 0.7.0 | format 1, «also when motor off» |

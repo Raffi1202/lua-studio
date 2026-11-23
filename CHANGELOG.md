@@ -2,6 +2,13 @@
 
 New entries in English. Older entries in German.
 
+## 0.15.0 (23 Nov 2026)
+
+- **Electric 0.10.0** (issues #1 and #2): flight mode line in the top bar of the preview (full screen: smaller model name with the flight mode below; compact: next to the flight time), hidden when «Show flight mode» is off. New values to choose in own layouts: RSSI 2.4 / 900, VFR 2.4 / 900, RX VFR, cell battery 2, battery 2 %, voltage battery 2, receiver battery 2; new settings VFR warning / RX VFR alarm, cells 2 (in series / own battery), cell count battery 2.
+- Known difference to «preview like the original»: the new footers of the built-in Electric display («2.4 x%  900 y%», «2: 4.4V», «battery 2 …») are not drawn, like the other footers.
+- Docs: the tutorial note said «from 0.14.0» (correct: 0.13.0) and the Windows file name in the manual was outdated; fixed.
+- Control interface: the preview picture is redrawn and fully visible before capture (a hidden window returned the previous view); command `testwerte` for fixed test values when comparing with simulator pictures.
+
 ## 0.14.0 (22 Nov 2026)
 
 - **One layout for all models:** «Applies to: This model only / All models (default)» when transferring and with «Save as file». «All» writes `Standard.<lua>.lua`, which the Luas use for every model without its own studio file (order: widget menu choice → model file → default → built-in). «Take over radio changes» is off for the default file, `.funke.lua` stays per model.

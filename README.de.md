@@ -89,7 +89,7 @@ Schmuck braucht ein Lua, das Format 2 kann. Für ältere Luas schreibt das Studi
 
 | Lua | Studio-Unterstützung |
 |---|---|
-| [Electric](https://github.com/Raffi1202/electric-lua) 0.9.0 | format 2, «auch bei Motor aus» |
+| [Electric](https://github.com/Raffi1202/electric-lua) 0.10.0 | format 2, «auch bei Motor aus» |
 | [Heli](https://github.com/Raffi1202/heli-lua) 1.16.0 | format 2, «auch bei Motor aus» |
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.7.0 | format 2, «auch bei Motor aus» |
 | [Glider](https://github.com/Raffi1202/glider-lua) 0.7.0 | format 1, «auch bei Motor aus» |
