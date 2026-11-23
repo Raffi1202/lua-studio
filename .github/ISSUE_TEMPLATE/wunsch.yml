@@ -18,3 +18,13 @@ body:
     id: sender
     attributes:
       label: Sender / Radio
+  - type: input
+    id: ethos
+    attributes:
+      label: Ethos-Version / Ethos version
+      description: z. B. 26.2.0 (System › Info)
+  - type: input
+    id: empfaenger
+    attributes:
+      label: Empfänger / Receiver
+      description: z. B. Archer SR10+, TD R10 (2,4 GHz + 900 MHz), TW R6

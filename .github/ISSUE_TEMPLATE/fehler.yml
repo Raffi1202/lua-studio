@@ -30,6 +30,11 @@ body:
     validations:
       required: true
   - type: input
+    id: empfaenger
+    attributes:
+      label: Empfänger / Receiver
+      description: z. B. Archer SR10+, TD R10 (2,4 GHz + 900 MHz), TW R6
+  - type: input
     id: testfall
     attributes:
       label: Testfall (Nummer aus TESTLEITFADEN.md)
