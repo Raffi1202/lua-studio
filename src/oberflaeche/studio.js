@@ -387,9 +387,21 @@ function anordnungPruefen(a) {
 }
 
 // ---------- Vorschau wie im Lua (lua-vorschau.js) ----------
+// Flugphase in der Kopfzeile (Electric Issue #1): ab dieser Version, Beispielphase wie bei einem Modell mit mehreren Phasen.
+// PHASE_SCHALTER: Kennung der Einstellung «Flugphase anzeigen» (folgt von der Electric-Sitzung; null = immer ein)
+const PHASE_AB = { electric: '0.10.0' }
+const PHASE_SCHALTER = { electric: null }
+function phaseZeigen() {
+  const lua = st.m && st.m.lua, ab = PHASE_AB[lua]
+  const v = (st.m && st.m.info && st.m.info.luaVersion) || (beschreibung() || {}).luaVersion
+  if (!ab || !v || versionKleinerUI(String(v), ab)) return null
+  const k = PHASE_SCHALTER[lua], e = st.projekt && st.projekt.einstellungen
+  if (k && e && (e[k] === false || e[k] === 0 || e[k] === 'aus')) return null
+  return sprache === 'de' ? 'Thermik' : 'Thermal'
+}
 function luaKontext(stil, a) {
   const T = (stil.texte && (stil.texte[sprache] || stil.texte.en)) || {}
-  return { ansicht: a, T, regeln: stil.regeln, reserviert: reserviert(a), modell: String((st.m && st.m.info && st.m.info.modell) || 'DEMO').toUpperCase(),
+  return { ansicht: a, T, regeln: stil.regeln, reserviert: reserviert(a), modell: String((st.m && st.m.info && st.m.info.modell) || 'DEMO').toUpperCase(), phase: phaseZeigen(),
     symbol: (svg, q, farbe, th, pad) => symbolUndEinheit(svg, q.p, farbe, q.einheit, q.zeit || q.darstellung === 'status', q.titel, th, pad) }
 }
 // Einheit doppelt? Steht sie schon als eigenes Wort im Titel (z. B. «Akku %», «Strom (A)»), dann nicht am Wert.
