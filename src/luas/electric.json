@@ -1,6 +1,6 @@
 {
  "lua": "electric",
- "luaVersion": "0.10.0",
+ "luaVersion": "0.10.1",
  "formate": [
   1,
   2
@@ -503,7 +503,6 @@
     "balken_s",
     "kurve"
    ],
-   "grenzeRichtung": "unter",
    "ansage": false
   },
   {
@@ -523,7 +522,6 @@
     "balken_s",
     "kurve"
    ],
-   "grenzeRichtung": "unter",
    "ansage": false
   },
   {
@@ -543,7 +541,6 @@
     "balken_s",
     "kurve"
    ],
-   "grenzeRichtung": "unter",
    "ansage": false
   },
   {
@@ -563,7 +560,6 @@
     "balken_s",
     "kurve"
    ],
-   "grenzeRichtung": "unter",
    "ansage": false
   },
   {
@@ -583,7 +579,6 @@
     "balken_s",
     "kurve"
    ],
-   "grenzeRichtung": "unter",
    "ansage": false
   },
   {
@@ -603,7 +598,6 @@
     "balken_s",
     "kurve"
    ],
-   "grenzeRichtung": "unter",
    "ansage": false
   },
   {
@@ -623,7 +617,6 @@
     "balken_s",
     "kurve"
    ],
-   "grenzeRichtung": "unter",
    "ansage": false
   },
   {
@@ -662,7 +655,6 @@
     "balken_s",
     "kurve"
    ],
-   "grenzeRichtung": "unter",
    "ansage": false
   }
  ],
@@ -1125,6 +1117,53 @@
    "werk": 0,
    "min": 0,
    "max": 14
+  },
+  {
+   "s": "akkuart2",
+   "art": "w",
+   "gruppe": "Akku",
+   "name": {
+    "de": "Akkuart Akku 2",
+    "en": "Battery type battery 2"
+   },
+   "werk": 1,
+   "auswahl": [
+    {
+     "wert": 1,
+     "name": {
+      "de": "LiPo",
+      "en": "LiPo"
+     }
+    },
+    {
+     "wert": 2,
+     "name": {
+      "de": "LiHV",
+      "en": "LiHV"
+     }
+    },
+    {
+     "wert": 3,
+     "name": {
+      "de": "LiFe",
+      "en": "LiFe"
+     }
+    },
+    {
+     "wert": 4,
+     "name": {
+      "de": "Li-Ion",
+      "en": "Li-Ion"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "NiMH",
+      "en": "NiMH"
+     }
+    }
+   ]
   }
  ],
  "standard": {

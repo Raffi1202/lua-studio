@@ -2,6 +2,10 @@
 
 New entries in English. Older entries in German.
 
+## 0.15.1 (23 Nov 2026)
+
+- **Electric 0.10.1:** new setting «battery type 2». The nine new values (RSSI/VFR per band, RX VFR, battery 2 values) have no limit direction any more: Electric takes their limits from the radio menu only, so Lua-Studio offers no limits for them. VFR warning/alarm and battery 2 limits are set in the menu of the radio.
+
 ## 0.15.0 (23 Nov 2026)
 
 - **Electric 0.10.0** (issues #1 and #2): flight mode line in the top bar of the preview (full screen: smaller model name with the flight mode below; compact: next to the flight time), hidden when «Show flight mode» is off. New values to choose in own layouts: RSSI 2.4 / 900, VFR 2.4 / 900, RX VFR, cell battery 2, battery 2 %, voltage battery 2, receiver battery 2; new settings VFR warning / RX VFR alarm, cells 2 (in series / own battery), cell count battery 2.
