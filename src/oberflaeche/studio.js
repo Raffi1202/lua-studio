@@ -390,7 +390,7 @@ function anordnungPruefen(a) {
 // Flugphase in der Kopfzeile (Electric Issue #1): ab dieser Version, Beispielphase wie bei einem Modell mit mehreren Phasen.
 // PHASE_SCHALTER: Kennung der Einstellung «Flugphase anzeigen» (folgt von der Electric-Sitzung; null = immer ein)
 const PHASE_AB = { electric: '0.10.0' }
-const PHASE_SCHALTER = { electric: null }
+const PHASE_SCHALTER = { electric: 'phase' }
 function phaseZeigen() {
   const lua = st.m && st.m.lua, ab = PHASE_AB[lua]
   const v = (st.m && st.m.info && st.m.info.luaVersion) || (beschreibung() || {}).luaVersion
