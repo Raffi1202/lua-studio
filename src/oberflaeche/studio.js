@@ -401,7 +401,7 @@ function phaseZeigen() {
 }
 function luaKontext(stil, a) {
   const T = (stil.texte && (stil.texte[sprache] || stil.texte.en)) || {}
-  return { ansicht: a, T, regeln: stil.regeln, reserviert: reserviert(a), modell: String((st.m && st.m.info && st.m.info.modell) || 'DEMO').toUpperCase(), phase: phaseZeigen(),
+  return { ansicht: a, T, regeln: stil.regeln, reserviert: reserviert(a), modell: String((st.m && st.m.info && st.m.info.modell) || 'DEMO').toUpperCase(), phase: phaseZeigen(), zeit: st.testWerte && st.testWerte.zeit,
     symbol: (svg, q, farbe, th, pad) => symbolUndEinheit(svg, q.p, farbe, q.einheit, q.zeit || q.darstellung === 'status', q.titel, th, pad) }
 }
 // Einheit doppelt? Steht sie schon als eigenes Wort im Titel (z. B. «Akku %», «Strom (A)»), dann nicht am Wert.
@@ -433,7 +433,8 @@ function platzInfo(p, stil) {
   const lo = p.min !== undefined ? p.min : (def.min !== undefined ? def.min : 0)
   let hi = p.max !== undefined ? p.max : (def.max !== undefined ? def.max : 100)
   if (hi <= lo) hi = lo + 1
-  const wert = lo + (hi - lo) * 0.62
+  // Beispielwert 62 % des Bereichs; für Vergleichsbilder mit dem Simulator feste Testwerte (nur über die Steuerschnittstelle)
+  const wert = st.testWerte && typeof st.testWerte[p.w] === 'number' ? st.testWerte[p.w] : lo + (hi - lo) * 0.62
   const einheit = (st.projekt.werte[p.w] && st.projekt.werte[p.w].einheit) || einheitAnzeige(def.einheit) || (w && w.sensor && w.sensor.einheit) || (p.w && p.w.startsWith('kanal') ? '%' : '')
   const stellen = (st.projekt.werte[p.w] && st.projekt.werte[p.w].stellen) ?? def.stellen ?? 0
   let zahlText = wert.toFixed(stellen)

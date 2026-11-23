@@ -104,7 +104,7 @@
     let zx, x
     if (kompakt) {
       const zb = Z.breite('00:00', 34) + 16 * s
-      Z.text(12 * s, kh / 2, '4:26', 34, C.weiss, 'start', zb, true)
+      Z.text(12 * s, kh / 2, k.zeit || '4:26', 34, C.weiss, 'start', zb, true)
       zx = 12 * s + zb - 60 * s
       // Flugphase rechts neben der Flugzeit (Electric 0.10.0, Issue #1), nur bei mehr als einer Phase
       if (k.phase) Z.text(12 * s + zb + 10 * s, kh / 2, k.phase, 14, C.weiss, 'start', W * 0.35)
@@ -115,7 +115,7 @@
         Z.text(12 * s, kh * 0.36, k.modell, 24, C.weiss, 'start', zx - 60 * s - 12 * s, true)
         Z.text(12 * s, kh * 0.80, k.phase, 12, C.weiss, 'start', zx - 60 * s - 12 * s)
       } else Z.text(12 * s, kh / 2, k.modell, 30, C.weiss, 'start', zx - 60 * s - 12 * s, true)
-      Z.text(zx, kh / 2, '4:26', 34, C.weiss, 'middle', 120 * s)
+      Z.text(zx, kh / 2, k.zeit || '4:26', 34, C.weiss, 'middle', 120 * s)
       x = W - 12 * s
       // Senderakku
       const bb = 22 * s, bh = 32 * s

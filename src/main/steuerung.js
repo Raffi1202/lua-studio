@@ -26,8 +26,15 @@ function starten(d) {
     if (weg === '/vorschau') {
       const v = await brueckeAufruf('vorschau')
       if (anfrage && anfrage.png) {
-        const r = await js("JSON.stringify(document.getElementById('flaeche').getBoundingClientRect())").then(JSON.parse)
-        const bild = await d.fenster().webContents.capturePage({ x: Math.round(r.x), y: Math.round(r.y), width: Math.round(r.width), height: Math.round(r.height) })
+        const f = d.fenster()
+        let r = await js("JSON.stringify(document.getElementById('flaeche').getBoundingClientRect())").then(JSON.parse)
+        // Passt die Fläche nicht ganz ins Fenster (Grössenwächter unten), das Fenster für die Aufnahme kurz vergrössern
+        const [fb, fh] = f.getContentSize(), noetig = Math.ceil(r.y + r.height + 160)
+        if (noetig > fh) { f.setContentSize(fb, noetig); await new Promise((x) => setTimeout(x, 400)); r = await js("JSON.stringify(document.getElementById('flaeche').getBoundingClientRect())").then(JSON.parse) }
+        // neu zeichnen lassen, sonst liefert ein verdecktes Fenster das vorige Bild (z. B. die vorher gezeigte Ansicht)
+        f.webContents.invalidate(); await new Promise((x) => setTimeout(x, 300))
+        const bild = await f.webContents.capturePage({ x: Math.round(r.x), y: Math.round(r.y), width: Math.round(r.width), height: Math.round(r.height) })
+        if (noetig > fh) f.setContentSize(fb, fh)
         if (anfrage.pfad) { fs.writeFileSync(anfrage.pfad, bild.toPNG()); v.png = anfrage.pfad } else v.pngBase64 = bild.toPNG().toString('base64')
       }
       return v

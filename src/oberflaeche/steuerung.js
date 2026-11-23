@@ -93,6 +93,8 @@
       if (m) await modellOeffnen(m)
       await warte(300); return { ok: true, kennung: r.modell.kennung }
     },
+    // Feste Testwerte für die Vorschau (Vergleich mit Simulatorbildern): { 'lua:akku_proz': 18, …, zeit: '4:19' }; ohne werte zurück zu 62 %
+    async testwerte({ werte }) { st.testWerte = werte || null; flaecheZeigen(); await warte(200); return { testWerte: st.testWerte } },
     async ansicht({ index, breite, hoehe }) {
       const i = index !== undefined ? index : st.projekt.ansichten.findIndex((a) => a.breite === breite && a.hoehe === hoehe)
       if (i < 0 || !st.projekt.ansichten[i]) throw new Error('ansicht')
