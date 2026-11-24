@@ -2,6 +2,13 @@
 
 New entries in English. Older entries in German.
 
+## 0.15.4 (24 Nov 2026)
+
+- **Glider 0.7.4:** RSSI 2.4 / 900 in dB instead of %.
+- **DLG 0.3.3:** description taken from the release (luaVersion only).
+- Heli description stays without the template «with symbols» (symbols were removed in 0.11.0).
+- Code comment without internal names.
+
 ## 0.15.3 (24 Nov 2026)
 
 - **Glider 0.7.3** (two receiver bands, glider issue #1): new values RSSI 2.4 / 900, VFR 2.4 / 900 and RX VFR (%, same keys as Electric) to choose in own layouts; new settings VFR warning (default 70) and VFR alarm (default 50). The new values have no limit direction: Glider takes their limits from the radio menu, so Lua-Studio offers no limits for them.

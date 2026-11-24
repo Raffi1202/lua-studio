@@ -1,6 +1,6 @@
 {
  "lua": "dlg",
- "luaVersion": "0.3.0",
+ "luaVersion": "0.3.3",
  "formate": [
   1,
   2
