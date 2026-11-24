@@ -2,6 +2,12 @@
 
 New entries in English. Older entries in German.
 
+## 0.15.3 (24 Nov 2026)
+
+- **Glider 0.7.3** (two receiver bands, glider issue #1): new values RSSI 2.4 / 900, VFR 2.4 / 900 and RX VFR (%, same keys as Electric) to choose in own layouts; new settings VFR warning (default 70) and VFR alarm (default 50). The new values have no limit direction: Glider takes their limits from the radio menu, so Lua-Studio offers no limits for them.
+- Known difference to «preview like the original»: footers of the built-in Glider display are not drawn, like for Electric.
+- Test: a Glider studio file with the new values and settings is read by the Lua reference.
+
 ## 0.15.2 (24 Nov 2026)
 
 - **Reverse throttle** (`gas_inv`, yes/no, off by default) from Electric 0.10.2, Glider 0.7.1, Jet 0.7.1, Gas Engine ECU 1.13.1 and Carb 0.13.1: shown in the settings and written to the studio file; the Luas read it as `gasInv`. When it is on, the preview shows throttle % as 100 − value, like the Luas (the Glider preview shows no throttle value).

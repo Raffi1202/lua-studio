@@ -1,7 +1,7 @@
 {
   "name": "lua-studio",
   "productName": "Lua-Studio",
-  "version": "0.15.2",
+  "version": "0.15.3",
   "description": "PC app (Mac/Windows) for FrSky Ethos Lua widgets: radio live over USB, set up layout, limits and symbols per model",
   "main": "src/main/main.js",
   "private": true,

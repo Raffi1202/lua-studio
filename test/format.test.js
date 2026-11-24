@@ -114,3 +114,19 @@ test('Gas umkehren: Datei schreiben, Lua liest gasInv', { skip: !luaDa() && 'lua
     }
   }
 })
+
+// Glider 0.7.3 (Issue #1): zwei Empfangsbänder wie Electric, Grenzen nur im Funkenmenü (vfr_w/vfr_a)
+test('Glider 0.7.3: Empfangsbänder wählbar, Datei wird von der Lua-Referenz gelesen', { skip: !luaDa() && 'lua oder Referenz nicht vorhanden' }, () => {
+  const b = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'src', 'luas', 'glider.json'), 'utf8'))
+  const neu = ['rssi_24', 'rssi_900', 'vfr_24', 'vfr_900', 'rx_vfr']
+  for (const k of neu) { const w = b.werte.find((x) => x.s === k); assert.ok(w && !w.grenzeRichtung, `${k} fehlt oder hat Grenzrichtung`) }
+  assert.deepStrictEqual(b.einstellungen.slice(-2).map((e) => [e.s, e.werk]), [['vfr_w', 70], ['vfr_a', 50]])
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'lua-studio-glider-'))
+  const a = { breite: 800, hoehe: 480, plaetze: neu.map((k, i) => ({ x: i * 150, y: 60, b: 140, h: 100, w: `lua:${k}`, darstellung: 'zahl' })) }
+  const r = F.bauen({ einstellungen: { vfr_w: 70, vfr_a: 50 }, werte: {}, grenzen: {}, ansichten: [a] })
+  assert.deepStrictEqual(r.fehler, [])
+  const p = path.join(tmp, 'glider.lua'); fs.writeFileSync(p, r.text)
+  const skript = path.join(tmp, 'g.lua')
+  fs.writeFileSync(skript, `local d = dofile(${JSON.stringify(REFERENZ)})(arg[1], 1)\nlocal t = {} for _, q in ipairs(d.ansichten[1].plaetze) do t[#t + 1] = q.w end\nprint(table.concat(t, ",") .. ";" .. d.einstellungen.vfr_w .. ";" .. d.einstellungen.vfr_a)\n`)
+  assert.strictEqual(execFileSync('lua', [skript, p]).toString().trim(), neu.map((k) => `lua:${k}`).join(',') + ';70;50')
+})

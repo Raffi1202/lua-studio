@@ -1,6 +1,6 @@
 {
  "lua": "glider",
- "luaVersion": "0.7.1",
+ "luaVersion": "0.7.3",
  "beiMotorAus": true,
  "formate": [
   1
@@ -411,6 +411,96 @@
    ],
    "grenzeRichtung": "unter",
    "ansage": true
+  },
+  {
+   "s": "rssi_24",
+   "name": {
+    "de": "RSSI 2.4",
+    "en": "RSSI 2.4"
+   },
+   "einheit": "%",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "rssi_900",
+   "name": {
+    "de": "RSSI 900",
+    "en": "RSSI 900"
+   },
+   "einheit": "%",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "vfr_24",
+   "name": {
+    "de": "VFR 2.4",
+    "en": "VFR 2.4"
+   },
+   "einheit": "%",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "vfr_900",
+   "name": {
+    "de": "VFR 900",
+    "en": "VFR 900"
+   },
+   "einheit": "%",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "rx_vfr",
+   "name": {
+    "de": "RX VFR",
+    "en": "RX VFR"
+   },
+   "einheit": "%",
+   "stellen": 0,
+   "min": 0,
+   "max": 100,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
   },
   {
    "s": "speed",
@@ -1649,6 +1739,30 @@
    "min": 2,
    "max": 10,
    "einheit": "m/s"
+  },
+  {
+   "s": "vfr_w",
+   "art": "z",
+   "name": {
+    "de": "VFR Warnung unter (je Band)",
+    "en": "VFR warning below (per band)"
+   },
+   "werk": 70,
+   "min": 0,
+   "max": 100,
+   "einheit": "%"
+  },
+  {
+   "s": "vfr_a",
+   "art": "z",
+   "name": {
+    "de": "RX VFR Alarm unter",
+    "en": "RX VFR alarm below"
+   },
+   "werk": 50,
+   "min": 0,
+   "max": 100,
+   "einheit": "%"
   }
  ],
  "standard": {

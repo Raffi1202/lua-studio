@@ -96,7 +96,7 @@ Schmuck braucht ein Lua, das Format 2 kann. Für ältere Luas schreibt das Studi
 | [Electric](https://github.com/Raffi1202/electric-lua) 0.10.2 | format 2, «auch bei Motor aus» |
 | [Heli](https://github.com/Raffi1202/heli-lua) 1.16.0 | format 2, «auch bei Motor aus» |
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.7.1 | format 2, «auch bei Motor aus» |
-| [Glider](https://github.com/Raffi1202/glider-lua) 0.7.1 | format 1, «auch bei Motor aus» |
+| [Glider](https://github.com/Raffi1202/glider-lua) 0.7.3 | format 1, «auch bei Motor aus» |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.13.1 / 0.13.1 | format 1, «auch bei Motor aus» |
 | [DLG](https://github.com/Raffi1202/dlg-lua) 0.3.0 (Wurfgleiter) | format 2, nur Seite FLUG; kein Motorschalter |
 

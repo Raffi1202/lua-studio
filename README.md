@@ -58,7 +58,7 @@ Transfer or «Save as file» with «All models (default)»: the file `Standard.<
 | [Electric](https://github.com/Raffi1202/electric-lua) 0.10.2 | format 2, «also when motor off» |
 | [Heli](https://github.com/Raffi1202/heli-lua) 1.16.0 | format 2, «also when motor off» |
 | [Jet](https://github.com/Raffi1202/jet-lua) 0.7.1 | format 2, «also when motor off» |
-| [Glider](https://github.com/Raffi1202/glider-lua) 0.7.1 | format 1, «also when motor off» |
+| [Glider](https://github.com/Raffi1202/glider-lua) 0.7.3 | format 1, «also when motor off» |
 | [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.13.1 / 0.13.1 | format 1, «also when motor off» |
 | [DLG](https://github.com/Raffi1202/dlg-lua) 0.3.0 (discus launch glider) | format 2, FLIGHT page only; no motor switch |
 
