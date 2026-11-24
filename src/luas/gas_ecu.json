@@ -1,6 +1,6 @@
 {
  "lua": "gas_ecu",
- "luaVersion": "1.12.0",
+ "luaVersion": "1.13.1",
  "formate": [
   1
  ],
@@ -837,6 +837,15 @@
      }
     }
    ]
+  },
+  {
+   "s": "gas_inv",
+   "art": "b",
+   "name": {
+    "de": "Gas umkehren",
+    "en": "Reverse throttle"
+   },
+   "werk": false
   },
   {
    "s": "sw_aus",

@@ -4,6 +4,10 @@
 
 🇬🇧 English · 🇩🇪 [Deutsch](README.de.md) · Documentation: [Wiki (English)](wiki/Home.md#english)
 
+This project is open source and free. If you like it, you can support it with a donation:
+
+<a href="https://paypal.me/RaphaelHunziker"><img src=".github/paypal-donate.png" alt="Donate with PayPal" width="200"></a>
+
 > **Pre-release / public beta.** Tested on a real radio only on the X18RS. Use at your own risk.
 
 A program for Mac and Windows that belongs to our FrSky Ethos Lua widgets (Electric, Heli, Jet, Glider, Gas Engine, DLG). Principle: **the PC thinks, the radio displays.**
@@ -51,11 +55,11 @@ Transfer or «Save as file» with «All models (default)»: the file `Standard.<
 
 | Lua | Studio support |
 |---|---|
-| [Electric](https://github.com/Raffi1202/electric-lua) 0.10.1 | format 2, «also when motor off» |
+| [Electric](https://github.com/Raffi1202/electric-lua) 0.10.2 | format 2, «also when motor off» |
 | [Heli](https://github.com/Raffi1202/heli-lua) 1.16.0 | format 2, «also when motor off» |
-| [Jet](https://github.com/Raffi1202/jet-lua) 0.7.0 | format 2, «also when motor off» |
-| [Glider](https://github.com/Raffi1202/glider-lua) 0.7.0 | format 1, «also when motor off» |
-| [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.13.0 / 0.13.0 | format 1, «also when motor off» |
+| [Jet](https://github.com/Raffi1202/jet-lua) 0.7.1 | format 2, «also when motor off» |
+| [Glider](https://github.com/Raffi1202/glider-lua) 0.7.1 | format 1, «also when motor off» |
+| [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.13.1 / 0.13.1 | format 1, «also when motor off» |
 | [DLG](https://github.com/Raffi1202/dlg-lua) 0.3.0 (discus launch glider) | format 2, FLIGHT page only; no motor switch |
 
 Luas with format 2 also get decoration and templates; for format 1 the studio writes the file without them. Symbols and bold units are **removed from 0.11.0**: old projects load without them (one-time note), old symbol images on the radio are offered for deletion.

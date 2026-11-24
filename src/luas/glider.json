@@ -1,6 +1,6 @@
 {
  "lua": "glider",
- "luaVersion": "0.7.0",
+ "luaVersion": "0.7.1",
  "beiMotorAus": true,
  "formate": [
   1
@@ -1242,6 +1242,15 @@
      }
     }
    ]
+  },
+  {
+   "s": "gas_inv",
+   "art": "b",
+   "name": {
+    "de": "Gas umkehren",
+    "en": "Reverse throttle"
+   },
+   "werk": false
   },
   {
    "s": "gas_ab",

@@ -4,6 +4,10 @@
 
 🇬🇧 [English](README.md) · 🇩🇪 Deutsch · Dokumentation: [Wiki (Deutsch)](wiki/Home.md#deutsch)
 
+Dieses Projekt ist Open Source und kostenlos. Wenn es dir gefällt, kannst du es mit einer Spende unterstützen:
+
+<a href="https://paypal.me/RaphaelHunziker"><img src=".github/paypal-spenden.png" alt="Spenden mit PayPal" width="200"></a>
+
 > **Vorabversion / öffentliche Beta.** Am echten Sender nur an der X18RS getestet. Nutzung auf eigene Verantwortung.
 
 Programm für Mac und Windows zu unseren Ethos-Luas (Electric, Heli, Jet, Glider, Gas Engine, DLG). Grundsatz: **Der PC denkt, die Funke zeigt an.**
@@ -89,11 +93,11 @@ Schmuck braucht ein Lua, das Format 2 kann. Für ältere Luas schreibt das Studi
 
 | Lua | Studio-Unterstützung |
 |---|---|
-| [Electric](https://github.com/Raffi1202/electric-lua) 0.10.1 | format 2, «auch bei Motor aus» |
+| [Electric](https://github.com/Raffi1202/electric-lua) 0.10.2 | format 2, «auch bei Motor aus» |
 | [Heli](https://github.com/Raffi1202/heli-lua) 1.16.0 | format 2, «auch bei Motor aus» |
-| [Jet](https://github.com/Raffi1202/jet-lua) 0.7.0 | format 2, «auch bei Motor aus» |
-| [Glider](https://github.com/Raffi1202/glider-lua) 0.7.0 | format 1, «auch bei Motor aus» |
-| [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.13.0 / 0.13.0 | format 1, «auch bei Motor aus» |
+| [Jet](https://github.com/Raffi1202/jet-lua) 0.7.1 | format 2, «auch bei Motor aus» |
+| [Glider](https://github.com/Raffi1202/glider-lua) 0.7.1 | format 1, «auch bei Motor aus» |
+| [Gas Engine ECU / Carb](https://github.com/Raffi1202/gas-engine-lua) 1.13.1 / 0.13.1 | format 1, «auch bei Motor aus» |
 | [DLG](https://github.com/Raffi1202/dlg-lua) 0.3.0 (Wurfgleiter) | format 2, nur Seite FLUG; kein Motorschalter |
 
 ## Lizenz

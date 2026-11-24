@@ -10,6 +10,7 @@ dist/
 test/ausgabe/
 *.png
 !docs/bilder/*.png
+!.github/paypal-*.png
 
 # Übergabedatei: nur lokal, nie auf GitHub (User 20.11.2026)
 STAND.md

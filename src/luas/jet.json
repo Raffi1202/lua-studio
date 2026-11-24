@@ -1,6 +1,6 @@
 {
   "lua": "jet",
-  "luaVersion": "0.7.0",
+  "luaVersion": "0.7.1",
   "formate": [
     1,
     2
@@ -730,6 +730,15 @@
         "en": "Switch 2 name"
       },
       "werk": "FAHRWERK"
+    },
+    {
+      "s": "gas_inv",
+      "art": "b",
+      "name": {
+        "de": "Gas umkehren",
+        "en": "Reverse throttle"
+      },
+      "werk": false
     },
     {
       "s": "ansage",

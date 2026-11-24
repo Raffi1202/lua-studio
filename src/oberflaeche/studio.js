@@ -426,6 +426,8 @@ function symbolUndEinheit(svg, p, farbe, einheit, zeitOderStatus, titel, th, pad
   let x = r, da = false
   return { ein: da ? x : 0, amWert: !(p.einheitZeigen === false || zeitOderStatus || einheitImTitel(einheit, titel)) }
 }
+// Werte mit Gas % in Prozent (Electric/Jet: gas_proz, Gas ECU/Carb: gas)
+const GAS_WERT = ['lua:gas_proz', 'lua:gas']
 // Angaben eines Platzes für die Vorschau (Beispielwert 62 % des Bereichs)
 function platzInfo(p, stil) {
   const w = wertInfo(p.w)
@@ -434,7 +436,10 @@ function platzInfo(p, stil) {
   let hi = p.max !== undefined ? p.max : (def.max !== undefined ? def.max : 100)
   if (hi <= lo) hi = lo + 1
   // Beispielwert 62 % des Bereichs; für Vergleichsbilder mit dem Simulator feste Testwerte (nur über die Steuerschnittstelle)
-  const wert = st.testWerte && typeof st.testWerte[p.w] === 'number' ? st.testWerte[p.w] : lo + (hi - lo) * 0.62
+  let wert = st.testWerte && typeof st.testWerte[p.w] === 'number' ? st.testWerte[p.w] : lo + (hi - lo) * 0.62
+  // Einstellung «Gas umkehren» (gas_inv): das Lua rechnet Gas % = 100 − Gas %
+  const ein = st.projekt && st.projekt.einstellungen
+  if (ein && (ein.gas_inv === true || ein.gas_inv === 1) && GAS_WERT.includes(p.w)) wert = 100 - wert
   const einheit = (st.projekt.werte[p.w] && st.projekt.werte[p.w].einheit) || einheitAnzeige(def.einheit) || (w && w.sensor && w.sensor.einheit) || (p.w && p.w.startsWith('kanal') ? '%' : '')
   const stellen = (st.projekt.werte[p.w] && st.projekt.werte[p.w].stellen) ?? def.stellen ?? 0
   let zahlText = wert.toFixed(stellen)

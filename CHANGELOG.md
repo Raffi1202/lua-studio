@@ -2,6 +2,13 @@
 
 New entries in English. Older entries in German.
 
+## 0.15.2 (24 Nov 2026)
+
+- **Reverse throttle** (`gas_inv`, yes/no, off by default) from Electric 0.10.2, Glider 0.7.1, Jet 0.7.1, Gas Engine ECU 1.13.1 and Carb 0.13.1: shown in the settings and written to the studio file; the Luas read it as `gasInv`. When it is on, the preview shows throttle % as 100 − value, like the Luas (the Glider preview shows no throttle value).
+- Descriptions of the five Luas taken unchanged from their release tags.
+- Test: studio file with `gas_inv` on/off is read by the Lua reference as `gasInv` for all five Luas.
+- README: donation button (PayPal) at the top, like the other projects.
+
 ## 0.15.1 (23 Nov 2026)
 
 - **Electric 0.10.1:** new setting «battery type 2». The nine new values (RSSI/VFR per band, RX VFR, battery 2 values) have no limit direction any more: Electric takes their limits from the radio menu only, so Lua-Studio offers no limits for them. VFR warning/alarm and battery 2 limits are set in the menu of the radio.

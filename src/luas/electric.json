@@ -1,6 +1,6 @@
 {
  "lua": "electric",
- "luaVersion": "0.10.1",
+ "luaVersion": "0.10.2",
  "formate": [
   1,
   2
@@ -820,6 +820,17 @@
      }
     }
    ]
+  },
+  {
+   "s": "gas_inv",
+   "art": "b",
+   "gruppe": "Flug",
+   "name": {
+    "de": "Gas umkehren",
+    "en": "Reverse throttle"
+   },
+   "werk": false,
+   "lua": "gasInv"
   },
   {
    "s": "flug_strom",

@@ -94,3 +94,23 @@ test('Abgleich mit der Lua-Referenz (Testdateien und gebaute Dateien)', { skip: 
   })
   fs.rmSync(tmp, { recursive: true, force: true })
 })
+
+// Gas umkehren (24.11.): Lua-Studio schreibt einstellungen.gas_inv, die Luas lesen es über ihre Zuordnung
+// camelCase → snake_case (studio.lua: f[1]:gsub("%u", "_" .. klein)) in gasInv.
+test('Gas umkehren: Datei schreiben, Lua liest gasInv', { skip: !luaDa() && 'lua oder Referenz nicht vorhanden' }, () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'lua-studio-gasinv-'))
+  for (const l of ['electric', 'glider', 'jet', 'gas_ecu', 'gas_carb']) {
+    const b = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'src', 'luas', `${l}.json`), 'utf8'))
+    const e = b.einstellungen.find((x) => x.s === 'gas_inv')
+    assert.ok(e && e.art === 'b' && e.werk === false && e.name.de === 'Gas umkehren' && e.name.en === 'Reverse throttle', `${l}: gas_inv fehlt`)
+    for (const v of [true, false]) {
+      const p = path.join(tmp, `${l}-${v}.lua`)
+      const r = F.bauen({ einstellungen: { gas_inv: v }, werte: {}, grenzen: {}, ansichten: [] })
+      assert.deepStrictEqual(r.fehler, [])
+      fs.writeFileSync(p, r.text)
+      const skript = path.join(tmp, 'gasinv.lua')
+      fs.writeFileSync(skript, `local d = dofile(${JSON.stringify(REFERENZ)})(arg[1], 1)\nlocal k = ("gasInv"):gsub("%u", function(c) return "_" .. c:lower() end)\nprint(tostring(d.einstellungen[k]))\n`)
+      assert.strictEqual(execFileSync('lua', [skript, p]).toString().trim(), String(v), `${l}: gasInv = ${v}`)
+    }
+  }
+})
