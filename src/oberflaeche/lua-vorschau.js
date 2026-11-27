@@ -516,7 +516,9 @@
     // Darstellungen des Luas (ab Gas Engine 1.11.0 / 0.11.0), nach dem Simulatorbild «16 Studio Zylinder und Tank» (Beispielwerte)
     if (d === 'zylinder') {
       Z.text(b / 2, th * 0.6 + 2 * s, (q.p.titel || k.T.zylinder).toUpperCase(), 13, G.dim, 'middle', b - 8 * s)
-      const n = 2, sb = min(90 * s, (b - 40 * s) / n - 20 * s), sh = min(120 * s, h - th - 90 * s)
+      // Säulenzahl aus der Einstellung «Zylinder» (zyl_anz, 1–5), Breite und Schrift wie seite1.lua (Gas 1.14.0)
+      const n = k.zyl || 2, sb = b * (n === 5 ? 0.12 : n === 4 ? 0.15 : n === 3 ? 0.19 : n === 1 ? 0.30 : 0.24), sh = min(120 * s, h - th - 90 * s)
+      const tg = n === 5 ? 17 : n === 4 ? 20 : n === 3 ? 24 : 28
       const top = th + 30 * s
       for (let i = 0; i < n; i++) {
         const cx = b * (i + 0.5) / n, x0 = cx - sb / 2
@@ -527,7 +529,7 @@
         const f = 0.62 - i * 0.02
         Z.rechteck(x0 + 2, top + sh * (1 - f), sb - 4, sh * f - 3, G.gruen)
         Z.rechteck(x0 - 2 * s, top + sh * (1 - f) - 4 * s, sb + 4 * s, 2, G.text)
-        Z.text(cx, top + sh + 18 * s, `${142 - i * 4}°`, 18, G.gruen, 'middle', sb + 20 * s)
+        Z.text(cx, top + sh + 18 * s, `${142 - i * 4}°`, tg, G.gruen, 'middle', sb + 20 * s)
       }
       Z.text(b / 2, h - 14 * s, 'Diff 4°   |   max 151°', 12, G.dim, 'middle', b - 8 * s)
       return

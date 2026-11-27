@@ -1,6 +1,6 @@
 {
  "lua": "gas_ecu",
- "luaVersion": "1.13.1",
+ "luaVersion": "1.14.0",
  "formate": [
   1
  ],
@@ -185,6 +185,24 @@
    "name": {
     "de": "Zylinder 4",
     "en": "Cylinder 4"
+   },
+   "einheit": "°C",
+   "stellen": 0,
+   "min": 0,
+   "max": 300,
+   "darstellungen": [
+    "zahl",
+    "ring",
+    "balken_w",
+    "balken_s",
+    "kurve"
+   ]
+  },
+  {
+   "s": "cht5",
+   "name": {
+    "de": "Zylinder 5",
+    "en": "Cylinder 5"
    },
    "einheit": "°C",
    "stellen": 0,
@@ -834,6 +852,13 @@
      "name": {
       "de": "4",
       "en": "4"
+     }
+    },
+    {
+     "wert": 5,
+     "name": {
+      "de": "5",
+      "en": "5"
      }
     }
    ]

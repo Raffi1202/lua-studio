@@ -399,9 +399,16 @@ function phaseZeigen() {
   if (k && e && (e[k] === false || e[k] === 0 || e[k] === 'aus')) return null
   return sprache === 'de' ? 'Thermik' : 'Thermal'
 }
+// Einstellung «Zylinder» der Gas-Luas (zyl_anz 1–5, Werk aus der Beschreibung) für die Säulen der Darstellung «zylinder»
+function zylAnzahl() {
+  const e = st.projekt && st.projekt.einstellungen, v = e && Number(e.zyl_anz)
+  if (v >= 1 && v <= 5) return Math.floor(v)
+  const d = ((beschreibung() || {}).einstellungen || []).find((x) => x.s === 'zyl_anz')
+  return (d && d.werk) || 2
+}
 function luaKontext(stil, a) {
   const T = (stil.texte && (stil.texte[sprache] || stil.texte.en)) || {}
-  return { ansicht: a, T, regeln: stil.regeln, reserviert: reserviert(a), modell: String((st.m && st.m.info && st.m.info.modell) || 'DEMO').toUpperCase(), phase: phaseZeigen(), zeit: st.testWerte && st.testWerte.zeit,
+  return { ansicht: a, T, regeln: stil.regeln, reserviert: reserviert(a), modell: String((st.m && st.m.info && st.m.info.modell) || 'DEMO').toUpperCase(), phase: phaseZeigen(), zyl: zylAnzahl(), zeit: st.testWerte && st.testWerte.zeit,
     symbol: (svg, q, farbe, th, pad) => symbolUndEinheit(svg, q.p, farbe, q.einheit, q.zeit || q.darstellung === 'status', q.titel, th, pad) }
 }
 // Einheit doppelt? Steht sie schon als eigenes Wort im Titel (z. B. «Akku %», «Strom (A)»), dann nicht am Wert.

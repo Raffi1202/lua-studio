@@ -130,3 +130,21 @@ test('Glider 0.7.3: Empfangsbänder wählbar, Datei wird von der Lua-Referenz ge
   fs.writeFileSync(skript, `local d = dofile(${JSON.stringify(REFERENZ)})(arg[1], 1)\nlocal t = {} for _, q in ipairs(d.ansichten[1].plaetze) do t[#t + 1] = q.w end\nprint(table.concat(t, ",") .. ";" .. d.einstellungen.vfr_w .. ";" .. d.einstellungen.vfr_a)\n`)
   assert.strictEqual(execFileSync('lua', [skript, p]).toString().trim(), neu.map((k) => `lua:${k}`).join(',') + ';70;50')
 })
+
+// Gas Engine ECU 1.14.0 / Carb 0.14.0: fünfter Zylinder (cht5 nach cht4, zyl_anz bis 5)
+test('Gas 1.14.0 / 0.14.0: cht5 und zyl_anz 5, Datei wird von der Lua-Referenz gelesen', { skip: !luaDa() && 'lua oder Referenz nicht vorhanden' }, () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'lua-studio-cht5-'))
+  for (const l of ['gas_ecu', 'gas_carb']) {
+    const b = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'src', 'luas', `${l}.json`), 'utf8'))
+    const i = b.werte.findIndex((x) => x.s === 'cht4')
+    assert.strictEqual(b.werte[i + 1] && b.werte[i + 1].s, 'cht5', `${l}: cht5 nicht direkt nach cht4`)
+    assert.ok(b.einstellungen.find((e) => e.s === 'zyl_anz').auswahl.some((a) => a.wert === 5), `${l}: zyl_anz ohne 5`)
+    const a = { breite: 800, hoehe: 480, plaetze: [{ x: 0, y: 60, b: 200, h: 120, w: 'lua:cht5', darstellung: 'zahl' }] }
+    const r = F.bauen({ einstellungen: { zyl_anz: 5 }, werte: {}, grenzen: {}, ansichten: [a] })
+    assert.deepStrictEqual(r.fehler, [])
+    const p = path.join(tmp, `${l}.lua`); fs.writeFileSync(p, r.text)
+    const skript = path.join(tmp, 'c.lua')
+    fs.writeFileSync(skript, `local d = dofile(${JSON.stringify(REFERENZ)})(arg[1], 1)\nprint(d.ansichten[1].plaetze[1].w .. ";" .. d.einstellungen.zyl_anz)\n`)
+    assert.strictEqual(execFileSync('lua', [skript, p]).toString().trim(), 'lua:cht5;5')
+  }
+})

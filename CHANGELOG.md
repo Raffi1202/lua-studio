@@ -2,6 +2,12 @@
 
 New entries in English. Older entries in German.
 
+## 0.15.5 (27 Nov 2026)
+
+- **Gas Engine ECU 1.14.0 / Carb 0.14.0** (fifth cylinder): new value «Cylinder 5» (`cht5`) to choose in own layouts, setting «Cylinders» up to 5.
+- Preview: the display «cylinders» follows the setting «Cylinders» (1–5 columns, column width and font like the Lua); before, it always showed 2 columns.
+- Test: studio file with `cht5` and 5 cylinders is read by the Lua reference.
+
 ## 0.15.4 (24 Nov 2026)
 
 - **Glider 0.7.4:** RSSI 2.4 / 900 in dB instead of %.
